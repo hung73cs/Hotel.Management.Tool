@@ -24,19 +24,7 @@ const CreateAccount = () => {
 
   const OnSelect = (e) => {
     let value = e.target.selectedIndex
-    switch (value) {
-      case 1:
-        setGender(Gender[1])
-        break
-      case 2:
-        setGender(Gender[2])
-        break
-      case 3:
-        setGender(Gender[3])
-        break
-      default:
-        break
-    }
+    setGender(Gender[value])
   }
 
   const OnInput = (e) => {
