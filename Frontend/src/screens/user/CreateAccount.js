@@ -6,66 +6,112 @@ import {
   CFormControl,
   CFormLabel,
   CInputGroup,
-  CInputGroupText,
   CRow,
   CFormSelect,
   CCol,
-  CFormFeedback,
 } from '@coreui/react'
+import { Gender } from 'src/Utils/Enum'
+import { useForm } from 'react-hook-form'
 
 const CreateAccount = () => {
+  const [username, setUsername] = React.useState('')
+  const [name, setName] = React.useState('')
+  const [pass1, setPass1] = React.useState('')
+  const [pass2, setPass2] = React.useState('')
+  const [gender, setGender] = React.useState()
+  const [accountInfo, setAccountInfo] = React.useState()
+  const { register, handleSubmit, watch } = useForm()
+
+  const OnSelect = (e) => {
+    let value = e.target.selectedIndex
+    switch (value) {
+      case 1:
+        setGender(Gender[1])
+        break
+      case 2:
+        setGender(Gender[2])
+        break
+      case 3:
+        setGender(Gender[3])
+        break
+      default:
+        break
+    }
+  }
+
+  const OnInput = (e) => {
+    let value = e.target.value
+
+    if (value.length < 32) {
+      setPass2(value)
+    }
+  }
+
   return (
     <CRow>
-      <CCard className="mb-4">
+      <CCard className="sb-4">
         <CCardHeader>
           <strong>Tạo tài khoản người dùng</strong>
         </CCardHeader>
         <CCardBody>
+          {/* Username */}
           <CInputGroup className="mb-3">
-            <CInputGroupText id="basic-addon1">@</CInputGroupText>
-            <CFormControl
-              placeholder="Username"
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-            />
-          </CInputGroup>
-          <CInputGroup className="mb-3">
-            <CInputGroupText id="basic-addon2">@</CInputGroupText>
-            <CFormControl
-              placeholder="Mật khẩu"
-              aria-label="Mật khẩu"
-              aria-describedby="basic-addon2"
-              type="password"
-            />
-          </CInputGroup>
-
-          <CInputGroup className="mb-3">
-            <CInputGroupText id="basic-addon2">@</CInputGroupText>
-            <CFormControl
-              placeholder="Nhập lại mật khẩu"
-              aria-label="Nhập lại mật khẩu"
-              aria-describedby="basic-addon2"
-              type="password"
-            />
-          </CInputGroup>
-
-          <CInputGroup className="mb-3">
-            <CCol md="12">
-              <CFormLabel htmlFor="validationDefault03">Tên hiển thị</CFormLabel>
-              <CFormControl type="text" id="validationDefault03" required />
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right' }} htmlFor="validationDefault04">
+                Username:
+              </CFormLabel>
             </CCol>
             <CCol md="6">
-              <CFormLabel htmlFor="validationDefault04">Loại tài khoản</CFormLabel>
-              <CFormSelect id="validationDefault04">
+              <CFormControl type="text" onInput={(e) => OnSelect(e)} />
+            </CCol>
+          </CInputGroup>
+          {/* Name */}
+          <CInputGroup className="mb-3">
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right' }} htmlFor="validationDefault04">
+                Name:
+              </CFormLabel>
+            </CCol>
+            <CCol md="6">
+              <CFormControl type="text" onInput={(e) => OnSelect(e)} />
+            </CCol>
+          </CInputGroup>
+          {/* Ngày sinh */}
+          <CInputGroup className="mb-3">
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right' }} htmlFor="validationDefault04">
+                Ngày sinh:
+              </CFormLabel>
+            </CCol>
+            {/* ngày */}
+            <CCol md="1" style={{ marginRight: 10 }}>
+              <CFormControl type="number" onInput={(e) => OnSelect(e)} />
+            </CCol>
+            {/* tháng */}
+            <CCol md="2" style={{ marginRight: 10 }}>
+              <CFormSelect id="validationDefault04" onChange={(e) => OnSelect(e)}>
                 <option disabled>Choose...</option>
-                <option>Admin</option>
-                <option>Staff</option>
+                {[...Array(13).keys()].map((item, index) => {
+                  if (item > 0) {
+                    return <option key={index}>Tháng {item}</option>
+                  }
+                })}
               </CFormSelect>
             </CCol>
-
-            <CCol md="6">
-              <CFormLabel htmlFor="validationDefault04">Giới tính</CFormLabel>
-              <CFormSelect id="validationDefault04">
+            {/* năm */}
+            <CCol md="2">
+              <CFormControl type="number" onInput={(e) => OnSelect(e)} />
+            </CCol>
+          </CInputGroup>
+          {/* Giới tính */}
+          <CInputGroup className="mb-3">
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right', marginBottom: 0 }} htmlFor="validationDefault04">
+                Giới tính:
+              </CFormLabel>
+            </CCol>
+            <CCol md="3">
+              <CFormSelect id="validationDefault04" onChange={(e) => OnSelect(e)}>
                 <option disabled>Choose...</option>
                 <option>Nam</option>
                 <option>Nữ</option>
@@ -73,25 +119,75 @@ const CreateAccount = () => {
               </CFormSelect>
             </CCol>
           </CInputGroup>
-
-          <CFormLabel htmlFor="basic-url">Your vanity URL</CFormLabel>
+          {/* Số điện thoại */}
           <CInputGroup className="mb-3">
-            <CInputGroupText id="basic-addon3">https://example.com/users/</CInputGroupText>
-            <CFormControl id="basic-url" aria-describedby="basic-addon3" />
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right' }} htmlFor="validationDefault04">
+                Số điện thoại:
+              </CFormLabel>
+            </CCol>
+            <CCol md="6">
+              <CFormControl type="text" onInput={(e) => OnSelect(e)} />
+            </CCol>
           </CInputGroup>
+          {/* Địa chỉ */}
           <CInputGroup className="mb-3">
-            <CInputGroupText>$</CInputGroupText>
-            <CFormControl aria-label="Amount (to the nearest dollar)" />
-            <CInputGroupText>.00</CInputGroupText>
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right' }} htmlFor="validationDefault04">
+                Địa chỉ:
+              </CFormLabel>
+            </CCol>
+            <CCol md="6">
+              <CFormControl type="text" onInput={(e) => OnSelect(e)} />
+            </CCol>
           </CInputGroup>
+          {/* ID card */}
           <CInputGroup className="mb-3">
-            <CFormControl placeholder="Username" aria-label="Username" />
-            <CInputGroupText>@</CInputGroupText>
-            <CFormControl placeholder="Server" aria-label="Server" />
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right' }} htmlFor="validationDefault04">
+                CMND:
+              </CFormLabel>
+            </CCol>
+            <CCol md="6">
+              <CFormControl type="text" onInput={(e) => OnSelect(e)} />
+            </CCol>
           </CInputGroup>
-          <CInputGroup>
-            <CInputGroupText>With textarea</CInputGroupText>
-            <CFormControl component="textarea" aria-label="With textarea"></CFormControl>
+          {/* Nhập mật khẩu */}
+          <CInputGroup className="mb-3">
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right', marginBottom: 0 }} htmlFor="validationDefault04">
+                Mật khẩu:
+              </CFormLabel>
+            </CCol>
+            <CCol md="6">
+              <CFormControl type="password" onInput={(e) => OnSelect(e)} />
+            </CCol>
+          </CInputGroup>
+          {/* Nhập lại mật khẩu */}
+          <CInputGroup className="mb-3">
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right', marginBottom: 0 }} htmlFor="validationDefault04">
+                Xác nhận lại mật khẩu:
+              </CFormLabel>
+            </CCol>
+            <CCol md="6">
+              <CFormControl type="password" value={pass2} onInput={(e) => OnSelect(e)} />
+            </CCol>
+          </CInputGroup>
+          {/* Phân quyền */}
+          <CInputGroup className="mb-3">
+            <CCol md="4" style={{ marginRight: 10 }}>
+              <CFormLabel style={{ float: 'right', marginBottom: 0 }} htmlFor="validationDefault04">
+                Phân quyền:
+              </CFormLabel>
+            </CCol>
+            <CCol md="6">
+              <CFormSelect id="validationDefault04" onChange={(e) => OnSelect(e)}>
+                <option disabled>Choose...</option>
+                <option>Admin</option>
+                <option>Staff</option>
+              </CFormSelect>
+            </CCol>
           </CInputGroup>
         </CCardBody>
       </CCard>
