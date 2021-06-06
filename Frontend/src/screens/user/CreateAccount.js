@@ -162,7 +162,7 @@ const CreateAccount = () => {
               <CFormControl type="password" value={pass2} onInput={(e) => OnSelect(e)} />
             </CCol>
           </CInputGroup>
-          {/* Phân quyền */}
+          {/* Phân quyền   */}
           <CInputGroup className="mb-3">
             <CCol md="4" style={{ marginRight: 10 }}>
               <CFormLabel style={{ float: 'right', marginBottom: 0 }} htmlFor="validationDefault04">
