@@ -66,7 +66,7 @@ const CreateAccount = () => {
       case 'USERNAME':
         setaccountInfo(() => {
           return Object.assign({}, accountInfo, {
-            username: value,
+            username: value.replace(' ', ''),
           })
         })
         break
