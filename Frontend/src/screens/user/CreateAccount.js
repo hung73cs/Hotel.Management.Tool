@@ -12,12 +12,13 @@ import {
   CCardFooter,
   CButton,
 } from '@coreui/react'
-import { Gender } from 'src/Utils/Enum'
+// import { Gender } from 'src/Utils/Enum'
+import Message from '../../components/Message'
 
 const CreateAccount = () => {
   const [name, setName] = React.useState('')
   const [phoneNumber, setPhoneNumber] = React.useState('')
-  const [gender, setGender] = React.useState(Gender[1])
+  const [gender, setGender] = React.useState('Gender[1]')
   const [idCard, setIdCard] = React.useState('')
   const [address, setAddress] = React.useState('')
   const [date, setDate] = React.useState('')
@@ -25,13 +26,15 @@ const CreateAccount = () => {
   const [pass1, setPass1] = React.useState('')
   const [pass2, setPass2] = React.useState('')
   const [year, setYear] = React.useState('')
+  const [message, setMessage] = React.useState('')
+
   const [accountInfo, setaccountInfo] = React.useState({
     username: '',
     password: '',
     role: 'Admin',
     userInfoModel: {
       name: '',
-      gender: Gender[1],
+      gender: 'Gender[1]',
       birthday: '',
       phoneNumber: '',
       address: '',
@@ -46,7 +49,7 @@ const CreateAccount = () => {
         setMonth(value)
         break
       case 'GENDER':
-        setGender(Gender[value])
+        setGender('Gender[value]')
         break
       case 'ROLE':
         setaccountInfo(() => {
@@ -112,8 +115,9 @@ const CreateAccount = () => {
   }
 
   function Submit(e) {
+    e.preventDefault()
     if (pass1 !== pass2) {
-      alert('Mật khẩu không chính xác')
+      setMessage('Mật khẩu không khớp')
       return
     }
     accountInfo.password = pass1
@@ -131,7 +135,7 @@ const CreateAccount = () => {
         case 10:
         case 12:
           if (date < 0 || date > 31) {
-            alert('Ngày sinh không hợp lệ')
+            setMessage('Ngày sinh không hợp lệ')
           }
           break
         case 4:
@@ -139,29 +143,29 @@ const CreateAccount = () => {
         case 9:
         case 11:
           if (date < 0 || date > 30) {
-            alert('Ngày sinh không hợp lệ')
+            setMessage('Ngày sinh không hợp lệ')
           }
           break
         default:
           if (date < 0 || date > 28) {
-            alert('Ngày sinh không hợp lệ')
+            setMessage('Ngày sinh không hợp lệ')
           }
           break
       }
 
       let currentDate = new Date()
       if (currentDate.getFullYear() < year) {
-        alert('Năm sinh không hợp lệ')
+        setMessage('Năm sinh không hợp lệ')
         return
       } else {
         if (currentDate.getFullYear() === year) {
           if (currentDate.getMonth < month) {
-            alert('Tháng sinh không hợp lệ')
+            setMessage('Năm sinh không hợp lệ')
             return
           } else {
             if (currentDate.getMonth === month) {
               if (currentDate.getDate < date) {
-                alert('Ngày sinh không hợp lệ')
+                setMessage('Năm sinh không hợp lệ')
                 return
               }
             }
@@ -185,6 +189,7 @@ const CreateAccount = () => {
         <CCardHeader>
           <strong>Tạo tài khoản người dùng</strong>
         </CCardHeader>
+        {message && <Message variant="danger">{message}</Message>}
         <CCardBody>
           {/* Username */}
           <CInputGroup className="mb-3">
