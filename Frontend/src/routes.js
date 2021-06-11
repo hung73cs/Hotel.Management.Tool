@@ -45,7 +45,7 @@ const Badges = React.lazy(() => import('./views/components/notifications/badges/
 const Modals = React.lazy(() => import('./views/components/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/components/notifications/toasts/Toasts'))
 
-// const Login = React.lazy(() => import('./views/examples/pages/login/Login'))
+const Login = React.lazy(() => import('./views/pages/login/Login'))
 // const Register = React.lazy(() => import('./views/examples/pages/register/Register'))
 // const Page404 = React.lazy(() => import('./views/examples/pages/page404/Page404'))
 // const Page500 = React.lazy(() => import('./views/examples/pages/page500/Page500'))

@@ -12,7 +12,6 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import { Example } from 'src/reusable'
 
 const GetAccounts = () => {
   return (
