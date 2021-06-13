@@ -34,9 +34,11 @@ const Login = () => {
   //   dispatch(userActions.logout()``)
   // }, [dispatch, submitted])
 
-  function handleChange(e) {
+  function handleChange(e, type) {
     let value = e.target.value
-    setInputs(Object.assign({}, inputs, { username: value }))
+    setInputs(
+      Object.assign({}, inputs, type == 'USERNAME' ? { username: value } : { password: value }),
+    )
   }
 
   function handleSubmit(e) {
@@ -67,8 +69,8 @@ const Login = () => {
                     <CFormControl
                       placeholder="Username"
                       autoComplete="username"
-                      value={username}
-                      onInput={(e) => handleChange(e)}
+                      value={inputs.username}
+                      onInput={(e) => handleChange(e, 'USERNAME')}
                     />
                   </CInputGroup>
                   <CInputGroup className="mb-4">
@@ -79,8 +81,8 @@ const Login = () => {
                       type="password"
                       placeholder="Password"
                       autoComplete="current-password"
-                      value={password}
-                      onInput={(e) => handleChange(e)}
+                      value={inputs.password}
+                      onInput={(e) => handleChange(e, 'PASS')}
                     />
                   </CInputGroup>
                   <CRow>
