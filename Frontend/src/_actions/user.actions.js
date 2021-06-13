@@ -6,9 +6,9 @@ import { history } from '../_helpers'
 export const userActions = {
   login,
   logout,
-  register,
   getAll,
   delete: _delete,
+  UpdateToken,
 }
 
 function login(username, password, from) {
@@ -17,7 +17,7 @@ function login(username, password, from) {
 
     userService.login(username, password).then(
       (user) => {
-        dispatch(success(user))
+        dispatch(UpdateToken(user.token))
         history.push(from)
       },
       (error) => {
@@ -38,37 +38,19 @@ function login(username, password, from) {
   }
 }
 
+function UpdateToken(token) {
+  return { type: 'UPDATE_TOKEN', token: token }
+}
 function logout() {
   userService.logout()
-  return { type: userConstants.LOGOUT }
+  console.log('tao cut roi dcmm')
+  return (dispatch) => {
+    dispatch(RemoveToken())
+  }
 }
 
-function register(user) {
-  return (dispatch) => {
-    dispatch(request(user))
-
-    userService.register(user).then(
-      (user) => {
-        dispatch(success())
-        history.push('/login')
-        dispatch(alertActions.success('Registration successful'))
-      },
-      (error) => {
-        dispatch(failure(error.toString()))
-        dispatch(alertActions.error(error.toString()))
-      },
-    )
-  }
-
-  function request(user) {
-    return { type: userConstants.REGISTER_REQUEST, user }
-  }
-  function success(user) {
-    return { type: userConstants.REGISTER_SUCCESS, user }
-  }
-  function failure(error) {
-    return { type: userConstants.REGISTER_FAILURE, error }
-  }
+function RemoveToken() {
+  return { type: userConstants.LOGOUT }
 }
 
 function getAll() {

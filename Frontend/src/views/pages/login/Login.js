@@ -37,13 +37,14 @@ const Login = () => {
   function handleChange(e, type) {
     let value = e.target.value
     setInputs(
-      Object.assign({}, inputs, type == 'USERNAME' ? { username: value } : { password: value }),
+      Object.assign({}, inputs, type === 'USERNAME' ? { username: value } : { password: value }),
     )
+    console.log(inputs)
   }
 
   function handleSubmit(e) {
     e.preventDefault()
-
+    console.log('vdsd')
     setSubmitted(true)
     if (username && password) {
       // get return url from location state or default to home page
@@ -59,7 +60,7 @@ const Login = () => {
           <CCol md="5">
             <CCard className="p-4">
               <CCardBody>
-                <CForm onSubmit={handleSubmit}>
+                <CForm>
                   <h1>Login</h1>
                   <p className="text-medium-emphasis">Sign In to your account</p>
                   <CInputGroup className="mb-3">
@@ -87,7 +88,12 @@ const Login = () => {
                   </CInputGroup>
                   <CRow>
                     <CCol xs="6">
-                      <CButton color="primary" className="px-4">
+                      <CButton
+                        {...loggingIn}
+                        color="primary"
+                        className="px-4"
+                        onClick={(e) => handleSubmit(e)}
+                      >
                         Login
                       </CButton>
                     </CCol>
