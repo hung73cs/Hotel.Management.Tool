@@ -30,13 +30,13 @@ const Login = () => {
   const location = useLocation()
 
   // reset login status
-  useEffect(() => {
-    dispatch(userActions.logout())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(userActions.logout()``)
+  // }, [dispatch, submitted])
 
   function handleChange(e) {
-    const { name, value } = e.target
-    setInputs((inputs) => ({ ...inputs, [name]: value }))
+    let value = e.target.value
+    setInputs(Object.assign({}, inputs, { username: value }))
   }
 
   function handleSubmit(e) {
@@ -79,6 +79,8 @@ const Login = () => {
                       type="password"
                       placeholder="Password"
                       autoComplete="current-password"
+                      value={password}
+                      onInput={(e) => handleChange(e)}
                     />
                   </CInputGroup>
                   <CRow>
