@@ -1,15 +1,11 @@
 ﻿using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Core.Interfaces;
-using Hotel.Management.Tool.Core.Interfaces.Paremeter;
-using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Parameter;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
 {
     public class ParameterMapper : IParameterMapper
-    {
-        private readonly IParameterRepository _parameterRepository;
-        
+    {        
         public ParameterMapper(IParameterRepository parameterRepository)
         {
             _parameterRepository = parameterRepository;
