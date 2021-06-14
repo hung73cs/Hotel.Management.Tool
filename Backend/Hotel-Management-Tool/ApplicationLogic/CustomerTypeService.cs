@@ -9,68 +9,73 @@ using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.ApplicationLogic
 {
-    public class CustomerTypeService : ICustomerTypeService
+    public class GuestTypeService : IGuestTypeService
     {
-        private readonly ICustomerTypeRepository _customerType;
+        private readonly IGuestTypeRepository _GuestType;
 
-        public CustomerTypeService(ICustomerTypeRepository customerType)
+        public GuestTypeService(IGuestTypeRepository GuestType)
         {
-            _customerType = customerType;
+            _GuestType = GuestType;
         }
 
-        public async Task<CustomerType> GetCustomerTypeAsync(Guid customerTypeId)
+        public async Task<GuestType> GetGuestTypeAsync(Guid GuestTypeId)
         {
-            var customerType = await _customerType.SearchForSingleItemAsync(x => x.Id == customerTypeId);
-            return customerType;
+            var GuestType = await _GuestType.SearchForSingleItemAsync(x => x.Id == GuestTypeId);
+            return GuestType;
         }
 
-        public async Task<List<CustomerType>> GetMultipleCustomerTypePagingAsync(int pageIndex, int itemPerPage)
+        public async Task<List<GuestType>> GetMultipleGuestTypePagingAsync(int pageIndex, int itemPerPage)
         {
-            var customerType = await _customerType.GetListByPagingAsync(pageIndex, itemPerPage);
-            return customerType;
+            var GuestType = await _GuestType.GetListByPagingAsync(pageIndex, itemPerPage);
+            return GuestType;
         }
-        public async Task<CustomerType> CreateCustomerTypeAsync(CustomerType customerTypeToCreate)
+        public async Task<GuestType> CreateGuestTypeAsync(GuestType GuestTypeToCreate)
         {
-            var customerType = await _customerType.SearchForSingleItemAsync(x => x.Name == customerTypeToCreate.Name);
+            var GuestType = await _GuestType.SearchForSingleItemAsync(x => x.Name == GuestTypeToCreate.Name);
 
-            if (customerType != null)
+            if (GuestType != null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
             }
 
-            return await _customerType.CreateAsync(customerTypeToCreate);
+            return await _GuestType.CreateAsync(GuestTypeToCreate);
         }
-        public async Task<CustomerType> UpdateCustomerTypeAsync(CustomerType customerTypeRequest)
+        public async Task<GuestType> UpdateGuestTypeAsync(GuestType GuestTypeRequest)
         {
-            var customerTypes = await _customerType.SearchForMultipleItemsAsync(x => x.Name == customerTypeRequest.Name);
+            var GuestTypes = await _GuestType.SearchForMultipleItemsAsync(x => x.Name == GuestTypeRequest.Name);
 
-            foreach (var i in customerTypes)
+            foreach (var i in GuestTypes)
             {
-                if (customerTypeRequest.Name == i.Name && customerTypeRequest.Id != i.Id)
+                if (GuestTypeRequest.Name == i.Name && GuestTypeRequest.Id != i.Id)
                 {
                     throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
                 }
             }
 
-            return await _customerType.UpdateAsync(customerTypeRequest);
+            return await _GuestType.UpdateAsync(GuestTypeRequest);
         }
 
-        public async Task DeleteCustomerTypeAsync(Guid customerTypeId)
+        public async Task DeleteGuestTypeAsync(Guid GuestTypeId)
         {
-            var customerType = await _customerType.SearchForSingleItemAsync(x => x.Id == customerTypeId);
+            var GuestType = await _GuestType.SearchForSingleItemAsync(x => x.Id == GuestTypeId);
 
-            if (customerType == null)
+            if (GuestType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
-            customerType.IsDeleted = true;
+            GuestType.IsDeleted = true;
 
-            await _customerType.UpdateAsync(customerType);
+            await _GuestType.UpdateAsync(GuestType);
         }
 
-        public async Task HardDeleteCustomerTypeAsync(Guid customerTypeId)
+        public async Task HardDeleteGuestTypeAsync(Guid GuestTypeId)
         {
-            await _customerType.DeleteAsync(a => a.Id == customerTypeId);
+            await _GuestType.DeleteAsync(a => a.Id == GuestTypeId);
+        }
+
+        public async Task<List<GuestType>> GetGuestTypesAsync()
+        {
+            return await _GuestType.GetListAsync();        
         }
     }
 }

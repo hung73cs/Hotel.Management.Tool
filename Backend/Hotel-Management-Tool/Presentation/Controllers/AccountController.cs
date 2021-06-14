@@ -3,6 +3,7 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models.Account;
+using Hotel.Management.Tool.Presentation.Extensions;
 using Hotel.Management.Tool.Presentation.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,9 +47,23 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         [HttpGet]
         [Route("get/{page}/{item}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<GetAccountModel>>> GetAccounts(int page, int item)
+        public async Task<ActionResult<List<GetAccountModel>>> GetAccountsPagingAsync(int page, int item)
         {
             var accounts = await _account.GetMultipleAccountPagingAsync(page, item);
+
+            if (accounts == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            return Ok(
+                 _accountMapper.MapAccountToAccountModel(accounts));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<GetAccountModel>>> GetAccountsAsync()
+        {
+            var accounts = await _account.GetAccountsAsync();
 
             if (accounts == null)
             {
@@ -70,7 +85,9 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
 
-            await _account.CreateAsync(mappedAccount);
+            var result = await _account.CreateAsync(mappedAccount);
+
+            Response.AddInfoHeaders(result.Id);
 
             return NoContent();
         }

@@ -17,8 +17,8 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 bookingDetails = model.BookingDetails.Select(x => new BookingDetail
                 {
-                    CustomerName = x.CustomerName,
-                    CustomerTypeId = x.CustomerTypeId,
+                    GuestName = x.GuestName,
+                    GuestTypeId = x.GuestTypeId,
                     IdCard = x.IdCard,
                     Address = x.Address
                 }).ToList();
@@ -29,12 +29,13 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 StartedDate = model.StartedDate == null ? DateTime.Now : model.StartedDate,
                 RoomId = model.RoomId,
                 AccountId = model.AccountId,
-                NumberOfCustomer = model.NumberOfCustomer,
+                NumberOfGuest = model.NumberOfGuest,
                 UnitPrice = model.UnitPrice,
                 UnitStandardPrice = model.UnitStandardPrice,
                 BookingDetails = bookingDetails,
             };
         }
+
 
         public BookingModel MappBookingToBookingModel(Booking booking)
         {
@@ -43,8 +44,8 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 bookingDetails = booking.BookingDetails.Select(x => new BookingDetail
                 {
-                    CustomerName = x.CustomerName,
-                    CustomerTypeId = x.CustomerTypeId,
+                    GuestName = x.GuestName,
+                    GuestTypeId = x.GuestTypeId,
                     IdCard = x.IdCard,
                     Address = x.Address
                 }).ToList();
@@ -55,11 +56,43 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 StartedDate = booking.StartedDate,
                 RoomId = booking.RoomId,
                 AccountId = booking.AccountId,
-                NumberOfCustomer = booking.NumberOfCustomer,
+                NumberOfGuest = booking.NumberOfGuest,
                 UnitPrice = booking.UnitPrice,
                 UnitStandardPrice = booking.UnitStandardPrice,
                 BookingDetails = bookingDetails,
             };
+        }
+
+        public List<BookingModel> MappBookingToBookingModel(List<Booking> bookings)
+        {
+            var bookingModels = new List<BookingModel>();
+            foreach (var i in bookings)
+            {
+                var bookingDetails = new List<BookingDetail>();
+                if (i.BookingDetails != null)
+                {
+                    bookingDetails = i.BookingDetails.Select(x => new BookingDetail
+                    {
+                        GuestName = x.GuestName,
+                        GuestTypeId = x.GuestTypeId,
+                        IdCard = x.IdCard,
+                        Address = x.Address
+                    }).ToList();
+                }
+                var bookingModel = new BookingModel()
+                {
+                    Id = i.Id,
+                    StartedDate = i.StartedDate,
+                    RoomId = i.RoomId,
+                    AccountId = i.AccountId,
+                    NumberOfGuest = i.NumberOfGuest,
+                    UnitPrice = i.UnitPrice,
+                    UnitStandardPrice = i.UnitStandardPrice,
+                    BookingDetails = bookingDetails,
+                };
+                bookingModels.Add(bookingModel);
+            }
+            return bookingModels;
         }
 
         public Booking MapBookingModelToBooking(Booking bookingEntity, CreateBookingModel model)
@@ -69,8 +102,8 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 bookingDetails = model.BookingDetails.Select(x => new BookingDetail
                 {
-                    CustomerName = x.CustomerName,
-                    CustomerTypeId = x.CustomerTypeId,
+                    GuestName = x.GuestName,
+                    GuestTypeId = x.GuestTypeId,
                     IdCard = x.IdCard,
                     Address = x.Address
                 }).ToList();
@@ -79,7 +112,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 bookingEntity.StartedDate = model.StartedDate;
                 bookingEntity.RoomId = model.RoomId;
-                bookingEntity.NumberOfCustomer = model.NumberOfCustomer;
+                bookingEntity.NumberOfGuest = model.NumberOfGuest;
                 bookingEntity.UnitPrice = model.UnitPrice;
                 bookingEntity.StartedDate = model.StartedDate;
                 bookingEntity.BookingDetails = bookingDetails;

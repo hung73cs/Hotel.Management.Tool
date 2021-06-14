@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Management.Tool.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210606071152_remove customer table")]
-    partial class removecustomertable
+    [Migration("20210606071152_remove Guest table")]
+    partial class removeGuesttable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,7 +57,7 @@ namespace Hotel.Management.Tool.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid>("GuestId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("EndedDate")
@@ -123,7 +123,7 @@ namespace Hotel.Management.Tool.Migrations
                     b.ToTable("BookingDetails");
                 });
 
-            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.CustomerType", b =>
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.GuestType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,7 +143,7 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerTypes");
+                    b.ToTable("GuestTypes");
                 });
 
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Parameter", b =>

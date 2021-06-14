@@ -12,6 +12,8 @@ namespace Hotel.Management.Tool.Core.Interfaces
         Task<Room> CreateRoomAsync(Room room);
         Task<Room> UpdateRoomAsync(Room room);
         Task DeleteRoomAsync(Guid roomId);
-        Task HardDeleteRoomAsync(Guid roomId);        
+        Task HardDeleteRoomAsync(Guid roomId);
+        Task<List<Room>> GetRoomsAsync();
+
     }
 }
