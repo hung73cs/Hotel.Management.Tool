@@ -30,7 +30,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("id/{GuestTypeId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<GuestTypeModel>> GetGuestType(Guid GuestTypeId)
         {
             var GuestType = await _GuestTypeService.GetGuestTypeAsync(GuestTypeId);
@@ -43,7 +43,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> CreateGuestType([FromBody] CreateGuestTypeModel GuestTypeModel)
         {
             var mapper = _GuestTypeMapper.MapGuestTypeModelToGuestType(GuestTypeModel);
@@ -62,7 +62,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{GuestTypeId}")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="ADMIN")]
         public async Task<ActionResult> UpdateGuestType(Guid GuestTypeId, [FromBody] CreateGuestTypeModel GuestTypeModel)
         {
             var currentGuestType = await _GuestTypeService.GetGuestTypeAsync(GuestTypeId);
@@ -86,7 +86,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{GuestTypeId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteGuestType(Guid GuestTypeId)
         {
             await _GuestTypeService.DeleteGuestTypeAsync(GuestTypeId);
@@ -96,7 +96,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{GuestTypeId}/hard-delete")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> HardDeleteGuestType(Guid GuestTypeId)
         {
             await _GuestTypeService.HardDeleteGuestTypeAsync(GuestTypeId);

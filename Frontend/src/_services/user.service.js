@@ -17,8 +17,6 @@ function login(username, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
   }
-  console.log('requestOptions', requestOptions)
-
   return fetch(`${apiUrl}/login`, requestOptions)
     .then(handleResponse)
     .then((user) => {
@@ -38,8 +36,7 @@ function getAll() {
     method: 'GET',
     headers: authHeader(),
   }
-
-  return fetch(`${apiUrl}/users`, requestOptions).then(handleResponse)
+  return fetch(`${apiUrl}/account`, requestOptions).then(handleResponse)
 }
 
 function getById(id) {

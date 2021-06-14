@@ -87,7 +87,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<BookingModel>>> GetBookingsAsync()
         {
             var bookings = await _bookingService.GetBookings();

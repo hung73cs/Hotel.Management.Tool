@@ -326,7 +326,7 @@ const CreateAccount = () => {
             style={{ float: 'right' }}
             onClick={(e) => Submit(e)}
           >
-            {'Tạo'}
+            {'Bấm vào đây thằng lồn!'}
           </CButton>
         </CCardFooter>
       </CCard>

@@ -4,6 +4,7 @@ export function authHeader() {
 
   if (user && user.token) {
     return { Authorization: 'Bearer ' + user.token }
+    console.log(user.token)
   } else {
     return {}
   }

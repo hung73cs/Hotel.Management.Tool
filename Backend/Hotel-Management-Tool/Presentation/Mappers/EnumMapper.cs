@@ -20,7 +20,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {Gender.FEMALE, "Female"},
             {Gender.UNKNOWN, "Unknown"},
 
-            {Role.ADMIN, "Admin"},
+            {Role.ADMIN, "ADMIN"},
             {Role.STAFF, "Staff"},
 
             {RoomStatus.OPEN, "Open"},
