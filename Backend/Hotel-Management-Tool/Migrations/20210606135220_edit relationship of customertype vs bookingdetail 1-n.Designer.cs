@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Management.Tool.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210606135220_edit relationship of customertype vs bookingdetail 1-n")]
-    partial class editrelationshipofcustomertypevsbookingdetail1n
+    [Migration("20210606135220_edit relationship of Guesttype vs bookingdetail 1-n")]
+    partial class editrelationshipofGuesttypevsbookingdetail1n
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,7 +60,7 @@ namespace Hotel.Management.Tool.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("CustomerName")
+                    b.Property<string>("GuestName")
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
@@ -126,7 +126,7 @@ namespace Hotel.Management.Tool.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("NumberOfCustomer")
+                    b.Property<int>("NumberOfGuest")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("RoomId")
@@ -163,11 +163,11 @@ namespace Hotel.Management.Tool.Migrations
                     b.Property<Guid>("BookingId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CustomerName")
+                    b.Property<string>("GuestName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CustomerTypeId")
+                    b.Property<Guid>("GuestTypeId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("IdCard")
@@ -183,12 +183,12 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasIndex("BookingId");
 
-                    b.HasIndex("CustomerTypeId");
+                    b.HasIndex("GuestTypeId");
 
                     b.ToTable("BookingDetails");
                 });
 
-            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.CustomerType", b =>
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.GuestType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -208,7 +208,7 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerTypes");
+                    b.ToTable("GuestTypes");
                 });
 
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Parameter", b =>
@@ -428,9 +428,9 @@ namespace Hotel.Management.Tool.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Management.Tool.Core.Entities.CustomerType", "CustomerType")
+                    b.HasOne("Hotel.Management.Tool.Core.Entities.GuestType", "GuestType")
                         .WithMany("BookingDetails")
-                        .HasForeignKey("CustomerTypeId")
+                        .HasForeignKey("GuestTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

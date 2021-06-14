@@ -3,9 +3,12 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
+using Hotel.Management.Tool.Models.Booking;
+using Hotel.Management.Tool.Presentation.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
@@ -36,7 +39,10 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
 
-            await _bookingService.CreateAsync(mapper);
+            var result = await _bookingService.CreateAsync(mapper);
+
+            Response.AddInfoHeaders(result.Id);
+
             return NoContent();
         }
 
@@ -64,20 +70,34 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{bookingId}")]
-        public async Task<ActionResult> DeleteCustomerType(Guid customerTypeId)
+        public async Task<ActionResult> DeleteGuestType(Guid GuestTypeId)
         {
-            await _bookingService.DeleteBooking(customerTypeId);
+            await _bookingService.DeleteBooking(GuestTypeId);
 
             return NoContent();
         }
 
         [HttpDelete]
         [Route("id/{bookingId}/hard-delete")]
-        public async Task<ActionResult> HardDeleteCustomerType(Guid customerTypeId)
+        public async Task<ActionResult> HardDeleteGuestType(Guid GuestTypeId)
         {
-            await _bookingService.HardDeleteBooking(customerTypeId);
+            await _bookingService.HardDeleteBooking(GuestTypeId);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<BookingModel>>> GetBookingsAsync()
+        {
+            var bookings = await _bookingService.GetBookings();
+
+            if (bookings == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            return Ok(
+                 _bookingMapper.MappBookingToBookingModel(bookings));
         }
     }
 }

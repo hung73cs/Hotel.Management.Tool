@@ -72,5 +72,10 @@ namespace Hotel.Management.Tool.ApplicationLogic
         {
             await _roomType.DeleteAsync(a => a.Id == roomTypeId);
         }
+
+        public async Task<List<RoomType>> GetRoomTypesAsync()
+        {
+            return await _roomType.GetListAsync();
+        }
     }
 }

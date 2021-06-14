@@ -5,7 +5,9 @@ using Hotel.Management.Tool.Models.Parameter;
 namespace Hotel.Management.Tool.Presentation.Mappers
 {
     public class ParameterMapper : IParameterMapper
-    {        
+    {
+        private readonly IParameterRepository _parameterRepository;
+        
         public ParameterMapper(IParameterRepository parameterRepository)
         {
             _parameterRepository = parameterRepository;

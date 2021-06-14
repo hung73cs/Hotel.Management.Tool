@@ -2,7 +2,7 @@
 
 namespace Hotel.Management.Tool.Core.Entities
 {
-    public class CustomerType : Base
+    public class GuestType : Base
     {
         public string Name { get; set; }
         public decimal SurchargeRate { get; set; }

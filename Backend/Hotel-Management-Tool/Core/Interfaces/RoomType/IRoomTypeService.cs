@@ -13,5 +13,6 @@ namespace Hotel.Management.Tool.Core.Interfaces
         Task<RoomType> UpdateRoomTypeAsync(RoomType roomType);
         Task DeleteRoomTypeAsync(Guid roomTypeId);
         Task HardDeleteRoomTypeAsync(Guid roomTypeId);
+        Task<List<RoomType>> GetRoomTypesAsync();
     }
 }

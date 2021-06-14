@@ -4,6 +4,7 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.ApplicationLogic
@@ -57,6 +58,18 @@ namespace Hotel.Management.Tool.ApplicationLogic
         public async Task HardDeleteBooking(Guid id)
         {
             await _booking.DeleteAsync(x => x.Id == id);
+        }
+
+        public async Task<List<Booking>> GetBookings()
+        {
+            var bookings = await _booking.GetListAsync();
+            var results = new List<Booking>();
+            foreach (var i in bookings)
+            {
+                var booking = await _booking.SearchForSingleItemAsync(x => x.Id == i.Id, x => x.BookingDetails);
+                results.Add(booking);
+            }
+            return results;
         }
     }
 }

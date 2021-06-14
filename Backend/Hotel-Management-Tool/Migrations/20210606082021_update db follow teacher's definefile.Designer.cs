@@ -60,7 +60,7 @@ namespace Hotel.Management.Tool.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("CustomerName")
+                    b.Property<string>("GuestName")
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
@@ -126,7 +126,7 @@ namespace Hotel.Management.Tool.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("NumberOfCustomer")
+                    b.Property<int>("NumberOfGuest")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("RoomId")
@@ -163,11 +163,11 @@ namespace Hotel.Management.Tool.Migrations
                     b.Property<Guid>("BookingId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CustomerName")
+                    b.Property<string>("GuestName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CustomerTypeId")
+                    b.Property<Guid>("GuestTypeId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("IdCard")
@@ -183,13 +183,13 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasIndex("BookingId");
 
-                    b.HasIndex("CustomerTypeId")
+                    b.HasIndex("GuestTypeId")
                         .IsUnique();
 
                     b.ToTable("BookingDetails");
                 });
 
-            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.CustomerType", b =>
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.GuestType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -209,7 +209,7 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerTypes");
+                    b.ToTable("GuestTypes");
                 });
 
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Parameter", b =>
@@ -429,9 +429,9 @@ namespace Hotel.Management.Tool.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Management.Tool.Core.Entities.CustomerType", "CustomerType")
+                    b.HasOne("Hotel.Management.Tool.Core.Entities.GuestType", "GuestType")
                         .WithOne("BookingDetail")
-                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BookingDetail", "CustomerTypeId")
+                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BookingDetail", "GuestTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -23,6 +23,18 @@ namespace Hotel.Management.Tool.ApplicationLogic
             return account;
         }
 
+        public async Task<List<Account>> GetAccountsAsync()
+        {
+            var accounts = await _account.GetListAsync();
+            var results = new List<Account>();
+            foreach(var i in accounts)
+            {
+                var account = await _account.SearchForSingleItemAsync(x => x.Id == i.Id, x => x.UserInfo);
+                results.Add(account);
+            }
+            return results;
+        }
+
         public async Task<List<Account>> GetMultipleAccountPagingAsync(int pageIndex, int itemPerPage)
         {
             var account = await _account.GetListByPagingAsync(pageIndex, itemPerPage);

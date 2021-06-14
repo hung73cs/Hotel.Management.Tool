@@ -9,7 +9,7 @@ namespace Hotel.Management.Tool.Models.Booking
         public Guid Id { get; set; }
         public Guid RoomId { get; set; }
         public Guid AccountId { get; set; }
-        public int NumberOfCustomer { get; set; }
+        public int NumberOfGuest { get; set; }
         public DateTime StartedDate { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal UnitStandardPrice { get; set; }
