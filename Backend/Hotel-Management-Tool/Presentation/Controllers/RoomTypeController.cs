@@ -3,9 +3,12 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
+using Hotel.Management.Tool.Models.RoomType;
+using Hotel.Management.Tool.Presentation.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
@@ -41,7 +44,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> CreateRoomType([FromBody] RoomTypeModel roomTypeModel)
+        public async Task<ActionResult> CreateRoomType([FromBody] CreateRoomTypeModel roomTypeModel)
         {
             var mapper = _roomTypeMapper.MapRoomTypeModelToRoomType(roomTypeModel);
 
@@ -50,7 +53,9 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
             }
 
-            await _roomTypeService.CreateRoomTypeAsync(mapper);
+
+            var result = await _roomTypeService.CreateRoomTypeAsync(mapper);
+            Response.AddInfoHeaders(result.Id);
 
             return NoContent();
         }
@@ -58,7 +63,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         [HttpPut]
         [Route("id/{roomTypeId}")]
         [Authorize(Roles ="Admin")]
-        public async Task<ActionResult> UpdateRoomType(Guid roomTypeId, [FromBody]RoomTypeModel roomTypeModel)
+        public async Task<ActionResult> UpdateRoomType(Guid roomTypeId, [FromBody]CreateRoomTypeModel roomTypeModel)
         {
             var currentRoomType = await _roomTypeService.GetRoomTypeAsync(roomTypeId);
 
@@ -97,6 +102,18 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             await _roomTypeService.HardDeleteRoomTypeAsync(roomTypeId);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<RoomTypeModel>>> GetRoomTypes()
+        {
+            var roomTypes = await _roomTypeService.GetRoomTypesAsync();
+
+            if (roomTypes == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            return Ok(_roomTypeMapper.MapRoomTypeToRoomTypeModel(roomTypes));
         }
     }
 }

@@ -36,6 +36,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             };
         }
 
+
         public BookingModel MappBookingToBookingModel(Booking booking)
         {
             var bookingDetails = new List<BookingDetail>();
@@ -60,6 +61,38 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 UnitStandardPrice = booking.UnitStandardPrice,
                 BookingDetails = bookingDetails,
             };
+        }
+
+        public List<BookingModel> MappBookingToBookingModel(List<Booking> bookings)
+        {
+            var bookingModels = new List<BookingModel>();
+            foreach (var i in bookings)
+            {
+                var bookingDetails = new List<BookingDetail>();
+                if (i.BookingDetails != null)
+                {
+                    bookingDetails = i.BookingDetails.Select(x => new BookingDetail
+                    {
+                        CustomerName = x.CustomerName,
+                        CustomerTypeId = x.CustomerTypeId,
+                        IdCard = x.IdCard,
+                        Address = x.Address
+                    }).ToList();
+                }
+                var bookingModel = new BookingModel()
+                {
+                    Id = i.Id,
+                    StartedDate = i.StartedDate,
+                    RoomId = i.RoomId,
+                    AccountId = i.AccountId,
+                    NumberOfCustomer = i.NumberOfCustomer,
+                    UnitPrice = i.UnitPrice,
+                    UnitStandardPrice = i.UnitStandardPrice,
+                    BookingDetails = bookingDetails,
+                };
+                bookingModels.Add(bookingModel);
+            }
+            return bookingModels;
         }
 
         public Booking MapBookingModelToBooking(Booking bookingEntity, CreateBookingModel model)

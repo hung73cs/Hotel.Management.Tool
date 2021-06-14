@@ -3,9 +3,12 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
+using Hotel.Management.Tool.Models.CustomerType;
+using Hotel.Management.Tool.Presentation.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
@@ -41,7 +44,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> CreateCustomerType([FromBody] CustomerTypeModel customerTypeModel)
+        public async Task<ActionResult> CreateCustomerType([FromBody] CreateCustomerTypeModel customerTypeModel)
         {
             var mapper = _customerTypeMapper.MapCustomerTypeModelToCustomerType(customerTypeModel);
 
@@ -50,7 +53,9 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
             }
 
-            await _customerTypeService.CreateCustomerTypeAsync(mapper);
+            var result = await _customerTypeService.CreateCustomerTypeAsync(mapper);
+
+            Response.AddInfoHeaders(result.Id);
 
             return NoContent();
         }
@@ -58,7 +63,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         [HttpPut]
         [Route("id/{customerTypeId}")]
         [Authorize(Roles ="Admin")]
-        public async Task<ActionResult> UpdateCustomerType(Guid customerTypeId, [FromBody]CustomerTypeModel customerTypeModel)
+        public async Task<ActionResult> UpdateCustomerType(Guid customerTypeId, [FromBody] CreateCustomerTypeModel customerTypeModel)
         {
             var currentCustomerType = await _customerTypeService.GetCustomerTypeAsync(customerTypeId);
 
@@ -97,6 +102,18 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             await _customerTypeService.HardDeleteCustomerTypeAsync(customerTypeId);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<CustomerTypeModel>>> GetCustomerTypes()
+        {
+            var customerTypes = await _customerTypeService.GetCustomerTypesAsync();
+
+            if (customerTypes == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            return Ok(_customerTypeMapper.MapCustomerTypesToCustomerTypeModels(customerTypes));
         }
     }
 }

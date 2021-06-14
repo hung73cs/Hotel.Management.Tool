@@ -14,5 +14,7 @@ namespace Hotel.Management.Tool.Core.Interfaces
         Task<Booking> UpdateBooking(Booking bookingToUpdate);
         Task DeleteBooking(Guid id);
         Task HardDeleteBooking(Guid id);
+        Task<List<Booking>> GetBookings();
+
     }
 }

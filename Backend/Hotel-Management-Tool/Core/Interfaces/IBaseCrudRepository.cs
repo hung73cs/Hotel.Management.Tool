@@ -32,5 +32,7 @@ namespace Hotel.Management.Tool.Core.Interfaces
         Task DeleteAsync(Expression<Func<T, bool>> searchExpression);
 
         Task<List<T>> GetListByPagingAsync(int pageIndex, int itemPerPage);
+
+        Task<List<T>> GetListAsync();
     }
 }

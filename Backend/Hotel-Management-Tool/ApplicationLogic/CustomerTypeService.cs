@@ -72,5 +72,10 @@ namespace Hotel.Management.Tool.ApplicationLogic
         {
             await _customerType.DeleteAsync(a => a.Id == customerTypeId);
         }
+
+        public async Task<List<CustomerType>> GetCustomerTypesAsync()
+        {
+            return await _customerType.GetListAsync();        
+        }
     }
 }

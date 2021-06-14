@@ -3,9 +3,11 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models.Room;
+using Hotel.Management.Tool.Presentation.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
@@ -39,16 +41,6 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             return Ok(_roomMapper.MapRoomToRoomModel(room));
         }
 
-        //[HttpGet]
-        //[Route("get/{page}/{item}")]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<ActionResult<List<GetAccountModel>>> GetAccounts(int page, int item)
-        //{
-        //    return Ok(
-        //        await _account.GetMultipleAccountPagingAsync(page, item)
-        //        );
-        //}
-
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> CreateRoom([FromBody]CreateRoomModel room)
@@ -60,7 +52,9 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
             }
 
-            await _room.CreateRoomAsync(mapper);
+            var result = await _room.CreateRoomAsync(mapper);
+
+            Response.AddInfoHeaders(result.Id);
 
             return NoContent();
         }
@@ -107,6 +101,18 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             await _room.HardDeleteRoomAsync(roomId);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<RoomModel>>> GetRooms()
+        {
+            var room = await _room.GetRoomsAsync();
+
+            if (room == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            return Ok(_roomMapper.MapRoomToRoomModel(room));
         }
     }
 }

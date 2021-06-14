@@ -13,5 +13,7 @@ namespace Hotel.Management.Tool.Core.Interfaces
         Task<CustomerType> UpdateCustomerTypeAsync(CustomerType customerType);
         Task DeleteCustomerTypeAsync(Guid customerTypeId);
         Task HardDeleteCustomerTypeAsync(Guid customerTypeId);
+        Task<List<CustomerType>> GetCustomerTypesAsync();
+
     }
 }

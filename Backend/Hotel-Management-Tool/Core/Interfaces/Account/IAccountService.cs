@@ -14,5 +14,6 @@ namespace Hotel.Management.Tool.Core.Interfaces
         Task<Account> UpdateAsync(Account accountRequest);
         Task DeleteAsync(Guid accountId);
         Task HardDeleteAsync(Guid accountId);
+        Task<List<Account>> GetAccountsAsync();
     }
 }

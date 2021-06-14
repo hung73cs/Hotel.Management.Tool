@@ -5,6 +5,7 @@ using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Parameter;
+using Hotel.Management.Tool.Presentation.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -49,7 +50,8 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
-            await _parameterService.CreateParameterAsync(mapper);
+            var result = await _parameterService.CreateParameterAsync(mapper);
+            Response.AddInfoHeaders(result.Id);
 
             return NoContent();
         }

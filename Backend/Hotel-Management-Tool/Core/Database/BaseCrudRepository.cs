@@ -256,5 +256,23 @@ namespace Hotel.Management.Tool.Core.Database
                 throw new ExtendException(ErrorCode.BadRequest, "An error when get list");
             }
         }
+
+        public async Task<List<T>> GetListAsync()
+        {
+            try
+            {
+                var item = await _dbSet.AsNoTracking().ToListAsync();
+                if (item == null)
+                {
+                    throw new Exception("No item, create one.");
+                }
+
+                return item;
+            }
+            catch (Exception)
+            {
+                throw new ExtendException(ErrorCode.BadRequest, "An error when get list");
+            }
+        }
     }
 }

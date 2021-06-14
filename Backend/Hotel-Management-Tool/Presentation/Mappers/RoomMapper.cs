@@ -4,6 +4,7 @@ using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Room;
 using System;
+using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
 {
@@ -22,7 +23,8 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 Name = roomModel.Name,
                 RoomStatus = _enumMapper.Map<RoomStatus>(roomModel.RoomStatus).Value,
                 Note = roomModel.Note,
-                RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty,
+                //RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty,
+                RoomTypeId = roomModel.roomTypeId
             };
 
             return room;
@@ -35,7 +37,8 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 roomEntity.Name = roomModel.Name;
                 roomEntity.Note = roomModel.Note;
                 roomEntity.RoomStatus = _enumMapper.Map<RoomStatus>(roomModel.RoomStatus).Value;
-                roomEntity.RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty;
+                //roomEntity.RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty;
+                roomEntity.RoomTypeId = roomModel.roomTypeId;
             }
             return roomEntity;
         }
@@ -44,19 +47,32 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         {
             var roomModel = new RoomModel
             {
+                Id = room.Id,
                 Name = room.Name,
                 RoomStatus = room.RoomStatus.ToString(),
-                Note = room.Note
+                Note = room.Note,
+                roomTypeId = room.RoomTypeId
             };
-            var roomTypeModel = new RoomTypeModel
-            {
-                Name = room.RoomType.Name,
-                Cost = room.RoomType.Cost
-            };
-
-            roomModel.RoomTypeModel = roomTypeModel;
-
             return roomModel;
+        }
+
+        public List<RoomModel> MapRoomToRoomModel(List<Room> rooms)
+        {
+            var roomModels = new List<RoomModel>();
+            foreach(var i in rooms)
+            {
+                var roomModel = new RoomModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    RoomStatus = i.RoomStatus.ToString(),
+                    Note = i.Note,
+                    roomTypeId = i.RoomTypeId
+                };
+
+                roomModels.Add(roomModel);
+            }
+            return roomModels;
         }
     }
 }
