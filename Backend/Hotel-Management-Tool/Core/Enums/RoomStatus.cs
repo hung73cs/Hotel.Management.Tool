@@ -2,8 +2,8 @@
 {
     public enum RoomStatus
     {
-        Open,
-        Close,
-        Repairing
+        OPEN,
+        CLOSE,
+        REPAIRING
     }
 }

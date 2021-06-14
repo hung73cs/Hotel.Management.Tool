@@ -7,7 +7,7 @@ namespace Hotel.Management.Tool.Core.Enums
 {
     public enum Role
     {
-        Admin,
-        Staff
+        ADMIN,
+        STAFF
     }
 }
