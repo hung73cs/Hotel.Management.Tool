@@ -23,7 +23,7 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerTypes",
+                name: "GuestTypes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -33,7 +33,7 @@ namespace Hotel.Management.Tool.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerTypes", x => x.Id);
+                    table.PrimaryKey("PK_GuestTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,7 +90,7 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "Guests",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -101,15 +101,15 @@ namespace Hotel.Management.Tool.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
                     IdCard = table.Column<string>(nullable: false),
-                    CustomerTypeId = table.Column<Guid>(nullable: false)
+                    GuestTypeId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_Guests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Customers_CustomerTypes_CustomerTypeId",
-                        column: x => x.CustomerTypeId,
-                        principalTable: "CustomerTypes",
+                        name: "FK_Guests_GuestTypes_GuestTypeId",
+                        column: x => x.GuestTypeId,
+                        principalTable: "GuestTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -146,7 +146,7 @@ namespace Hotel.Management.Tool.Migrations
                     EndedDate = table.Column<DateTime>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     IsPaid = table.Column<bool>(nullable: false, defaultValue: false),
-                    CustomerId = table.Column<Guid>(nullable: false),
+                    GuestId = table.Column<Guid>(nullable: false),
                     RoomId = table.Column<Guid>(nullable: false),
                     AccountId = table.Column<Guid>(nullable: false)
                 },
@@ -190,27 +190,27 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerBookings",
+                name: "GuestBookings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    CustomerId = table.Column<Guid>(nullable: false),
+                    GuestId = table.Column<Guid>(nullable: false),
                     BookingId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerBookings", x => x.Id);
+                    table.PrimaryKey("PK_GuestBookings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomerBookings_Bookings_BookingId",
+                        name: "FK_GuestBookings_Bookings_BookingId",
                         column: x => x.BookingId,
                         principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomerBookings_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
+                        name: "FK_GuestBookings_Guests_GuestId",
+                        column: x => x.GuestId,
+                        principalTable: "Guests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -232,19 +232,19 @@ namespace Hotel.Management.Tool.Migrations
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerBookings_BookingId",
-                table: "CustomerBookings",
+                name: "IX_GuestBookings_BookingId",
+                table: "GuestBookings",
                 column: "BookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerBookings_CustomerId",
-                table: "CustomerBookings",
-                column: "CustomerId");
+                name: "IX_GuestBookings_GuestId",
+                table: "GuestBookings",
+                column: "GuestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_CustomerTypeId",
-                table: "Customers",
-                column: "CustomerTypeId");
+                name: "IX_Guests_GuestTypeId",
+                table: "Guests",
+                column: "GuestTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rooms_RoomTypeId",
@@ -264,7 +264,7 @@ namespace Hotel.Management.Tool.Migrations
                 name: "BookingDetails");
 
             migrationBuilder.DropTable(
-                name: "CustomerBookings");
+                name: "GuestBookings");
 
             migrationBuilder.DropTable(
                 name: "Parameters");
@@ -276,7 +276,7 @@ namespace Hotel.Management.Tool.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Guests");
 
             migrationBuilder.DropTable(
                 name: "Accounts");
@@ -285,7 +285,7 @@ namespace Hotel.Management.Tool.Migrations
                 name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "CustomerTypes");
+                name: "GuestTypes");
 
             migrationBuilder.DropTable(
                 name: "RoomTypes");

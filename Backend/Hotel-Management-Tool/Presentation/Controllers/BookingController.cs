@@ -70,18 +70,18 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{bookingId}")]
-        public async Task<ActionResult> DeleteCustomerType(Guid customerTypeId)
+        public async Task<ActionResult> DeleteGuestType(Guid GuestTypeId)
         {
-            await _bookingService.DeleteBooking(customerTypeId);
+            await _bookingService.DeleteBooking(GuestTypeId);
 
             return NoContent();
         }
 
         [HttpDelete]
         [Route("id/{bookingId}/hard-delete")]
-        public async Task<ActionResult> HardDeleteCustomerType(Guid customerTypeId)
+        public async Task<ActionResult> HardDeleteGuestType(Guid GuestTypeId)
         {
-            await _bookingService.HardDeleteBooking(customerTypeId);
+            await _bookingService.HardDeleteBooking(GuestTypeId);
 
             return NoContent();
         }

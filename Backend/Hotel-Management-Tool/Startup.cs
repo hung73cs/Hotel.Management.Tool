@@ -78,7 +78,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IRoomTypeService, RoomTypeService>();
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<IBookingService, BookingService>();
-            services.AddTransient<ICustomerTypeService, CustomerTypeService>();
+            services.AddTransient<IGuestTypeService, GuestTypeService>();
             services.AddTransient<IParameterService, ParameterService>();
 
 
@@ -88,7 +88,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IRoomMapper, RoomMapper>();
             services.AddTransient<IEnumMapper, EnumMapper>();
             services.AddTransient<IBookingMapper, BookingMapper>();
-            services.AddTransient<ICustomerTypeMapper, CustomerTypeMapper>();
+            services.AddTransient<IGuestTypeMapper, GuestTypeMapper>();
             services.AddTransient<IParameterMapper, ParameterMapper>();
 
             //Repository
@@ -98,7 +98,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IRoomRepository, RoomRepository>();
             services.AddTransient<IRoomTypeRepository, RoomTypeRepository>();
             services.AddTransient<IBookingRepository, BookingRepository>();
-            services.AddTransient<ICustomerTypeRepository, CustomerTypeRepository>();
+            services.AddTransient<IGuestTypeRepository, GuestTypeRepository>();
             services.AddTransient<IParameterRepository, ParameterRepository>();
         }
 

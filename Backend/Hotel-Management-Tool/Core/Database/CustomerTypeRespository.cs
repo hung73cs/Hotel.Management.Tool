@@ -3,9 +3,9 @@ using Hotel.Management.Tool.Core.Interfaces;
 
 namespace Hotel.Management.Tool.Core.Database
 {
-    public class CustomerTypeRepository : BaseCrudRepository<AppDbContext, CustomerType>, ICustomerTypeRepository
+    public class GuestTypeRepository : BaseCrudRepository<AppDbContext, GuestType>, IGuestTypeRepository
     {
-        public CustomerTypeRepository(AppDbContext context) : base(context)
+        public GuestTypeRepository(AppDbContext context) : base(context)
         { }
     }
 }

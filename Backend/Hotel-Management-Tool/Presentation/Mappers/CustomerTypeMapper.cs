@@ -1,66 +1,66 @@
 using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
-using Hotel.Management.Tool.Models.CustomerType;
+using Hotel.Management.Tool.Models.GuestType;
 using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
 {
-    public class CustomerTypeMapper : ICustomerTypeMapper
+    public class GuestTypeMapper : IGuestTypeMapper
     {
-        private readonly ICustomerTypeRepository _customerTypeRepository;
+        private readonly IGuestTypeRepository _GuestTypeRepository;
 
-        public CustomerTypeMapper(ICustomerTypeRepository customerTypeRepository)
+        public GuestTypeMapper(IGuestTypeRepository GuestTypeRepository)
         {
-            _customerTypeRepository = customerTypeRepository;
+            _GuestTypeRepository = GuestTypeRepository;
         }
 
-        public CustomerTypeModel MapCustomerTypeToCustomerTypeModel(CustomerType customerType)
+        public GuestTypeModel MapGuestTypeToGuestTypeModel(GuestType GuestType)
         {
-            var customerTypeModel = new CustomerTypeModel
+            var GuestTypeModel = new GuestTypeModel
             {
-                Id = customerType.Id,
-                Name = customerType.Name,
-                SurchargeRate = customerType.SurchargeRate
+                Id = GuestType.Id,
+                Name = GuestType.Name,
+                SurchargeRate = GuestType.SurchargeRate
             };
 
-            return customerTypeModel;
+            return GuestTypeModel;
         }
 
-        public CustomerType MapCustomerTypeModelToCustomerType(CreateCustomerTypeModel customerTypeModel)
+        public GuestType MapGuestTypeModelToGuestType(CreateGuestTypeModel GuestTypeModel)
         {
-            var customerType = new CustomerType
+            var GuestType = new GuestType
             {
-                Name = customerTypeModel.Name,
-                SurchargeRate = customerTypeModel.SurchargeRate
+                Name = GuestTypeModel.Name,
+                SurchargeRate = GuestTypeModel.SurchargeRate
             };
 
-            return customerType;
+            return GuestType;
         }
 
-        public CustomerType MapCustomerTypeModelToCustomerType(CreateCustomerTypeModel customerTypeModel, CustomerType customerType)
+        public GuestType MapGuestTypeModelToGuestType(CreateGuestTypeModel GuestTypeModel, GuestType GuestType)
         {
 
-            customerType.Name = customerTypeModel.Name;
-            customerType.SurchargeRate = customerTypeModel.SurchargeRate;
+            GuestType.Name = GuestTypeModel.Name;
+            GuestType.SurchargeRate = GuestTypeModel.SurchargeRate;
 
-            return customerType;
+            return GuestType;
         }
 
-        public List<CustomerTypeModel> MapCustomerTypesToCustomerTypeModels(List<CustomerType> customerTypes)
+        public List<GuestTypeModel> MapGuestTypesToGuestTypeModels(List<GuestType> GuestTypes)
         {
-            var customerTypeModels = new List<CustomerTypeModel>();
-            foreach(var i in customerTypes)
+            var GuestTypeModels = new List<GuestTypeModel>();
+            foreach(var i in GuestTypes)
             {
-                var customerTypeModel = new CustomerTypeModel
+                var GuestTypeModel = new GuestTypeModel
                 {
                     Id = i.Id,
                     Name = i.Name,
                     SurchargeRate = i.SurchargeRate
                 };
-                customerTypeModels.Add(customerTypeModel);
+                GuestTypeModels.Add(GuestTypeModel);
             }
-            return customerTypeModels;
+            return GuestTypeModels;
         }
     }
 }

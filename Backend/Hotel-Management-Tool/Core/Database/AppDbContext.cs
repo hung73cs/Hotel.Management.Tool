@@ -17,7 +17,7 @@ namespace Hotel.Management.Tool.Core.Database
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<BookingDetail> BookingDetails { get; set; }
-        public DbSet<CustomerType> CustomerTypes { get; set; }
+        public DbSet<GuestType> GuestTypes { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<UserInfo> UsersInfo { get; set; }
@@ -27,6 +27,7 @@ namespace Hotel.Management.Tool.Core.Database
         public DbSet<Bill> Bills { get; set; }
         public DbSet<BillDetail> BillDetails { get; set; }
 
+        public DbSet<SurchargeRate> SurchargeRates { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,7 +49,7 @@ namespace Hotel.Management.Tool.Core.Database
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.StartedDate).IsRequired();
-                entity.Property(e => e.NumberOfCustomer).IsRequired();
+                entity.Property(e => e.NumberOfGuest).IsRequired();
                 entity.Property(e => e.UnitPrice).IsRequired();
                 entity.Property(e => e.UnitStandardPrice).IsRequired();
                 entity.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
@@ -65,7 +66,7 @@ namespace Hotel.Management.Tool.Core.Database
             modelBuilder.Entity<BookingDetail>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.CustomerName).IsRequired();
+                entity.Property(e => e.GuestName).IsRequired();
                 entity.Property(e => e.IdCard).IsRequired();
                 entity.Property(e => e.Address).IsRequired();
                 entity.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
@@ -74,13 +75,13 @@ namespace Hotel.Management.Tool.Core.Database
                     .WithMany(g => g.BookingDetails)
                     .HasForeignKey(s => s.BookingId);
 
-                entity.HasOne(s => s.CustomerType)
+                entity.HasOne(s => s.GuestType)
                   .WithMany(g => g.BookingDetails)
-                  .HasForeignKey(s => s.CustomerTypeId);
+                  .HasForeignKey(s => s.GuestTypeId);
 
                 entity.HasQueryFilter(x => x.IsDeleted == false);
             });         
-            modelBuilder.Entity<CustomerType>(entity =>
+            modelBuilder.Entity<GuestType>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired();
@@ -187,6 +188,13 @@ namespace Hotel.Management.Tool.Core.Database
                   .WithOne(g => g.BillDetail)
                   .HasForeignKey<BillDetail>(s => s.BookingId);
 
+            });
+
+            modelBuilder.Entity<SurchargeRate>(entity =>
+            {
+                entity.HasKey(e => e.GuestLevel);
+                entity.Property(e => e.Rate).IsRequired();
+                entity.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
             });
         }
     }

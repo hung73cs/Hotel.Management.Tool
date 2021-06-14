@@ -2,30 +2,30 @@
 
 namespace Hotel.Management.Tool.Migrations
 {
-    public partial class editrelationshipofcustomertypevsbookingdetail1n : Migration
+    public partial class editrelationshipofGuesttypevsbookingdetail1n : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_BookingDetails_CustomerTypeId",
+                name: "IX_BookingDetails_GuestTypeId",
                 table: "BookingDetails");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingDetails_CustomerTypeId",
+                name: "IX_BookingDetails_GuestTypeId",
                 table: "BookingDetails",
-                column: "CustomerTypeId");
+                column: "GuestTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_BookingDetails_CustomerTypeId",
+                name: "IX_BookingDetails_GuestTypeId",
                 table: "BookingDetails");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingDetails_CustomerTypeId",
+                name: "IX_BookingDetails_GuestTypeId",
                 table: "BookingDetails",
-                column: "CustomerTypeId",
+                column: "GuestTypeId",
                 unique: true);
         }
     }

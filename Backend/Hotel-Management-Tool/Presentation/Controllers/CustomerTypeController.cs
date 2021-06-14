@@ -3,7 +3,7 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
-using Hotel.Management.Tool.Models.CustomerType;
+using Hotel.Management.Tool.Models.GuestType;
 using Hotel.Management.Tool.Presentation.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,46 +14,46 @@ using System.Threading.Tasks;
 namespace Hotel.Management.Tool.Presentation.Controllers
 {
     [Authorize]
-    [Route("customer-type")]
-    public class CustomerTypeController : ControllerBase
+    [Route("Guest-type")]
+    public class GuestTypeController : ControllerBase
     {
-        private readonly ICustomerTypeService _customerTypeService;
-        private readonly ICustomerTypeMapper _customerTypeMapper;
+        private readonly IGuestTypeService _GuestTypeService;
+        private readonly IGuestTypeMapper _GuestTypeMapper;
 
-        public CustomerTypeController(
-            ICustomerTypeService customerTypeService,
-            ICustomerTypeMapper customerTypeMapper)
+        public GuestTypeController(
+            IGuestTypeService GuestTypeService,
+            IGuestTypeMapper GuestTypeMapper)
         {
-            _customerTypeService = customerTypeService;
-            _customerTypeMapper = customerTypeMapper;
+            _GuestTypeService = GuestTypeService;
+            _GuestTypeMapper = GuestTypeMapper;
         }
 
         [HttpGet]
-        [Route("id/{customerTypeId}")]
+        [Route("id/{GuestTypeId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<CustomerTypeModel>> GetCustomerType(Guid customerTypeId)
+        public async Task<ActionResult<GuestTypeModel>> GetGuestType(Guid GuestTypeId)
         {
-            var customerType = await _customerTypeService.GetCustomerTypeAsync(customerTypeId);
+            var GuestType = await _GuestTypeService.GetGuestTypeAsync(GuestTypeId);
 
-            if (customerType == null)
+            if (GuestType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
-            return Ok(_customerTypeMapper.MapCustomerTypeToCustomerTypeModel(customerType));
+            return Ok(_GuestTypeMapper.MapGuestTypeToGuestTypeModel(GuestType));
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> CreateCustomerType([FromBody] CreateCustomerTypeModel customerTypeModel)
+        public async Task<ActionResult> CreateGuestType([FromBody] CreateGuestTypeModel GuestTypeModel)
         {
-            var mapper = _customerTypeMapper.MapCustomerTypeModelToCustomerType(customerTypeModel);
+            var mapper = _GuestTypeMapper.MapGuestTypeModelToGuestType(GuestTypeModel);
 
             if (mapper == null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
             }
 
-            var result = await _customerTypeService.CreateCustomerTypeAsync(mapper);
+            var result = await _GuestTypeService.CreateGuestTypeAsync(mapper);
 
             Response.AddInfoHeaders(result.Id);
 
@@ -61,59 +61,59 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpPut]
-        [Route("id/{customerTypeId}")]
+        [Route("id/{GuestTypeId}")]
         [Authorize(Roles ="Admin")]
-        public async Task<ActionResult> UpdateCustomerType(Guid customerTypeId, [FromBody] CreateCustomerTypeModel customerTypeModel)
+        public async Task<ActionResult> UpdateGuestType(Guid GuestTypeId, [FromBody] CreateGuestTypeModel GuestTypeModel)
         {
-            var currentCustomerType = await _customerTypeService.GetCustomerTypeAsync(customerTypeId);
+            var currentGuestType = await _GuestTypeService.GetGuestTypeAsync(GuestTypeId);
 
-            if(currentCustomerType == null)
+            if(currentGuestType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
 
-            var mapper = _customerTypeMapper.MapCustomerTypeModelToCustomerType(customerTypeModel, currentCustomerType);
+            var mapper = _GuestTypeMapper.MapGuestTypeModelToGuestType(GuestTypeModel, currentGuestType);
 
             if(mapper == null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
 
-            await _customerTypeService.UpdateCustomerTypeAsync(mapper);
+            await _GuestTypeService.UpdateGuestTypeAsync(mapper);
 
             return NoContent();
         }
 
         [HttpDelete]
-        [Route("id/{customerTypeId}")]
+        [Route("id/{GuestTypeId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteCustomerType(Guid customerTypeId)
+        public async Task<ActionResult> DeleteGuestType(Guid GuestTypeId)
         {
-            await _customerTypeService.DeleteCustomerTypeAsync(customerTypeId);
+            await _GuestTypeService.DeleteGuestTypeAsync(GuestTypeId);
 
             return NoContent();
         }
 
         [HttpDelete]
-        [Route("id/{customerTypeId}/hard-delete")]
+        [Route("id/{GuestTypeId}/hard-delete")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> HardDeleteCustomerType(Guid customerTypeId)
+        public async Task<ActionResult> HardDeleteGuestType(Guid GuestTypeId)
         {
-            await _customerTypeService.HardDeleteCustomerTypeAsync(customerTypeId);
+            await _GuestTypeService.HardDeleteGuestTypeAsync(GuestTypeId);
 
             return NoContent();
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CustomerTypeModel>>> GetCustomerTypes()
+        public async Task<ActionResult<List<GuestTypeModel>>> GetGuestTypes()
         {
-            var customerTypes = await _customerTypeService.GetCustomerTypesAsync();
+            var GuestTypes = await _GuestTypeService.GetGuestTypesAsync();
 
-            if (customerTypes == null)
+            if (GuestTypes == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
-            return Ok(_customerTypeMapper.MapCustomerTypesToCustomerTypeModels(customerTypes));
+            return Ok(_GuestTypeMapper.MapGuestTypesToGuestTypeModels(GuestTypes));
         }
     }
 }

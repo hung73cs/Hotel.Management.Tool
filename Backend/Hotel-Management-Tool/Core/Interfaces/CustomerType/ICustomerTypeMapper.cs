@@ -1,15 +1,15 @@
 using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Models;
-using Hotel.Management.Tool.Models.CustomerType;
+using Hotel.Management.Tool.Models.GuestType;
 using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Core.Interfaces
 {
-    public interface ICustomerTypeMapper
+    public interface IGuestTypeMapper
     {
-        CustomerTypeModel MapCustomerTypeToCustomerTypeModel(CustomerType customerType);
-        CustomerType MapCustomerTypeModelToCustomerType(CreateCustomerTypeModel customerTypeModel);
-        CustomerType MapCustomerTypeModelToCustomerType(CreateCustomerTypeModel customerTypeModel, CustomerType customerTypeEntity);
-        List<CustomerTypeModel> MapCustomerTypesToCustomerTypeModels(List<CustomerType> customerTypes);
+        GuestTypeModel MapGuestTypeToGuestTypeModel(GuestType GuestType);
+        GuestType MapGuestTypeModelToGuestType(CreateGuestTypeModel GuestTypeModel);
+        GuestType MapGuestTypeModelToGuestType(CreateGuestTypeModel GuestTypeModel, GuestType GuestTypeEntity);
+        List<GuestTypeModel> MapGuestTypesToGuestTypeModels(List<GuestType> GuestTypes);
     }
 }

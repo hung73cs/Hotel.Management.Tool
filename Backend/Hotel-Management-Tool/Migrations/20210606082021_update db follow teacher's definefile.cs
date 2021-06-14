@@ -16,7 +16,7 @@ namespace Hotel.Management.Tool.Migrations
                 table: "Reports");
 
             migrationBuilder.DropColumn(
-                name: "CustomerId",
+                name: "GuestId",
                 table: "Bookings");
 
             migrationBuilder.DropColumn(
@@ -62,7 +62,7 @@ namespace Hotel.Management.Tool.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "NumberOfCustomer",
+                name: "NumberOfGuest",
                 table: "Bookings",
                 nullable: false,
                 defaultValue: 0);
@@ -86,13 +86,13 @@ namespace Hotel.Management.Tool.Migrations
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
-                name: "CustomerName",
+                name: "GuestName",
                 table: "BookingDetails",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "CustomerTypeId",
+                name: "GuestTypeId",
                 table: "BookingDetails",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
@@ -110,7 +110,7 @@ namespace Hotel.Management.Tool.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    CustomerName = table.Column<string>(nullable: true),
+                    GuestName = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
                     TotalPrice = table.Column<decimal>(nullable: false)
                 },
@@ -154,9 +154,9 @@ namespace Hotel.Management.Tool.Migrations
                 column: "BookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingDetails_CustomerTypeId",
+                name: "IX_BookingDetails_GuestTypeId",
                 table: "BookingDetails",
-                column: "CustomerTypeId",
+                column: "GuestTypeId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -171,10 +171,10 @@ namespace Hotel.Management.Tool.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_BookingDetails_CustomerTypes_CustomerTypeId",
+                name: "FK_BookingDetails_GuestTypes_GuestTypeId",
                 table: "BookingDetails",
-                column: "CustomerTypeId",
-                principalTable: "CustomerTypes",
+                column: "GuestTypeId",
+                principalTable: "GuestTypes",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -182,7 +182,7 @@ namespace Hotel.Management.Tool.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_BookingDetails_CustomerTypes_CustomerTypeId",
+                name: "FK_BookingDetails_GuestTypes_GuestTypeId",
                 table: "BookingDetails");
 
             migrationBuilder.DropTable(
@@ -196,7 +196,7 @@ namespace Hotel.Management.Tool.Migrations
                 table: "BookingDetails");
 
             migrationBuilder.DropIndex(
-                name: "IX_BookingDetails_CustomerTypeId",
+                name: "IX_BookingDetails_GuestTypeId",
                 table: "BookingDetails");
 
             migrationBuilder.DropColumn(
@@ -212,7 +212,7 @@ namespace Hotel.Management.Tool.Migrations
                 table: "Reports");
 
             migrationBuilder.DropColumn(
-                name: "NumberOfCustomer",
+                name: "NumberOfGuest",
                 table: "Bookings");
 
             migrationBuilder.DropColumn(
@@ -228,11 +228,11 @@ namespace Hotel.Management.Tool.Migrations
                 table: "BookingDetails");
 
             migrationBuilder.DropColumn(
-                name: "CustomerName",
+                name: "GuestName",
                 table: "BookingDetails");
 
             migrationBuilder.DropColumn(
-                name: "CustomerTypeId",
+                name: "GuestTypeId",
                 table: "BookingDetails");
 
             migrationBuilder.DropColumn(
@@ -247,7 +247,7 @@ namespace Hotel.Management.Tool.Migrations
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<Guid>(
-                name: "CustomerId",
+                name: "GuestId",
                 table: "Bookings",
                 type: "uuid",
                 nullable: false,
