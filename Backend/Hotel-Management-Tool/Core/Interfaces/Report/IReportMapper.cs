@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Hotel.Management.Tool.Core.Entities;
+using Hotel.Management.Tool.Models;
+using Hotel.Management.Tool.Models.Report;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Hotel.Management.Tool.Core.Interfaces.Report
+namespace Hotel.Management.Tool.Core.Interfaces
 {
-    interface IReportMapper
+    public interface IReportMapper
     {
+        Report MapReportModelToReport(CreateReportModel model);
+        Report MapReportModelToReport(Report reportEntity, CreateReportModel model);
+        ReportModel MappReportToReportModel(Report report);
+        List<ReportModel> MappReportToReportModel(List<Report> reports);
     }
 }
