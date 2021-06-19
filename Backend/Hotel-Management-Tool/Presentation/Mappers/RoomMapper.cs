@@ -53,6 +53,16 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 Note = room.Note,
                 roomTypeId = room.RoomTypeId
             };
+            if(room.RoomType != null)
+            {
+                var roomTypeModel = new RoomTypeModel
+                {
+                    Id = room.RoomTypeId,
+                    Name = room.RoomType.Name,
+                    Cost = room.RoomType.Cost,
+                };
+                roomModel.RoomTypeModel = roomTypeModel;
+            }
             return roomModel;
         }
 
@@ -69,7 +79,16 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                     Note = i.Note,
                     roomTypeId = i.RoomTypeId
                 };
-
+                if (i.RoomType != null)
+                {
+                    var roomTypeModel = new RoomTypeModel
+                    {
+                        Id = i.RoomTypeId,
+                        Name = i.RoomType.Name,
+                        Cost = i.RoomType.Cost,
+                    };
+                    roomModel.RoomTypeModel = roomTypeModel;
+                }
                 roomModels.Add(roomModel);
             }
             return roomModels;
