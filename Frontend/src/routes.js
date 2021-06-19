@@ -58,6 +58,8 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 //Tự thêm
 const GetAccounts = React.lazy(() => import('./screens/user/GetAccounts'))
 const CreateAccount = React.lazy(() => import('./screens/user/CreateAccount'))
+const RoomTypes = React.lazy(() => import('./screens/rooms/RoomTypes'))
+const Rooms = React.lazy(() => import('./screens/rooms/Rooms'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -112,5 +114,7 @@ const routes = [
   { path: '/user', name: 'User' },
   { path: '/user/getaccounts', name: 'GetAccounts', component: GetAccounts },
   { path: '/user/createaccount', name: 'CreateAccount', component: CreateAccount },
+  { path: '/room-type', name: 'RoomType', component: RoomTypes },
+  { path: '/room', name: 'Room', component: Rooms },
 ]
 export default routes

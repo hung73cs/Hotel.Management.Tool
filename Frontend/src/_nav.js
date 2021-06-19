@@ -74,6 +74,27 @@ const _nav = [
   {
     _component: 'CNavGroup',
     as: NavLink,
+    anchor: 'Quản lý phòng',
+    to: '/to',
+    icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Quản lý loại phòng',
+        to: '/room-type',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Quản lý phòng',
+        to: '/room',
+      },
+    ],
+  },
+  {
+    _component: 'CNavGroup',
+    as: NavLink,
     anchor: 'Base',
     to: '/to',
     icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,

@@ -1,6 +1,6 @@
 import { authHeader } from '../_helpers'
-
-const apiUrl = 'https://localhost:5001'
+import { commonConstants } from '../_constants/common.constants'
+const apiUrl = commonConstants.BACKENDURI
 export const userService = {
   login,
   logout,
