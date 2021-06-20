@@ -21,7 +21,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             var room = new Room
             {
                 Name = roomModel.Name,
-                RoomStatus = _enumMapper.Map<RoomStatus>(roomModel.RoomStatus).Value,
+                RoomStatus = RoomStatus.OPEN,
                 Note = roomModel.Note,
                 //RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty,
                 RoomTypeId = roomModel.roomTypeId
@@ -36,7 +36,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 roomEntity.Name = roomModel.Name;
                 roomEntity.Note = roomModel.Note;
-                roomEntity.RoomStatus = _enumMapper.Map<RoomStatus>(roomModel.RoomStatus).Value;
+                roomEntity.RoomStatus = RoomStatus.OPEN;
                 //roomEntity.RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty;
                 roomEntity.RoomTypeId = roomModel.roomTypeId;
             }

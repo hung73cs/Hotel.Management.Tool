@@ -23,20 +23,17 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { roomService } from 'src/_services'
-import { roomTypeService } from 'src/_services'
+import { roomService, roomTypeService } from 'src/_services'
 
 const Rooms = () => {
+  const roomToCreateInit = {
+    id: null,
+    name: '',
+    roomTypeId: '',
+    note: '',
+  }
   const [openModal, setOpenModal] = useState(false)
-  const [rooms, setRooms] = useState([
-    {
-      id: '',
-      name: '',
-      roomTypeId: 0,
-      note: '',
-      roomTypeModel: '',
-    },
-  ])
+  const [rooms, setRooms] = useState([])
   const [roomTypes, setRoomtypes] = useState([
     {
       id: '',
@@ -44,30 +41,20 @@ const Rooms = () => {
       cost: 0,
     },
   ])
-  const roomInit = {
-    name: '',
-    roomTypeId: '',
-    note: '',
-  }
-  const [roomToCreateOrUpdate, setRoomToCreateOrUpdate] = useState(roomInit)
-
+  const [roomToCreate, setRoomToCreate] = useState(roomToCreateInit)
+  const [editForm, setEditForm] = useState(false)
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
+    console.log('rooms', rooms.length)
   }, [openModal])
 
-  useEffect(() => {
-    roomTypeService.getAll().then((x) => setRoomtypes(x))
-  }, [])
   const handleClickCreate = () => {
-    setRoomToCreateOrUpdate(roomInit)
     setOpenModal(true)
   }
-  const handleCreateService = (ob) => {
-    roomService.create(ob)
-  }
-
-  const handleClickEdit = (data) => {
+  const handleClickEdit = (room) => {
+    setEditForm(true)
     setOpenModal(true)
+    setRoomToCreate(room)
   }
 
   const handleClickDelete = (data) => {
@@ -76,35 +63,80 @@ const Rooms = () => {
     setRooms(roomsCopy)
   }
 
-  const OnSelect = (e) => {
-    let value = e.target.selectedIndex
-    let temp = roomToCreateOrUpdate
-    temp.roomTypeId = roomTypes.find((item) => item.name === value).id
+  const handleInputChange = (event) => {
+    const { name, value } = event.target
+    setRoomToCreate({ ...roomToCreate, [name]: value })
   }
 
-  const onInputChange = (e, type) => {
-    let value = e.target.value
-    let temp = roomToCreateOrUpdate
-
-    switch (type) {
-      case 'name':
-        temp.name = value
-        break
-      case 'note':
-        temp.note = value
-        break
-      default:
-        break
+  const loadedValueSelectRoomType = (data) => {
+    console.log('dâta', data)
+    if (editForm) return roomTypes.find((x) => x.id === data)?.name
+    else return roomTypes[0]?.name
+  }
+  const saveRoomToCreate = () => {
+    var data = {
+      name: roomToCreate.name,
+      roomTypeId: roomTypes.find((x) => x.name === roomToCreate.roomType)?.id,
+      note: roomToCreate.note,
     }
-    setRoomToCreateOrUpdate(temp)
-    console.log('aa', roomToCreateOrUpdate)
+    roomService.create(data).then((res) => {
+      if (res === 500 || res === 409) {
+        alert('Không tạo được')
+      } else {
+        setOpenModal(false)
+        setRoomToCreate(roomToCreateInit)
+      }
+    })
   }
+
+  const saveRoomToEdit = () => {
+    var data = {
+      id: roomToCreate.id,
+      name: roomToCreate.name,
+      roomTypeId: roomToCreate.roomTypeId,
+      note: roomToCreate.note,
+    }
+    roomService.edit(data).then((res) => {
+      if (res === 500 || res === 409) {
+        alert('Không thành công')
+      } else {
+        setOpenModal(false)
+        setRoomToCreate(roomToCreateInit)
+      }
+    })
+  }
+
+  const [searchInput, setSearchInput] = useState('')
+
+  const handleChangeSearchInput = (e) => {
+    const { name, value } = e.target
+    setSearchInput({ ...searchInput, [name]: value })
+    //searchRoom()
+  }
+  const searchRoom = () => {
+    let filteredData = rooms.filter((value) => {
+      return (
+        value.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+        value.roomType.toLowerCase().includes(searchInput.toLowerCase()) ||
+        value.note.toString().toLowerCase().includes(searchInput.toLowerCase())
+      )
+    })
+    setRooms(filteredData)
+  }
+
+  useEffect(() => {
+    roomTypeService.getAll().then((x) => setRoomtypes(x))
+  }, [])
 
   const modalCreateEdit = () => {
     return (
       <CModal visible={openModal}>
         <CModalHeader onDismiss={() => setOpenModal(false)}>
-          <CModalTitle>Thông tin phòng muốn thêm</CModalTitle>
+          {editForm ? (
+            <CModalTitle>Thông tin phòng muốn sửa</CModalTitle>
+          ) : (
+            <CModalTitle>Thông tin phòng muốn thêm</CModalTitle>
+          )}
         </CModalHeader>
         <CModalBody>
           <CInputGroup className="mb-3">
@@ -113,9 +145,11 @@ const Rooms = () => {
             </CCol>
             <CCol>
               <CFormControl
+                name="name"
                 type="text"
-                value={roomToCreateOrUpdate.name}
-                onInput={(e) => onInputChange(e, 'name')}
+                id="name"
+                value={roomToCreate.name}
+                onInput={handleInputChange}
               />
             </CCol>
           </CInputGroup>
@@ -124,7 +158,13 @@ const Rooms = () => {
               <CFormLabel>Loại phòng:</CFormLabel>
             </CCol>
             <CCol>
-              <CFormSelect onChange={(e) => OnSelect(e)}>
+              <CFormSelect
+                name="roomType"
+                id="roomType"
+                value={roomToCreate.roomType}
+                defaultValue={loadedValueSelectRoomType(roomToCreate.roomTypeId)}
+                onInput={handleInputChange}
+              >
                 {roomTypes.map((item, index) => {
                   return <option key={index}>{item.name}</option>
                 })}
@@ -138,15 +178,28 @@ const Rooms = () => {
             <CCol>
               <CFormControl
                 type="text"
-                value={roomToCreateOrUpdate.note}
-                onInput={(e) => onInputChange(e, 'note')}
+                id="note"
+                name="note"
+                onInput={handleInputChange}
+                value={roomToCreate.note}
               />
             </CCol>
           </CInputGroup>
         </CModalBody>
         <CModalFooter>
-          <CButton onClick={() => handleCreateService()}>Lưu</CButton>
-          <CButton color="secondary">Đóng</CButton>
+          {editForm ? (
+            <CButton color="secondary" onClick={saveRoomToEdit}>
+              Lưu
+            </CButton>
+          ) : (
+            <CButton color="secondary" onClick={saveRoomToCreate}>
+              Lưu
+            </CButton>
+          )}
+
+          <CButton color="secondary" onClick={setOpenModal}>
+            Đóng
+          </CButton>
         </CModalFooter>
       </CModal>
     )
@@ -161,9 +214,19 @@ const Rooms = () => {
           </CCardHeader>
           <CCardBody style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <p className="text-medium-emphasis small" style={{ width: '90%' }}>
+              <p className="text-medium-emphasis small" style={{ width: '70%' }}>
                 Đây là danh sách các loại phòng của khách sạn
               </p>
+              <CInputGroup style={{ width: '20%', marginRight: 20 }}>
+                <CCol>
+                  <CFormControl
+                    type="text"
+                    name="searchInput"
+                    onInput={handleChangeSearchInput}
+                    value={searchInput || ''}
+                  />
+                </CCol>
+              </CInputGroup>
               <CButton
                 onClick={() => handleClickCreate()}
                 style={{ width: '10%', fontSize: '0.8rem' }}
@@ -184,29 +247,33 @@ const Rooms = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {rooms.map((room, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{index + 1}</CTableDataCell>
-                    <CTableDataCell>{room.name}</CTableDataCell>
-                    <CTableDataCell>{room.roomTypeModel.name}</CTableDataCell>
-                    <CTableDataCell>{room.roomStatus}</CTableDataCell>
-                    <CTableDataCell>{room.note}</CTableDataCell>
-                    <CTableDataCell>
-                      <CIcon
-                        style={{ margin: '0px 5px', cursor: 'pointer' }}
-                        size={'lg'}
-                        name="cil-pencil"
-                        onClick={() => handleClickEdit(room)}
-                      ></CIcon>
-                      <CIcon
-                        style={{ margin: '0px 5px', cursor: 'pointer' }}
-                        size={'lg'}
-                        name="cil-trash"
-                        onClick={() => (room.id = handleClickDelete(room.id))}
-                      />
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
+                {rooms.length > 0 ? (
+                  rooms.map((room, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell>{room.name}</CTableDataCell>
+                      <CTableDataCell>{room.roomTypeModel.name}</CTableDataCell>
+                      <CTableDataCell>{room.roomStatus}</CTableDataCell>
+                      <CTableDataCell>{room.note}</CTableDataCell>
+                      <CTableDataCell>
+                        <CIcon
+                          style={{ margin: '0px 5px', cursor: 'pointer' }}
+                          size={'lg'}
+                          name="cil-pencil"
+                          onClick={() => handleClickEdit(room)}
+                        ></CIcon>
+                        <CIcon
+                          style={{ margin: '0px 5px', cursor: 'pointer' }}
+                          size={'lg'}
+                          name="cil-trash"
+                          onClick={() => (room.id = handleClickDelete(room.id))}
+                        />
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))
+                ) : (
+                  <CTableDataCell>Trống</CTableDataCell>
+                )}
               </CTableBody>
             </CTable>
           </CCardBody>
