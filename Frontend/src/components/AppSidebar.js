@@ -1,15 +1,8 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import {
-  CSidebar,
-  CSidebarBrand,
-  CSidebarNav,
-  CSidebarToggler,
-  CCreateNavItem,
-} from '@coreui/react'
-
-import CIcon from '@coreui/icons-react'
+import { CSidebar, CSidebarBrand, CSidebarNav, CCreateNavItem, CAvatar } from '@coreui/react'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
@@ -23,29 +16,16 @@ const AppSidebar = () => {
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   return (
-    <CSidebar
-      position="fixed"
-      selfHiding="md"
-      unfoldable={unfoldable}
-      show={sidebarShow}
-      onShow={() => console.log('show')}
-      onHide={() => {
-        dispatch({ type: 'set', sidebarShow: false })
-      }}
-    >
+    <CSidebar position="fixed" selfHiding="md" unfoldable={unfoldable} show={sidebarShow}>
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" name="logo-negative" height={35} />
-        <CIcon className="sidebar-brand-narrow" name="sygnet" height={35} />
+        {/* <CAvatar src="logo/logo.png" size="xl" /> */}
+        <img src="logo/logo.png" className="img-fluid" alt="Responsive image"></img>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
           <CCreateNavItem items={navigation} />
         </SimpleBar>
       </CSidebarNav>
-      <CSidebarToggler
-        className="d-none d-lg-flex"
-        onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
-      />
     </CSidebar>
   )
 }
