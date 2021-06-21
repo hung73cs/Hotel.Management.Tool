@@ -52,7 +52,6 @@ const Rooms = () => {
 
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
-    console.log('rooms', rooms.length)
   }, [openModal])
 
   const handleClickCreate = () => {
@@ -226,6 +225,7 @@ const Rooms = () => {
       </CModal>
     )
   }
+
   return (
     <CRow>
       {toastMessage && <ToastNotification message={toastMessage} />}
@@ -238,7 +238,7 @@ const Rooms = () => {
           <CCardBody style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <p className="text-medium-emphasis small" style={{ width: '70%' }}>
-                Đây là danh sách các loại phòng của khách sạn
+                Đây là danh sách các phòng của khách sạn
               </p>
               <CInputGroup style={{ width: '20%', marginRight: 20 }}>
                 <CCol>
@@ -256,17 +256,18 @@ const Rooms = () => {
               >
                 {/* <CIcon style={{ margin: '0px 5px' }} size={'lg'} name="cil-plus"></CIcon> */}
                 <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>+</span>
-                Thêm phòng
+                Thêm
               </CButton>
             </div>
             <CTable striped>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Tên phòng</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Loại phòng</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Tình trạng</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Ghi chú</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">TÊN PHÒNG</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">LOẠI PHÒNG</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">TÌNH TRẠNG</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">GHI CHÚ</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -275,7 +276,12 @@ const Rooms = () => {
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{room.name}</CTableDataCell>
-                      <CTableDataCell>{room.roomTypeModel.name}</CTableDataCell>
+                      <CTableDataCell>
+                        <strong> {room.roomTypeModel.name} </strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{room.roomTypeModel.cost} </strong>
+                      </CTableDataCell>
                       <CTableDataCell>{room.roomStatus}</CTableDataCell>
                       <CTableDataCell>{room.note}</CTableDataCell>
                       <CTableDataCell>

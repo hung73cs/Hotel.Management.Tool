@@ -51,9 +51,9 @@ const GetAccounts = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Username</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Role</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Chi tiết</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">TÀI KHOẢN</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">LOẠI TÀI KHOẢN</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">CHI TIẾT</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -75,7 +75,9 @@ const GetAccounts = () => {
                             <CTableBody>
                               <CTableRow>
                                 <CTableHeaderCell scope="col">Tên</CTableHeaderCell>
-                                <CTableDataCell scope="col">{userInfo.name}</CTableDataCell>
+                                <CTableDataCell scope="col">
+                                  <strong>{userInfo.name}</strong>
+                                </CTableDataCell>
                               </CTableRow>
                               <CTableRow>
                                 <CTableHeaderCell scope="col">CMND/CCCD</CTableHeaderCell>
