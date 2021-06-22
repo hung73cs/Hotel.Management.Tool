@@ -62,19 +62,19 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{GuestTypeId}")]
-        [Authorize(Roles ="ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> UpdateGuestType(Guid GuestTypeId, [FromBody] CreateGuestTypeModel GuestTypeModel)
         {
             var currentGuestType = await _GuestTypeService.GetGuestTypeAsync(GuestTypeId);
 
-            if(currentGuestType == null)
+            if (currentGuestType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
 
             var mapper = _GuestTypeMapper.MapGuestTypeModelToGuestType(GuestTypeModel, currentGuestType);
 
-            if(mapper == null)
+            if (mapper == null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }

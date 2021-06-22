@@ -81,12 +81,13 @@ namespace Hotel.Management.Tool.ApplicationLogic
 
         public async Task<List<Room>> GetRoomsAsync()
         {
-            var rooms =  await _room.GetListAsync();
+            var rooms = await _room.GetListAsync();
             var results = new List<Room>();
             foreach (var i in rooms)
             {
                 var room = await _room.SearchForSingleItemAsync(x => x.Id == i.Id, x => x.RoomType);
-                results.Add(room);
+                if (room != null)
+                    results.Add(room);
             }
             return results;
         }

@@ -28,7 +28,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             _roomTypeMapper = roomTypeMapper;
         }
 
-        [HttpGet]               
+        [HttpGet]
         [Route("id/{roomTypeId}")]
         [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<RoomTypeModel>> GetRoomType(Guid roomTypeId)
@@ -62,19 +62,19 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{roomTypeId}")]
-        [Authorize(Roles ="ADMIN")]
-        public async Task<ActionResult> UpdateRoomType(Guid roomTypeId, [FromBody]CreateRoomTypeModel roomTypeModel)
+        [Authorize(Roles = "ADMIN")]
+        public async Task<ActionResult> UpdateRoomType(Guid roomTypeId, [FromBody] CreateRoomTypeModel roomTypeModel)
         {
             var currentRoomType = await _roomTypeService.GetRoomTypeAsync(roomTypeId);
 
-            if(currentRoomType == null)
+            if (currentRoomType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
 
             var mapper = _roomTypeMapper.MapRoomTypeModelToRoomType(roomTypeModel, currentRoomType);
 
-            if(mapper == null)
+            if (mapper == null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }

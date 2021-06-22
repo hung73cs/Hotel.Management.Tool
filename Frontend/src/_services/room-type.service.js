@@ -43,7 +43,7 @@ async function edit(roomType) {
     body: JSON.stringify(roomType),
   }
 
-  return await fetch(`${apiUrl}/room-type/${roomType.id}`, requestOptions).then(handleResponse)
+  return await fetch(`${apiUrl}/room-type/id/${roomType.id}`, requestOptions).then(handleResponse)
 }
 
 async function _delete(id) {

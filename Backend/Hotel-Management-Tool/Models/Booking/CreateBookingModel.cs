@@ -12,7 +12,7 @@ namespace Hotel.Management.Tool.Models
         public DateTime StartedDate { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal UnitStandardPrice { get; set; }
-        public List<BookingDetail> BookingDetails {get;set;}
+        public List<BookingDetail> BookingDetails { get; set; }
         public CreateBookingModel()
         {
             BookingDetails = new List<BookingDetail>();

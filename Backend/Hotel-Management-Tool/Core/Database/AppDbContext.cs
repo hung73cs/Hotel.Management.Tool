@@ -1,5 +1,4 @@
 ﻿using Hotel.Management.Tool.Core.Entities;
-using Hotel.Management.Tool.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Management.Tool.Core.Database
@@ -57,7 +56,7 @@ namespace Hotel.Management.Tool.Core.Database
                 entity.HasOne(s => s.Account)
                     .WithMany(g => g.Bookings)
                     .HasForeignKey(s => s.AccountId);
-            
+
                 entity.HasOne(s => s.Room)
                     .WithMany(g => g.Bookings)
                     .HasForeignKey(s => s.RoomId);
@@ -80,7 +79,7 @@ namespace Hotel.Management.Tool.Core.Database
                   .HasForeignKey(s => s.GuestTypeId);
 
                 entity.HasQueryFilter(x => x.IsDeleted == false);
-            });         
+            });
             modelBuilder.Entity<GuestType>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -115,7 +114,7 @@ namespace Hotel.Management.Tool.Core.Database
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Cost).IsRequired();
-                entity.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);             
+                entity.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
                 entity.HasQueryFilter(x => x.IsDeleted == false);
             });
             modelBuilder.Entity<UserInfo>(entity =>
@@ -135,7 +134,7 @@ namespace Hotel.Management.Tool.Core.Database
 
                 entity.HasQueryFilter(x => x.IsDeleted == false);
             });
-        
+
             modelBuilder.Entity<Report>(entity =>
             {
                 entity.HasKey(e => e.Id);

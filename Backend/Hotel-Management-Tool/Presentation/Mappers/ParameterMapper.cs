@@ -7,12 +7,12 @@ namespace Hotel.Management.Tool.Presentation.Mappers
     public class ParameterMapper : IParameterMapper
     {
         private readonly IParameterRepository _parameterRepository;
-        
+
         public ParameterMapper(IParameterRepository parameterRepository)
         {
             _parameterRepository = parameterRepository;
         }
-        
+
         public ParameterModel MapParameterToParameterModel(Parameter parameter)
         {
             var parameterModel = new ParameterModel

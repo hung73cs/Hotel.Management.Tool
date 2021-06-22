@@ -2,8 +2,8 @@
 
 namespace Hotel.Management.Tool.Models.Room
 {
-  public class RoomModel
-  {
+    public class RoomModel
+    {
         public RoomModel()
         {
             RoomTypeModel = new RoomTypeModel();
@@ -14,5 +14,5 @@ namespace Hotel.Management.Tool.Models.Room
         public string RoomStatus { get; set; }
         public string Note { get; set; }
         public RoomTypeModel RoomTypeModel { get; set; }
-  }
+    }
 }

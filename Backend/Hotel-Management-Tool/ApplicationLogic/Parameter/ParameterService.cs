@@ -72,6 +72,6 @@ namespace Hotel.Management.Tool.ApplicationLogic
             await _parameter.DeleteAsync(a => a.Id == parameterId);
         }
 
-       
+
     }
 }

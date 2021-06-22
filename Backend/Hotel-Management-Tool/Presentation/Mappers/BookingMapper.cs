@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Booking;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
 {

@@ -125,7 +125,7 @@ namespace Hotel.Management.Tool
             app.ConfigExceptionHandler();
 
             app.UseRouting();
-            
+
             //Add Cors
             app.UseCors(MyAllowSpecificOrigins);
 
@@ -137,7 +137,7 @@ namespace Hotel.Management.Tool
             {
                 endpoints.MapControllers();
             });
-            
+
         }
     }
 }

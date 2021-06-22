@@ -2,7 +2,6 @@
 using Hotel.Management.Tool.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -40,6 +39,6 @@ namespace Hotel.Management.Tool.Core.Database
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
-        }     
+        }
     }
 }

@@ -30,6 +30,9 @@ const GetAccounts = () => {
   const [visible, setVisible] = useState(false)
   const [userInfo, setUserInfo] = useState({})
 
+  const formatBirthday = (birthday) => {
+    return String(birthday).substring(0, 10)
+  }
   const handleClick = (data) => {
     setVisible(!visible)
     setUserInfo(data)
@@ -74,9 +77,25 @@ const GetAccounts = () => {
                           <CTable>
                             <CTableBody>
                               <CTableRow>
+                                <CTableHeaderCell scope="col">Tên tài khoản</CTableHeaderCell>
+                                <CTableDataCell scope="col">
+                                  <mark>
+                                    <strong>{account.username}</strong>
+                                  </mark>
+                                </CTableDataCell>
+                              </CTableRow>
+                              <CTableRow>
+                                <CTableHeaderCell scope="col">Loại tài khoản</CTableHeaderCell>
+                                <CTableDataCell scope="col">
+                                  <strong>{account.role}</strong>
+                                </CTableDataCell>
+                              </CTableRow>
+                              <CTableRow>
                                 <CTableHeaderCell scope="col">Tên</CTableHeaderCell>
                                 <CTableDataCell scope="col">
-                                  <strong>{userInfo.name}</strong>
+                                  <mark>
+                                    <strong>{userInfo.name}</strong>
+                                  </mark>
                                 </CTableDataCell>
                               </CTableRow>
                               <CTableRow>
@@ -89,7 +108,9 @@ const GetAccounts = () => {
                               </CTableRow>
                               <CTableRow>
                                 <CTableHeaderCell scope="col">Ngày sinh</CTableHeaderCell>
-                                <CTableDataCell scope="col">{userInfo.birthday}</CTableDataCell>
+                                <CTableDataCell scope="col">
+                                  {formatBirthday(userInfo.birthday)}
+                                </CTableDataCell>
                               </CTableRow>
                               <CTableRow>
                                 <CTableHeaderCell scope="col">SDT</CTableHeaderCell>

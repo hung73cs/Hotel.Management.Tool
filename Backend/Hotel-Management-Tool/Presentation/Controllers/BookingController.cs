@@ -31,7 +31,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPost]
         public async Task<ActionResult> CreateBooking([FromBody] CreateBookingModel model)
-        {       
+        {
             var mapper = _bookingMapper.MapBookingModelToBooking(model);
 
             if (mapper == null)

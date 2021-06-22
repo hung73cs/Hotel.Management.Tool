@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Core.Interfaces
-{ 
+{
     public interface IParameterService
     {
         Task<Parameter> GetParameterAsync(Guid id);

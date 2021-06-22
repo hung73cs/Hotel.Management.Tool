@@ -50,7 +50,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public List<GuestTypeModel> MapGuestTypesToGuestTypeModels(List<GuestType> GuestTypes)
         {
             var GuestTypeModels = new List<GuestTypeModel>();
-            foreach(var i in GuestTypes)
+            foreach (var i in GuestTypes)
             {
                 var GuestTypeModel = new GuestTypeModel
                 {

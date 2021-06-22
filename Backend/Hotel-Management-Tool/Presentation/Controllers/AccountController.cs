@@ -78,7 +78,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         //[Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel account)
         {
-            var mappedAccount =  _accountMapper.MapAccountModelToAccount(account);
+            var mappedAccount = _accountMapper.MapAccountModelToAccount(account);
 
             if (mappedAccount == null)
             {
@@ -95,7 +95,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         [HttpPut]
         [Route("id/{accountId}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<ActionResult> UpdateAccount(Guid accountId, [FromBody]UpdateAccountModel updatedAccount)
+        public async Task<ActionResult> UpdateAccount(Guid accountId, [FromBody] UpdateAccountModel updatedAccount)
         {
             var currentAccount = await _account.GetAccountAsync(accountId);
 
@@ -103,7 +103,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
-      
+
             var mappedAccount = _accountMapper.MapAccountModelToAccount(updatedAccount, currentAccount);
 
             if (mappedAccount == null)

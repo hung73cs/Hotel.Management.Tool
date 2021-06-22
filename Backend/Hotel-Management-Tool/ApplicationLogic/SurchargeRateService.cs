@@ -5,7 +5,7 @@ using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.ApplicationLogic
 {
@@ -18,7 +18,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
             _surchargeRate = surchargeRate;
         }
 
-        
+
         public async Task<SurchargeRate> CreateSurchargeRateAsync(SurchargeRate surchargeRateToCreate)
         {
             var surchargeRate = await _surchargeRate.SearchForSingleItemAsync(x => x.GuestLevel == surchargeRateToCreate.GuestLevel);
@@ -70,13 +70,13 @@ namespace Hotel.Management.Tool.ApplicationLogic
 
             surchargeRates.OrderBy(o => o.GuestLevel).ToList();
 
-                foreach(var i in surchargeRates)
+            foreach (var i in surchargeRates)
+            {
+                if (i.GuestLevel <= numberOfGuest)
                 {
-                    if(i.GuestLevel <= numberOfGuest)
-                    {
-                        cost += (unitPrice * i.Rate) / 100;
-                    }
+                    cost += (unitPrice * i.Rate) / 100;
                 }
+            }
 
             return cost;
 

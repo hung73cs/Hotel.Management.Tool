@@ -43,7 +43,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<ActionResult> CreateRoom([FromBody]CreateRoomModel room)
+        public async Task<ActionResult> CreateRoom([FromBody] CreateRoomModel room)
         {
             var mapper = _roomMapper.MapRoomModelToRoom(room);
 

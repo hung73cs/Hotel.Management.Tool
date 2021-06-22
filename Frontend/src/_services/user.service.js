@@ -55,7 +55,7 @@ async function register(user) {
     body: JSON.stringify(user),
   }
   console.log('register', user)
-  // return await fetch(`${apiUrl}/account`, requestOptions).then(handleResponse)
+  return await fetch(`${apiUrl}/account`, requestOptions).then(handleResponse)
 }
 
 async function update(user) {

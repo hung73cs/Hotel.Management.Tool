@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Hotel.Management.Tool.Models.Account
+﻿namespace Hotel.Management.Tool.Models.Account
 {
     public class UpdateAccountModel
     {

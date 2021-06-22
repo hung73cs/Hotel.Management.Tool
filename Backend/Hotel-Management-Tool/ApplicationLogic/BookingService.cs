@@ -22,7 +22,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
             return await _booking.CreateAsync(bookingRequest);
         }
 
-        
+
 
         public async Task<Booking> GetBooking(Guid bookingId)
         {

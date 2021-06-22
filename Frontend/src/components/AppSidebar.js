@@ -17,7 +17,7 @@ const AppSidebar = () => {
 
   return (
     <CSidebar position="fixed" selfHiding="md" unfoldable={unfoldable} show={sidebarShow}>
-      <CSidebarBrand className="d-none d-md-flex" to="/">
+      <CSidebarBrand style={{ margin: '10px 50px' }} className="d-none d-md-flex" to="/">
         {/* <CAvatar src="logo/logo.png" size="xl" /> */}
         <img src="logo/logo.png" className="img-fluid" alt="Responsive image"></img>
       </CSidebarBrand>

@@ -3,7 +3,6 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Room;
-using System;
 using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
@@ -53,7 +52,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 Note = room.Note,
                 roomTypeId = room.RoomTypeId
             };
-            if(room.RoomType != null)
+            if (room.RoomType != null)
             {
                 var roomTypeModel = new RoomTypeModel
                 {
@@ -69,7 +68,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public List<RoomModel> MapRoomToRoomModel(List<Room> rooms)
         {
             var roomModels = new List<RoomModel>();
-            foreach(var i in rooms)
+            foreach (var i in rooms)
             {
                 var roomModel = new RoomModel
                 {

@@ -1,5 +1,5 @@
-﻿using System;
-using Hotel.Management.Tool.Core.Enums;
+﻿using Hotel.Management.Tool.Core.Enums;
+using System;
 
 namespace Hotel.Management.Tool.Core.Entities
 {
