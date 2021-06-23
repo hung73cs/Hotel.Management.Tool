@@ -81,7 +81,40 @@ namespace Hotel.Management.Tool.ApplicationLogic
 
         public async Task<List<Room>> GetRoomsAsync()
         {
-            return await _room.GetListAsync();
+            var rooms = await _room.GetListAsync();
+            var results = new List<Room>();
+            foreach (var i in rooms)
+            {
+                var room = await _room.SearchForSingleItemAsync(x => x.Id == i.Id, x => x.RoomType);
+                if (room != null)
+                    results.Add(room);
+            }
+            return results;
+        }
+
+        public async Task BookRoom(Guid roomId)
+        {
+            var room = await _room.SearchForSingleItemAsync(x => x.Id == roomId);
+            room.RoomStatus = RoomStatus.CLOSE;
+            await _room.UpdateAsync(room);
+        }
+
+        public async Task UnBookRoom(Guid roomId)
+        {
+            var room = await _room.SearchForSingleItemAsync(x => x.Id == roomId);
+            room.RoomStatus = RoomStatus.OPEN;
+            await _room.UpdateAsync(room);
+        }
+
+        public async Task UpdateBookRoom(Guid roomId, Guid newRoomId)
+        {
+            var room = await _room.SearchForSingleItemAsync(x => x.Id == roomId);
+            room.RoomStatus = RoomStatus.CLOSE;
+            await _room.UpdateAsync(room);
+
+            var newRoom = await _room.SearchForSingleItemAsync(x => x.Id == newRoomId);
+            newRoom.RoomStatus = RoomStatus.OPEN;
+            await _room.UpdateAsync(newRoom);
         }
     }
 }

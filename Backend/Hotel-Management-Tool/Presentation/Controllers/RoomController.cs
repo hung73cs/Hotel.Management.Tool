@@ -29,7 +29,6 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("id/{roomId}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<RoomModel>> GetRoom(Guid roomId)
         {
             var room = await _room.GetRoomAsync(roomId);
@@ -42,8 +41,8 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> CreateRoom([FromBody]CreateRoomModel room)
+        [Authorize(Roles = "ADMIN")]
+        public async Task<ActionResult> CreateRoom([FromBody] CreateRoomModel room)
         {
             var mapper = _roomMapper.MapRoomModelToRoom(room);
 
@@ -61,7 +60,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{roomId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> UpdateRoom(Guid roomId, [FromBody] CreateRoomModel roomModel)
         {
             var currentRoom = await _room.GetRoomAsync(roomId);
@@ -85,7 +84,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{roomId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteRoom(Guid roomId)
         {
             await _room.DeleteRoomAsync(roomId);
@@ -95,7 +94,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{roomId}/hard-delete")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> HardDeleteRoom(Guid roomId)
         {
             await _room.HardDeleteRoomAsync(roomId);

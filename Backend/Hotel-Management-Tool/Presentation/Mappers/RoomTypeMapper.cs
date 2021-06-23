@@ -50,7 +50,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public List<RoomTypeModel> MapRoomTypeToRoomTypeModel(List<RoomType> roomTypes)
         {
             var roomTypeModels = new List<RoomTypeModel>();
-            foreach(var i in roomTypes)
+            foreach (var i in roomTypes)
             {
                 var roomTypeModel = new RoomTypeModel
                 {

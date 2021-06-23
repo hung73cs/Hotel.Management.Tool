@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Hotel.Management.Tool.Core.Enums;
 using System.Collections.Generic;
-using Hotel.Management.Tool.Core.Enums;
 
 namespace Hotel.Management.Tool.Core.Entities
 {
@@ -10,6 +9,6 @@ namespace Hotel.Management.Tool.Core.Entities
         public string Password { get; set; }
         public Role Role { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
-        public virtual UserInfo UserInfo{ get; set; }
+        public virtual UserInfo UserInfo { get; set; }
     }
 }

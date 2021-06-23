@@ -2,5 +2,5 @@
 
 namespace Hotel.Management.Tool.Core.Interfaces
 {
-    public interface IUserInfoRepository : IBaseCrudRepository<UserInfo> {}
+    public interface IUserInfoRepository : IBaseCrudRepository<UserInfo> { }
 }

@@ -75,7 +75,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
 
         public async Task<List<GuestType>> GetGuestTypesAsync()
         {
-            return await _GuestType.GetListAsync();        
+            return await _GuestType.GetListAsync();
         }
     }
 }

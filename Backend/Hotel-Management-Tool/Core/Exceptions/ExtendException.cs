@@ -1,17 +1,18 @@
-﻿using System;
-using Hotel.Management.Tool.Core.Enums;
+﻿using Hotel.Management.Tool.Core.Enums;
+using System;
 
 namespace Hotel.Management.Tool.Core.Exceptions
 {
     public class ExtendException : Exception
     {
-        public ExtendException() {}
+        public ExtendException() { }
 
-        public ExtendException(string extendMessage, Exception innerException = null) {
+        public ExtendException(string extendMessage, Exception innerException = null)
+        {
             ExtendMessage = extendMessage;
         }
         public ExtendException(ErrorCode errorCode, string extendMessage, Exception innerException = null)
-        {         
+        {
             ErrorCode = errorCode;
             ExtendMessage = extendMessage;
         }

@@ -1,6 +1,4 @@
-﻿using Hotel.Management.Tool.Core.Constants;
-using Hotel.Management.Tool.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 
 namespace Hotel.Management.Tool.Presentation.Extensions

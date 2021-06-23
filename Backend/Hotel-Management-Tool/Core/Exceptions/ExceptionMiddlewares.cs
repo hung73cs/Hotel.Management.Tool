@@ -1,10 +1,10 @@
-﻿using System.Net;
-using Newtonsoft.Json;
+﻿using Hotel.Management.Tool.Core.Enums;
+using Hotel.Management.Tool.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Hotel.Management.Tool.Core.Enums;
-using Hotel.Management.Tool.Models;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace Hotel.Management.Tool.Core.Exceptions
 {
@@ -32,7 +32,7 @@ namespace Hotel.Management.Tool.Core.Exceptions
                                   case ErrorCode.BadRequest:
                                       context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                                       errorMessage = extendException.ExtendMessage;
-                                    break;
+                                      break;
                                   case ErrorCode.Unauthorized:
                                       context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                                       errorMessage = extendException.ExtendMessage;
@@ -69,6 +69,6 @@ namespace Hotel.Management.Tool.Core.Exceptions
                   });
               });
         }
-               
+
     }
 }

@@ -1,6 +1,4 @@
-﻿using Hotel.Management.Tool.Core.Enums;
-using Hotel.Management.Tool.Models;
-using System;
+﻿using Hotel.Management.Tool.Models;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
 {

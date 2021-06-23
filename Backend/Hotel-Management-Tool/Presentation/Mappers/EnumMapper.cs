@@ -16,16 +16,16 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {ErrorCode.Unauthorized, "Unauthorized"},
             {ErrorCode.Other, "Other"},
 
-            {Gender.MALE, "Male"},
-            {Gender.FEMALE, "Female"},
-            {Gender.UNKNOWN, "Unknown"},
+            {Gender.MALE, "MALE"},
+            {Gender.FEMALE, "FEMALE"},
+            {Gender.UNKNOWN, "UNKNOWN"},
 
-            {Role.ADMIN, "Admin"},
-            {Role.STAFF, "Staff"},
+            {Role.ADMIN, "ADMIN"},
+            {Role.STAFF, "STAFF"},
 
-            {RoomStatus.OPEN, "Open"},
-            {RoomStatus.CLOSE, "Close"},
-            {RoomStatus.REPAIRING, "Repairing"},
+            {RoomStatus.OPEN, "OPEN"},
+            {RoomStatus.CLOSE, "CLOSE"},
+            {RoomStatus.REPAIRING, "REPAIRING"},
 
             {SortDirection.Ascending, "Ascending" },
             {SortDirection.Descending, "Descending" }

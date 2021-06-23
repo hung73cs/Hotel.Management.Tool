@@ -28,9 +28,8 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             _roomTypeMapper = roomTypeMapper;
         }
 
-        [HttpGet]               
+        [HttpGet]
         [Route("id/{roomTypeId}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<RoomTypeModel>> GetRoomType(Guid roomTypeId)
         {
             var roomType = await _roomTypeService.GetRoomTypeAsync(roomTypeId);
@@ -43,7 +42,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> CreateRoomType([FromBody] CreateRoomTypeModel roomTypeModel)
         {
             var mapper = _roomTypeMapper.MapRoomTypeModelToRoomType(roomTypeModel);
@@ -62,19 +61,19 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{roomTypeId}")]
-        [Authorize(Roles ="Admin")]
-        public async Task<ActionResult> UpdateRoomType(Guid roomTypeId, [FromBody]CreateRoomTypeModel roomTypeModel)
+        [Authorize(Roles = "ADMIN")]
+        public async Task<ActionResult> UpdateRoomType(Guid roomTypeId, [FromBody] CreateRoomTypeModel roomTypeModel)
         {
             var currentRoomType = await _roomTypeService.GetRoomTypeAsync(roomTypeId);
 
-            if(currentRoomType == null)
+            if (currentRoomType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
 
             var mapper = _roomTypeMapper.MapRoomTypeModelToRoomType(roomTypeModel, currentRoomType);
 
-            if(mapper == null)
+            if (mapper == null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
@@ -86,7 +85,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{roomTypeId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteRoomType(Guid roomTypeId)
         {
             await _roomTypeService.DeleteRoomTypeAsync(roomTypeId);
@@ -96,7 +95,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{roomTypeId}/hard-delete")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> HardDeleteRoomType(Guid roomTypeId)
         {
             await _roomTypeService.HardDeleteRoomTypeAsync(roomTypeId);

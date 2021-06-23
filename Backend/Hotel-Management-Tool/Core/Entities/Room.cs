@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Hotel.Management.Tool.Core.Enums;
+using System;
 using System.Collections.Generic;
-using Hotel.Management.Tool.Core.Enums;
 
 namespace Hotel.Management.Tool.Core.Entities
 {

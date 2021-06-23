@@ -22,7 +22,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
             return await _booking.CreateAsync(bookingRequest);
         }
 
-        
+
 
         public async Task<Booking> GetBooking(Guid bookingId)
         {
@@ -67,7 +67,8 @@ namespace Hotel.Management.Tool.ApplicationLogic
             foreach (var i in bookings)
             {
                 var booking = await _booking.SearchForSingleItemAsync(x => x.Id == i.Id, x => x.BookingDetails);
-                results.Add(booking);
+                if (booking != null)
+                    results.Add(booking);
             }
             return results;
         }

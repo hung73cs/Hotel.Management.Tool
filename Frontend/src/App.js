@@ -18,7 +18,6 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 // class App extends Component {
 const App = () => {
   const token = useSelector((state) => state.users.token)
-  console.log('dmm', token)
   const dispatch = useDispatch()
 
   useEffect(() => {

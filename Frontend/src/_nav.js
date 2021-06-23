@@ -17,19 +17,6 @@ const _nav = [
   //////////////////////////////////////
   {
     _component: 'CNavTitle',
-    anchor: 'User Management',
-  },
-
-  {
-    _component: 'CNavItem',
-    as: NavLink,
-    anchor: 'List accounts',
-    to: '/user/get-users',
-    icon: <CIcon name="cil-drop" customClasses="nav-icon" />,
-  },
-  //////////////////////////////////////
-  {
-    _component: 'CNavTitle',
     anchor: 'Theme',
   },
   {
@@ -48,12 +35,12 @@ const _nav = [
   },
   {
     _component: 'CNavTitle',
-    anchor: 'Components',
+    anchor: 'Nội bộ',
   },
   {
     _component: 'CNavGroup',
     as: NavLink,
-    anchor: 'Quản lý người dùng',
+    anchor: 'Tài khoản',
     to: '/to',
     icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,
     items: [
@@ -66,8 +53,29 @@ const _nav = [
       {
         _component: 'CNavItem',
         as: NavLink,
-        anchor: 'Thêm tài khoản người dùng',
+        anchor: 'Thêm tài khoản',
         to: '/user/createaccount',
+      },
+    ],
+  },
+  {
+    _component: 'CNavGroup',
+    as: NavLink,
+    anchor: 'Phòng',
+    to: '/to',
+    icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Loại phòng',
+        to: '/room-type',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Phòng',
+        to: '/room',
       },
     ],
   },

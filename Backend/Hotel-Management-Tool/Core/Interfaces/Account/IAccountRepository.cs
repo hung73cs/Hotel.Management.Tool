@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Hotel.Management.Tool.Core.Entities;
+using System;
 using System.Threading.Tasks;
-using Hotel.Management.Tool.Core.Entities;
 
 namespace Hotel.Management.Tool.Core.Interfaces
 {

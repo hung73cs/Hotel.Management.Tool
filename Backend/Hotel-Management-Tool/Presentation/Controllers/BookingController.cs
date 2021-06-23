@@ -19,19 +19,22 @@ namespace Hotel.Management.Tool.Presentation.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly IBookingMapper _bookingMapper;
+        private readonly IRoomService _roomService;
 
         public BookingController(
             IBookingService bookingService,
-            IBookingMapper bookingMapper)
+            IBookingMapper bookingMapper,
+            IRoomService roomService)
         {
             _bookingService = bookingService;
             _bookingMapper = bookingMapper;
+            _roomService = roomService;
 
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateBooking([FromBody] CreateBookingModel model)
-        {       
+        {
             var mapper = _bookingMapper.MapBookingModelToBooking(model);
 
             if (mapper == null)
@@ -40,6 +43,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             }
 
             var result = await _bookingService.CreateAsync(mapper);
+            await _roomService.BookRoom(model.RoomId);
 
             Response.AddInfoHeaders(result.Id);
 
@@ -87,7 +91,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<BookingModel>>> GetBookingsAsync()
         {
             var bookings = await _bookingService.GetBookings();
