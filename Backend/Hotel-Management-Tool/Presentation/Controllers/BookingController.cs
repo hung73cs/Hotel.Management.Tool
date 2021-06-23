@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
 {
+    [Authorize]
     [Route("booking")]
     public class BookingController : ControllerBase
     {

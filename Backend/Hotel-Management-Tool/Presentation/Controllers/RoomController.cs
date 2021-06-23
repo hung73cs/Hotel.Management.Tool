@@ -29,7 +29,6 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("id/{roomId}")]
-        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<RoomModel>> GetRoom(Guid roomId)
         {
             var room = await _room.GetRoomAsync(roomId);

@@ -30,7 +30,6 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("id/{GuestTypeId}")]
-        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<GuestTypeModel>> GetGuestType(Guid GuestTypeId)
         {
             var GuestType = await _GuestTypeService.GetGuestTypeAsync(GuestTypeId);
