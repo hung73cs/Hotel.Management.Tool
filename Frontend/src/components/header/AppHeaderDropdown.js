@@ -1,9 +1,7 @@
 import React from 'react'
 import {
   CAvatar,
-  CBadge,
   CDropdown,
-  CDropdownDivider,
   CDropdownHeader,
   CDropdownItem,
   CDropdownMenu,
@@ -12,7 +10,6 @@ import {
 import CIcon from '@coreui/icons-react'
 import { useDispatch } from 'react-redux'
 import { userActions } from '../../_actions'
-
 const AppHeaderDropdown = () => {
   const dispatch = useDispatch()
 
