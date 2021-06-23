@@ -1,5 +1,4 @@
-﻿using Hotel.Management.Tool.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Models.Booking
@@ -13,10 +12,10 @@ namespace Hotel.Management.Tool.Models.Booking
         public DateTime StartedDate { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal UnitStandardPrice { get; set; }
-        public List<BookingDetail> BookingDetails { get; set; }
+        public List<BookingDetailModel> BookingDetailModels { get; set; }
         public BookingModel()
         {
-            BookingDetails = new List<BookingDetail>();
+            BookingDetailModels = new List<BookingDetailModel>();
         }
     }
 }

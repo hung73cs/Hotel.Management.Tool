@@ -13,19 +13,21 @@ using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
 {
-    [Authorize]
     [Route("booking")]
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
         private readonly IBookingMapper _bookingMapper;
+        private readonly IRoomService _roomService;
 
         public BookingController(
             IBookingService bookingService,
-            IBookingMapper bookingMapper)
+            IBookingMapper bookingMapper,
+            IRoomService roomService)
         {
             _bookingService = bookingService;
             _bookingMapper = bookingMapper;
+            _roomService = roomService;
 
         }
 
@@ -40,6 +42,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             }
 
             var result = await _bookingService.CreateAsync(mapper);
+            await _roomService.BookRoom(model.RoomId);
 
             Response.AddInfoHeaders(result.Id);
 
