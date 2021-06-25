@@ -285,13 +285,14 @@ const Rooms = () => {
             </div>
             <CTable striped>
               <CTableHead>
-                <CTableRow>
+                <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÊN PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">LOẠI PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÌNH TRẠNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">GHI CHÚ</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -299,7 +300,9 @@ const Rooms = () => {
                   rooms.map((room, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{room.name}</CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{room.name}</strong>
+                      </CTableDataCell>
                       <CTableDataCell>
                         <strong> {room.roomTypeModel.name} </strong>
                       </CTableDataCell>

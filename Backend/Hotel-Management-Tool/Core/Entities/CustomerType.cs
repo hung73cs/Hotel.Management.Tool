@@ -6,7 +6,7 @@ namespace Hotel.Management.Tool.Core.Entities
     {
         public string Name { get; set; }
         public decimal SurchargeRate { get; set; }
-        public virtual ICollection<BookingDetail> BookingDetails { get; set; }
+        public virtual ICollection<BillDetail> BillDetails { get; set; }
 
     }
 }

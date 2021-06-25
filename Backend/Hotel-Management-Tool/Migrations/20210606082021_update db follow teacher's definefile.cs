@@ -8,8 +8,8 @@ namespace Hotel.Management.Tool.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_BookingDetails_BookingId",
-                table: "BookingDetails");
+                name: "IX_BillDetails_BillId",
+                table: "BillDetails");
 
             migrationBuilder.DropColumn(
                 name: "ReportDateTime",
@@ -17,31 +17,31 @@ namespace Hotel.Management.Tool.Migrations
 
             migrationBuilder.DropColumn(
                 name: "GuestId",
-                table: "Bookings");
+                table: "Bills");
 
             migrationBuilder.DropColumn(
                 name: "EndedDate",
-                table: "Bookings");
+                table: "Bills");
 
             migrationBuilder.DropColumn(
                 name: "IsPaid",
-                table: "Bookings");
+                table: "Bills");
 
             migrationBuilder.DropColumn(
                 name: "Price",
-                table: "Bookings");
+                table: "Bills");
 
             migrationBuilder.DropColumn(
                 name: "Cost",
-                table: "BookingDetails");
+                table: "BillDetails");
 
             migrationBuilder.DropColumn(
                 name: "Promotion",
-                table: "BookingDetails");
+                table: "BillDetails");
 
             migrationBuilder.DropColumn(
                 name: "Surcharge",
-                table: "BookingDetails");
+                table: "BillDetails");
 
             migrationBuilder.AddColumn<int>(
                 name: "Month",
@@ -63,43 +63,43 @@ namespace Hotel.Management.Tool.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "NumberOfGuest",
-                table: "Bookings",
+                table: "Bills",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "UnitPrice",
-                table: "Bookings",
+                table: "Bills",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "UnitStandardPrice",
-                table: "Bookings",
+                table: "Bills",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<string>(
                 name: "Address",
-                table: "BookingDetails",
+                table: "BillDetails",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "GuestName",
-                table: "BookingDetails",
+                table: "BillDetails",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "GuestTypeId",
-                table: "BookingDetails",
+                table: "BillDetails",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<string>(
                 name: "IdCard",
-                table: "BookingDetails",
+                table: "BillDetails",
                 nullable: false,
                 defaultValue: "");
 
@@ -125,7 +125,7 @@ namespace Hotel.Management.Tool.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    BookingId = table.Column<Guid>(nullable: false),
+                    BillId = table.Column<Guid>(nullable: false),
                     BillId = table.Column<Guid>(nullable: false),
                     NumberOfRentalDays = table.Column<int>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
@@ -141,21 +141,21 @@ namespace Hotel.Management.Tool.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BillDetails_Bookings_BookingId",
-                        column: x => x.BookingId,
-                        principalTable: "Bookings",
+                        name: "FK_BillDetails_Bills_BillId",
+                        column: x => x.BillId,
+                        principalTable: "Bills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingDetails_BookingId",
-                table: "BookingDetails",
-                column: "BookingId");
+                name: "IX_BillDetails_BillId",
+                table: "BillDetails",
+                column: "BillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingDetails_GuestTypeId",
-                table: "BookingDetails",
+                name: "IX_BillDetails_GuestTypeId",
+                table: "BillDetails",
                 column: "GuestTypeId",
                 unique: true);
 
@@ -165,14 +165,14 @@ namespace Hotel.Management.Tool.Migrations
                 column: "BillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BillDetails_BookingId",
+                name: "IX_BillDetails_BillId",
                 table: "BillDetails",
-                column: "BookingId",
+                column: "BillId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_BookingDetails_GuestTypes_GuestTypeId",
-                table: "BookingDetails",
+                name: "FK_BillDetails_GuestTypes_GuestTypeId",
+                table: "BillDetails",
                 column: "GuestTypeId",
                 principalTable: "GuestTypes",
                 principalColumn: "Id",
@@ -182,8 +182,8 @@ namespace Hotel.Management.Tool.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_BookingDetails_GuestTypes_GuestTypeId",
-                table: "BookingDetails");
+                name: "FK_BillDetails_GuestTypes_GuestTypeId",
+                table: "BillDetails");
 
             migrationBuilder.DropTable(
                 name: "BillDetails");
@@ -192,12 +192,12 @@ namespace Hotel.Management.Tool.Migrations
                 name: "Bills");
 
             migrationBuilder.DropIndex(
-                name: "IX_BookingDetails_BookingId",
-                table: "BookingDetails");
+                name: "IX_BillDetails_BillId",
+                table: "BillDetails");
 
             migrationBuilder.DropIndex(
-                name: "IX_BookingDetails_GuestTypeId",
-                table: "BookingDetails");
+                name: "IX_BillDetails_GuestTypeId",
+                table: "BillDetails");
 
             migrationBuilder.DropColumn(
                 name: "Month",
@@ -213,31 +213,31 @@ namespace Hotel.Management.Tool.Migrations
 
             migrationBuilder.DropColumn(
                 name: "NumberOfGuest",
-                table: "Bookings");
+                table: "Bills");
 
             migrationBuilder.DropColumn(
                 name: "UnitPrice",
-                table: "Bookings");
+                table: "Bills");
 
             migrationBuilder.DropColumn(
                 name: "UnitStandardPrice",
-                table: "Bookings");
+                table: "Bills");
 
             migrationBuilder.DropColumn(
                 name: "Address",
-                table: "BookingDetails");
+                table: "BillDetails");
 
             migrationBuilder.DropColumn(
                 name: "GuestName",
-                table: "BookingDetails");
+                table: "BillDetails");
 
             migrationBuilder.DropColumn(
                 name: "GuestTypeId",
-                table: "BookingDetails");
+                table: "BillDetails");
 
             migrationBuilder.DropColumn(
                 name: "IdCard",
-                table: "BookingDetails");
+                table: "BillDetails");
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "ReportDateTime",
@@ -248,56 +248,56 @@ namespace Hotel.Management.Tool.Migrations
 
             migrationBuilder.AddColumn<Guid>(
                 name: "GuestId",
-                table: "Bookings",
+                table: "Bills",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "EndedDate",
-                table: "Bookings",
+                table: "Bills",
                 type: "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsPaid",
-                table: "Bookings",
+                table: "Bills",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "Price",
-                table: "Bookings",
+                table: "Bills",
                 type: "numeric",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "Cost",
-                table: "BookingDetails",
+                table: "BillDetails",
                 type: "numeric",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "Promotion",
-                table: "BookingDetails",
+                table: "BillDetails",
                 type: "numeric",
                 nullable: true);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "Surcharge",
-                table: "BookingDetails",
+                table: "BillDetails",
                 type: "numeric",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingDetails_BookingId",
-                table: "BookingDetails",
-                column: "BookingId",
+                name: "IX_BillDetails_BillId",
+                table: "BillDetails",
+                column: "BillId",
                 unique: true);
         }
     }

@@ -8,7 +8,7 @@ namespace Hotel.Management.Tool.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GuestBookings");
+                name: "GuestBills");
 
             migrationBuilder.DropTable(
                 name: "Guests");
@@ -88,25 +88,25 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GuestBookings",
+                name: "GuestBills",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    BookingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BillId = table.Column<Guid>(type: "uuid", nullable: false),
                     GuestId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GuestBookings", x => x.Id);
+                    table.PrimaryKey("PK_GuestBills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GuestBookings_Bookings_BookingId",
-                        column: x => x.BookingId,
-                        principalTable: "Bookings",
+                        name: "FK_GuestBills_Bills_BillId",
+                        column: x => x.BillId,
+                        principalTable: "Bills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GuestBookings_Guests_GuestId",
+                        name: "FK_GuestBills_Guests_GuestId",
                         column: x => x.GuestId,
                         principalTable: "Guests",
                         principalColumn: "Id",
@@ -114,13 +114,13 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestBookings_BookingId",
-                table: "GuestBookings",
-                column: "BookingId");
+                name: "IX_GuestBills_BillId",
+                table: "GuestBills",
+                column: "BillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestBookings_GuestId",
-                table: "GuestBookings",
+                name: "IX_GuestBills_GuestId",
+                table: "GuestBills",
                 column: "GuestId");
 
             migrationBuilder.CreateIndex(

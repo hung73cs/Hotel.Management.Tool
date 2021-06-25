@@ -85,7 +85,7 @@ namespace Hotel.Management.Tool.Migrations
                     b.Property<Guid>("BillId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BookingId")
+                    b.Property<Guid>("BillId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -106,13 +106,13 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasIndex("BillId");
 
-                    b.HasIndex("BookingId")
+                    b.HasIndex("BillId")
                         .IsUnique();
 
                     b.ToTable("BillDetails");
                 });
 
-            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Booking", b =>
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Bill", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -147,10 +147,10 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bills");
                 });
 
-            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.BookingDetail", b =>
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.BillDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +160,7 @@ namespace Hotel.Management.Tool.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("BookingId")
+                    b.Property<Guid>("BillId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("GuestName")
@@ -181,12 +181,12 @@ namespace Hotel.Management.Tool.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
+                    b.HasIndex("BillId");
 
                     b.HasIndex("GuestTypeId")
                         .IsUnique();
 
-                    b.ToTable("BookingDetails");
+                    b.ToTable("BillDetails");
                 });
 
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.GuestType", b =>
@@ -399,39 +399,39 @@ namespace Hotel.Management.Tool.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Management.Tool.Core.Entities.Booking", "Booking")
+                    b.HasOne("Hotel.Management.Tool.Core.Entities.Bill", "Bill")
                         .WithOne("BillDetail")
-                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BillDetail", "BookingId")
+                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BillDetail", "BillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Booking", b =>
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Bill", b =>
                 {
                     b.HasOne("Hotel.Management.Tool.Core.Entities.Account", "Account")
-                        .WithMany("Bookings")
+                        .WithMany("Bills")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hotel.Management.Tool.Core.Entities.Room", "Room")
-                        .WithMany("Bookings")
+                        .WithMany("Bills")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.BookingDetail", b =>
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.BillDetail", b =>
                 {
-                    b.HasOne("Hotel.Management.Tool.Core.Entities.Booking", "Booking")
-                        .WithMany("BookingDetails")
-                        .HasForeignKey("BookingId")
+                    b.HasOne("Hotel.Management.Tool.Core.Entities.Bill", "Bill")
+                        .WithMany("BillDetails")
+                        .HasForeignKey("BillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hotel.Management.Tool.Core.Entities.GuestType", "GuestType")
-                        .WithOne("BookingDetail")
-                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BookingDetail", "GuestTypeId")
+                        .WithOne("BillDetail")
+                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BillDetail", "GuestTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
