@@ -69,23 +69,33 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
             await _bookingService.UpdateBooking(mapper);
+
+            if (bookingModel.RoomId != bookingEntity.RoomId)
+                await _roomService.UpdateBookRoom(bookingEntity.RoomId, bookingModel.RoomId);
+
             return NoContent();
         }
 
         [HttpDelete]
         [Route("id/{bookingId}")]
-        public async Task<ActionResult> DeleteGuestType(Guid GuestTypeId)
+        public async Task<ActionResult> DeleteBooking(Guid bookingId)
         {
-            await _bookingService.DeleteBooking(GuestTypeId);
+            var booking = await _bookingService.GetBooking(bookingId);
+
+            await _roomService.UnBookRoom(booking.RoomId);
+            await _bookingService.DeleteBooking(bookingId);
 
             return NoContent();
         }
 
         [HttpDelete]
         [Route("id/{bookingId}/hard-delete")]
-        public async Task<ActionResult> HardDeleteGuestType(Guid GuestTypeId)
+        public async Task<ActionResult> HardDeleteBooking(Guid bookingId)
         {
-            await _bookingService.HardDeleteBooking(GuestTypeId);
+            var booking = await _bookingService.GetBooking(bookingId);
+
+            await _roomService.UnBookRoom(booking.RoomId);
+            await _bookingService.HardDeleteBooking(bookingId);
 
             return NoContent();
         }
