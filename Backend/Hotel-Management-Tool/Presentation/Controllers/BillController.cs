@@ -109,6 +109,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{billId}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteBill(Guid billId)
         {
             await _bill.DeleteBill(billId);

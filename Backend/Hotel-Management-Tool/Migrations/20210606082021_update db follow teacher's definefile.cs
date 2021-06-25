@@ -126,7 +126,7 @@ namespace Hotel.Management.Tool.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
                     BillId = table.Column<Guid>(nullable: false),
-                    BillId = table.Column<Guid>(nullable: false),
+                    BookingId = table.Column<Guid>(nullable: false),
                     NumberOfRentalDays = table.Column<int>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
                     Price = table.Column<decimal>(nullable: false)

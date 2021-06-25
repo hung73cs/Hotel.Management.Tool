@@ -16,7 +16,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 billDetails = model.BillDetailModels.Select(x => new BillDetail
                 {
-                    BillId = x.BillId,
+                    BookingId = x.BookingId,
                     NumberOfRentalDays = x.NumberOfRentalDays,
                     UnitPrice = x.UnitPrice,
                     Price = x.Price
@@ -40,7 +40,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 billDetails = model.BillDetailModels.Select(x => new BillDetail
                 {
-                    BillId = x.BillId,
+                    BookingId = x.BookingId,
                     NumberOfRentalDays = x.NumberOfRentalDays,
                     UnitPrice = x.UnitPrice,
                     Price = x.Price
@@ -64,7 +64,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 billDetailModel = bill.BillDetails.Select(x => new BillDetailModel
                 {
-                    BillId = x.BillId,
+                    BookingId = x.BookingId,
                     NumberOfRentalDays = x.NumberOfRentalDays,
                     UnitPrice = x.UnitPrice,
                     Price = x.Price
@@ -92,7 +92,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 {
                     billDetailModel = i.BillDetails.Select(x => new BillDetailModel
                     {
-                        BillId = x.BillId,
+                        BookingId = x.BookingId,
                         NumberOfRentalDays = x.NumberOfRentalDays,
                         UnitPrice = x.UnitPrice,
                         Price = x.Price

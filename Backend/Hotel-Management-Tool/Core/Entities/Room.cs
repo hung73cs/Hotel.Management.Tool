@@ -11,6 +11,6 @@ namespace Hotel.Management.Tool.Core.Entities
         public Guid RoomTypeId { get; set; }
         public string Note { get; set; }
         public virtual RoomType RoomType { get; set; }
-        public virtual ICollection<Bill> Bills { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }
