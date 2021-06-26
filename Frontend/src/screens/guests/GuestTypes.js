@@ -23,24 +23,24 @@ import {
   CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { roomTypeService } from 'src/_services'
+import { guestTypeService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
-const RoomTypes = () => {
-  const [roomTypes, setRoomTypes] = useState([
+const GuestTypes = () => {
+  const [guestTypes, setGuestTypes] = useState([
     {
       name: '',
-      cost: 0,
+      surchargeRate: 0,
     },
   ])
-  const roomTypeInit = {
+  const guestTypeInit = {
     id: null,
     name: '',
-    cost: 0,
+    surchargeRate: 0,
   }
   const [editForm, setEditForm] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-  const [roomTypeToCreateOrUpdate, setRoomTypeToCreateOrUpdate] = useState(roomTypeInit)
+  const [guestTypeToCreateOrUpdate, setGuestTypeToCreateOrUpdate] = useState(guestTypeInit)
   const [message, setMessage] = useState('')
   const [toastMessage, setToastMessage] = useState()
 
@@ -51,23 +51,22 @@ const RoomTypes = () => {
   const handleClickEdit = (value) => {
     setEditForm(true)
     setOpenModal(true)
-    setRoomTypeToCreateOrUpdate(value)
+    setGuestTypeToCreateOrUpdate(value)
   }
 
-  const saveRoomTypeToCreate = () => {
+  const saveGuestTypeToCreate = () => {
     var data = {
-      name: roomTypeToCreateOrUpdate.name,
-      cost: Number(roomTypeToCreateOrUpdate.cost),
+      name: guestTypeToCreateOrUpdate.name,
+      surchargeRate: Number(guestTypeToCreateOrUpdate.surchargeRate),
     }
-    console.log('roomTdataype', typeof data.cost)
 
-    roomTypeService.create(data).then((res) => {
+    guestTypeService.create(data).then((res) => {
       switch (res) {
         case 400:
           setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
           break
         case 409:
-          setMessage('Tên loại phòng đã tồn tại')
+          setMessage('Tên loại khách bị trùng')
           break
         case 500:
           setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
@@ -75,28 +74,26 @@ const RoomTypes = () => {
         default:
           setMessage('')
           handleCloseModal()
-          setRoomTypeToCreateOrUpdate(roomTypeInit)
-          setToastMessage('Tạo loại phòng thành công')
+          setToastMessage('Tạo loại khách thành công')
       }
     })
   }
 
-  const saveRoomTypeToEdit = () => {
+  const saveGuestTypeToEdit = () => {
     var data = {
-      id: roomTypeToCreateOrUpdate.id,
-      name: roomTypeToCreateOrUpdate.name,
-      cost: roomTypeToCreateOrUpdate.cost,
+      name: guestTypeToCreateOrUpdate.name,
+      surchargeRate: Number(guestTypeToCreateOrUpdate.surchargeRate),
     }
-    roomTypeService.edit(data).then((res) => {
+    guestTypeService.edit(guestTypeToCreateOrUpdate.id, data).then((res) => {
       switch (res) {
         case 400:
           setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
           break
         case 404:
-          setMessage('Loại phòng cần sửa không tồn tại')
+          setMessage('Loại khách cần sửa không tồn tại')
           break
         case 409:
-          setMessage('Tên loại phòng bị trùng với các loại phòng khác')
+          setMessage('Tên loại khách bị trùng với các loại khách khác')
           break
         case 500:
           setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
@@ -104,7 +101,7 @@ const RoomTypes = () => {
         default:
           setMessage('')
           handleCloseModal()
-          setToastMessage('Sửa loại phòng thành công')
+          setToastMessage('Sửa loại khách thành công')
       }
     })
   }
@@ -112,24 +109,25 @@ const RoomTypes = () => {
   const handleCloseModal = () => {
     setOpenModal(false)
     setMessage('')
-    setRoomTypeToCreateOrUpdate(roomTypeInit)
+    setGuestTypeToCreateOrUpdate(guestTypeInit)
     setEditForm(false)
   }
 
   const handleClickDelete = (id) => {
-    roomTypeService._delete(id)
-    let roomTypesCopy = roomTypes.filter((item) => item.id !== id)
-    setRoomTypes(roomTypesCopy)
-    setToastMessage('Xoá loại phòng thành công')
+    guestTypeService._delete(id)
+    let guestTypesCopy = guestTypes.filter((item) => item.id !== id)
+    setGuestTypes(guestTypesCopy)
+    setToastMessage('Xoá loại khách thành công')
   }
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    setRoomTypeToCreateOrUpdate({ ...roomTypeToCreateOrUpdate, [name]: value })
+    setGuestTypeToCreateOrUpdate({ ...guestTypeToCreateOrUpdate, [name]: value })
+    console.log('guestTypeToCreateOrUpdate', guestTypeToCreateOrUpdate)
   }
 
   useEffect(() => {
-    roomTypeService.getAll().then((x) => setRoomTypes(x))
+    guestTypeService.getAll().then((x) => setGuestTypes(x))
   }, [openModal])
 
   const modalCreateEdit = () => {
@@ -137,9 +135,9 @@ const RoomTypes = () => {
       <CModal visible={openModal}>
         <CModalHeader onDismiss={() => setOpenModal(false)}>
           {editForm ? (
-            <CModalTitle>Thông tin loại phòng muốn sửa</CModalTitle>
+            <CModalTitle>Thông tin loại khách muốn sửa</CModalTitle>
           ) : (
-            <CModalTitle>Thông tin loại phòng muốn thêm</CModalTitle>
+            <CModalTitle>Thông tin loại khách muốn thêm</CModalTitle>
           )}
         </CModalHeader>
         {message && <Message variant="danger">{message}</Message>}
@@ -154,22 +152,22 @@ const RoomTypes = () => {
                   name="name"
                   type="text"
                   id="name"
-                  value={roomTypeToCreateOrUpdate.name}
+                  value={guestTypeToCreateOrUpdate.name}
                   onInput={handleInputChange}
                 />
               </CCol>
             </CInputGroup>
             <CInputGroup className="mb-3">
               <CCol>
-                <CFormLabel>Giá: </CFormLabel>
+                <CFormLabel>Tỉ lệ phụ thu: </CFormLabel>
               </CCol>
               <CCol>
                 <CFormControl
                   type="number"
                   id="note"
-                  name="cost"
+                  name="surchargeRate"
                   onInput={handleInputChange}
-                  value={roomTypeToCreateOrUpdate.cost}
+                  value={guestTypeToCreateOrUpdate.surchargeRate}
                 />
               </CCol>
             </CInputGroup>
@@ -177,11 +175,11 @@ const RoomTypes = () => {
         </CModalBody>
         <CModalFooter>
           {editForm ? (
-            <CButton color="secondary" onClick={saveRoomTypeToEdit}>
+            <CButton color="secondary" onClick={saveGuestTypeToEdit}>
               Lưu
             </CButton>
           ) : (
-            <CButton color="secondary" onClick={saveRoomTypeToCreate}>
+            <CButton color="secondary" onClick={saveGuestTypeToCreate}>
               Lưu
             </CButton>
           )}
@@ -226,33 +224,33 @@ const RoomTypes = () => {
               <CTableHead>
                 <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">TÊN LOẠI PHÒNG</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">TÊN LOẠI KHÁCH</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">TỈ LỆ PHỤ THU (%)</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {roomTypes.map((roomType, index) => (
-                  <CTableRow key={roomType.id}>
+                {guestTypes.map((item, index) => (
+                  <CTableRow key={item.id}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>
-                      <strong>{roomType.name}</strong>
+                      <strong>{item.name}</strong>
                     </CTableDataCell>
                     <CTableDataCell>
-                      <strong>{roomType.cost}</strong>
+                      <strong>{item.surchargeRate}</strong>
                     </CTableDataCell>
                     <CTableDataCell>
                       <CIcon
                         style={{ margin: '0px 5px', cursor: 'pointer' }}
                         size={'lg'}
                         name="cil-pencil"
-                        onClick={() => handleClickEdit(roomType)}
+                        onClick={() => handleClickEdit(item)}
                       ></CIcon>{' '}
                       <CIcon
                         style={{ margin: '0px 5px', cursor: 'pointer' }}
                         size={'lg'}
                         name="cil-trash"
-                        onClick={() => (roomType.id = handleClickDelete(roomType.id))}
+                        onClick={() => (item.id = handleClickDelete(item.id))}
                       />
                     </CTableDataCell>
                   </CTableRow>
@@ -266,4 +264,4 @@ const RoomTypes = () => {
   )
 }
 
-export default RoomTypes
+export default GuestTypes

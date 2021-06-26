@@ -48,7 +48,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
             if (mapper == null)
             {
-                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
 
             var result = await _room.CreateRoomAsync(mapper);

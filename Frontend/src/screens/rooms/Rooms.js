@@ -59,11 +59,9 @@ const Rooms = () => {
     if (!editForm) {
       event.preventDefault()
       createRoomService()
-      handleReset()
     } else {
       event.preventDefault()
       editRoomService()
-      handleReset()
     }
   }
 
@@ -75,12 +73,20 @@ const Rooms = () => {
     }
     console.log('createRoomService', data)
     roomService.create(data).then((res) => {
-      if (res === 500 || res === 409) {
-        return setMessage('Gặp lỗi khi sửa, kiểm tra tên có bị trùng')
-      } else {
-        setMessage('')
-        setOpenModal(false)
-        setToastMessage('Thêm phòng thành công')
+      switch (res) {
+        case 400:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        case 409:
+          setMessage('Tên phòng đã tồn tại')
+          break
+        case 500:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        default:
+          setMessage('')
+          handleCloseModal()
+          setToastMessage('Tạo phòng thành công')
       }
     })
   }
@@ -94,12 +100,23 @@ const Rooms = () => {
     }
     console.log('createRoomService', data)
     roomService.edit(data).then((res) => {
-      if (res === 500 || res === 409) {
-        return setMessage('Gặp lỗi khi sửa, kiểm tra tên có bị trùng')
-      } else {
-        setMessage('')
-        setOpenModal(false)
-        setToastMessage('Sửa phòng thành công')
+      switch (res) {
+        case 400:
+          setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
+          break
+        case 404:
+          setMessage('Phòng cần sửa không tồn tại')
+          break
+        case 409:
+          setMessage('Tên phòng bị trùng với các phòng khác')
+          break
+        case 500:
+          setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
+          break
+        default:
+          setMessage('')
+          handleCloseModal()
+          setToastMessage('Sửa phòng thành công')
       }
     })
   }

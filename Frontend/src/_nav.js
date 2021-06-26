@@ -35,6 +35,24 @@ const _nav = [
   },
   {
     _component: 'CNavTitle',
+    anchor: 'Thuê phòng',
+  },
+  {
+    _component: 'CNavItem',
+    as: NavLink,
+    anchor: 'Tạo phiếu thuê',
+    to: '/booking/create',
+    icon: <CIcon name="cil-pencil" customClasses="nav-icon" />,
+  },
+  {
+    _component: 'CNavItem',
+    as: NavLink,
+    anchor: 'Danh sách phiếu',
+    to: '/booking/bookings',
+    icon: <CIcon name="cil-pencil" customClasses="nav-icon" />,
+  },
+  {
+    _component: 'CNavTitle',
     anchor: 'Nội bộ',
   },
   {
@@ -89,8 +107,14 @@ const _nav = [
       {
         _component: 'CNavItem',
         as: NavLink,
-        anchor: 'Quy định đạt phòng',
+        anchor: 'Quy định đặt phòng',
         to: '/parameter',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Loại khách',
+        to: '/guest-type',
       },
     ],
   },

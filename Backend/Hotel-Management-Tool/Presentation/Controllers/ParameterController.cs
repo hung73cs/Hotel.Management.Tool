@@ -39,6 +39,17 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             return Ok(_parameterMapper.MapParameterToParameterModel(parameter));
         }
 
+        [HttpGet]
+        public async Task<ActionResult<ParameterModel>> GetParameters()
+        {
+            var parameters = await _parameterService.GetParametersAsync();
+            if (parameters == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            return Ok(_parameterMapper.MapParameterToParameterModel(parameters));
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateParameter([FromBody] ParameterModel parameterModel)
         {

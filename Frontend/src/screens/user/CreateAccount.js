@@ -152,11 +152,20 @@ const CreateAccount = () => {
       },
     }
     userService.register(data).then((res) => {
-      if (res === 500 || res === 409) {
-        return setMessage('Gặp lỗi khi tạo, kiểm tra tên tài khoản có bị trùng')
+      switch (res) {
+        case 400:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        case 409:
+          setMessage('Tên tài khoản đã tồn tại')
+          break
+        case 500:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        default:
+          setMessage('')
+          setToastMessage('Tạo tài khoản thành công')
       }
-      setMessage('')
-      setToastMessage('Tạo phòng thành công')
     })
   }
 

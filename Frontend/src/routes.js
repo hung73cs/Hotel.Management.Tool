@@ -61,6 +61,9 @@ const CreateAccount = React.lazy(() => import('./screens/user/CreateAccount'))
 const RoomTypes = React.lazy(() => import('./screens/rooms/RoomTypes'))
 const Rooms = React.lazy(() => import('./screens/rooms/Rooms'))
 const Parameters = React.lazy(() => import('./screens/parameters/Parameters'))
+const GuestTypes = React.lazy(() => import('./screens/guests/GuestTypes'))
+const CreateBooking = React.lazy(() => import('./screens/bookings/CreateBooking'))
+const Bookings = React.lazy(() => import('./screens/bookings/Bookings'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -118,5 +121,9 @@ const routes = [
   { path: '/room-type', name: 'RoomType', component: RoomTypes },
   { path: '/room', name: 'Room', component: Rooms },
   { path: '/parameter', name: 'Parameter', component: Parameters },
+  { path: '/guest-type', name: 'GuestType', component: GuestTypes },
+  { path: '/booking', name: 'Booking' },
+  { path: '/booking/create', name: 'CreateBooking', component: CreateBooking },
+  { path: '/booking/bookings', name: 'Bookings', component: Bookings },
 ]
 export default routes

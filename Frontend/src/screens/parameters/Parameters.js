@@ -3,6 +3,7 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
+  CCol,
   CRow,
   CTable,
   CTableBody,
@@ -10,120 +11,169 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CButton,
   CModal,
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CForm,
   CInputGroup,
   CFormLabel,
   CFormControl,
-  CModalFooter,
-  CButton,
-  CCol,
+  CForm,
+  CFormFeedback,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { roomTypeService } from 'src/_services'
+import { parameterService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
+
 const Parameters = () => {
-  const [roomTypes, setRoomTypes] = useState([
-    {
-      name: '',
-      cost: 0,
-    },
-  ])
-  const roomTypeInit = {
-    id: null,
-    name: '',
-    cost: 0,
-  }
-  const [editForm, setEditForm] = useState(false)
+  const [validated, setValidated] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-  const [roomTypeToCreateOrUpdate, setRoomTypeToCreateOrUpdate] = useState(roomTypeInit)
   const [message, setMessage] = useState('')
-  const [toastMessage, setToastMessage] = useState()
-
-  const handleClickCreate = () => {
-    setOpenModal(true)
-  }
-
-  const handleClickEdit = (value) => {
-    setEditForm(true)
-    setOpenModal(true)
-    setRoomTypeToCreateOrUpdate(value)
-  }
-
-  const saveRoomTypeToCreate = () => {
-    var data = {
-      name: roomTypeToCreateOrUpdate.name,
-      cost: Number(roomTypeToCreateOrUpdate.cost),
-    }
-    console.log('roomTdataype', typeof data.cost)
-
-    roomTypeService.create(data).then((res) => {
-      if (res === 500 || res === 409) {
-        return setMessage('Gặp lỗi khi tạo, kiểm tra tên có bị trùng')
-      } else {
-        setMessage('')
-        setOpenModal(false)
-        setRoomTypeToCreateOrUpdate(roomTypeInit)
-        setToastMessage('Tạo loại phòng thành công')
-      }
-    })
-  }
-
-  const saveRoomTypeToEdit = () => {
-    var data = {
-      id: roomTypeToCreateOrUpdate.id,
-      name: roomTypeToCreateOrUpdate.name,
-      cost: roomTypeToCreateOrUpdate.cost,
-    }
-    roomTypeService.edit(data).then((res) => {
-      if (res === 500 || res === 409) {
-        return setMessage('Gặp lỗi khi sửa, kiểm tra tên có bị trùng')
-      } else {
-        setMessage('')
-        setOpenModal(false)
-        setRoomTypeToCreateOrUpdate(roomTypeInit)
-        setToastMessage('Sửa loại phòng thành công')
-      }
-    })
-  }
-
-  const handleCloseModal = () => {
-    setOpenModal(false)
-    setMessage('')
-    setRoomTypeToCreateOrUpdate(roomTypeInit)
-    setEditForm(false)
-  }
-
-  const handleClickDelete = (data) => {
-    roomTypeService._delete(data)
-  }
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setRoomTypeToCreateOrUpdate({ ...roomTypeToCreateOrUpdate, [name]: value })
-  }
+  const [toastMessage, setToastMessage] = useState('')
+  const [editForm, setEditForm] = useState(false)
+  const [parameterName, setParameterName] = useState('')
+  const [parameterValue, setParameterValue] = useState(0)
+  const [parameterId, setParameterId] = useState('')
+  const [parameters, setParameters] = useState('')
 
   useEffect(() => {
-    roomTypeService.getAll().then((x) => setRoomTypes(x))
+    parameterService.getAll().then((x) => setParameters(x))
+  }, [])
+
+  useEffect(() => {
+    parameterService.getAll().then((x) => setParameters(x))
   }, [openModal])
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+      setValidated(true)
+      return
+    }
+    if (!editForm) {
+      event.preventDefault()
+      createParameterService()
+      handleReset()
+    } else {
+      event.preventDefault()
+      editParameterService()
+      handleReset()
+    }
+  }
+
+  const createParameterService = () => {
+    var data = {
+      name: parameterName,
+      value: Number(parameterValue),
+    }
+    parameterService.create(data).then((res) => {
+      switch (res) {
+        case 400:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        case 409:
+          setMessage('Tên quy định đã tồn tại')
+          break
+        case 500:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        default:
+          setMessage('')
+          handleCloseModal()
+          setToastMessage('Tạo quy định thành công')
+      }
+    })
+  }
+
+  const editParameterService = () => {
+    var data = {
+      id: parameterId,
+      name: parameterName,
+      value: Number(parameterValue),
+    }
+    parameterService.edit(data).then((res) => {
+      switch (res) {
+        case 400:
+          setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
+          break
+        case 404:
+          setMessage('Quy định cần sửa không tồn tại')
+          break
+        case 409:
+          setMessage('Tên quy định bị trùng với các quy định khác')
+          break
+        case 500:
+          setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
+          break
+        default:
+          setMessage('')
+          handleCloseModal()
+          setToastMessage('Sửa quy định thành công')
+      }
+    })
+  }
+
+  const handleOpenModalToCreate = () => {
+    setOpenModal(true)
+  }
+  const handleOpenModalToUpdate = (data) => {
+    setParameterId(data.id)
+    setParameterName(data.name)
+    setParameterValue(data.value)
+    setEditForm(true)
+    setOpenModal(true)
+  }
+  const handleCloseModal = () => {
+    setOpenModal(false)
+    handleReset()
+  }
+
+  const handleReset = () => {
+    setMessage('')
+    setToastMessage('')
+    setEditForm(false)
+    setParameterId('')
+    setParameterName('')
+    setParameterValue('')
+  }
+
+  const [searchInput, setSearchInput] = useState('')
+
+  const handleChangeSearchInput = (e) => {
+    const { name, value } = e.target
+    setSearchInput({ ...searchInput, [name]: value })
+    //searchRoom()
+  }
+
+  const handleClickDelete = (id) => {
+    parameterService._delete(id)
+    let parameterCopy = parameters.filter((item) => item.id !== id)
+    setParameters(parameterCopy)
+    setToastMessage('Xoá quy định thành công')
+  }
 
   const modalCreateEdit = () => {
     return (
       <CModal visible={openModal}>
-        <CModalHeader onDismiss={() => setOpenModal(false)}>
+        <CModalHeader onDismiss={() => handleCloseModal()}>
           {editForm ? (
-            <CModalTitle>Thông tin loại phòng muốn sửa</CModalTitle>
+            <CModalTitle>Thông tin quy định muốn sửa</CModalTitle>
           ) : (
-            <CModalTitle>Thông tin loại phòng muốn thêm</CModalTitle>
+            <CModalTitle>Thông tin quy định muốn thêm</CModalTitle>
           )}
         </CModalHeader>
         {message && <Message variant="danger">{message}</Message>}
         <CModalBody>
-          <CForm>
+          <CForm
+            className="row g-3 needs-validation"
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+          >
             <CInputGroup className="mb-3">
               <CCol>
                 <CFormLabel>Tên: </CFormLabel>
@@ -133,42 +183,36 @@ const Parameters = () => {
                   name="name"
                   type="text"
                   id="name"
-                  value={roomTypeToCreateOrUpdate.name}
-                  onInput={handleInputChange}
+                  value={parameterName}
+                  onInput={(e) => setParameterName(e.target.value)}
                 />
+                <CFormFeedback invalid>Bắt buộc</CFormFeedback>
               </CCol>
             </CInputGroup>
             <CInputGroup className="mb-3">
               <CCol>
-                <CFormLabel>Giá: </CFormLabel>
+                <CFormLabel>Giá trị: </CFormLabel>
               </CCol>
               <CCol>
                 <CFormControl
-                  type="number"
-                  id="note"
-                  name="cost"
-                  onInput={handleInputChange}
-                  value={roomTypeToCreateOrUpdate.cost}
+                  type="text"
+                  id="value"
+                  name="value"
+                  onInput={(e) => setParameterValue(e.target.value)}
+                  value={parameterValue}
                 />
               </CCol>
             </CInputGroup>
+            <span>
+              <CButton color="secondary" type="submit">
+                Lưu
+              </CButton>
+              <CButton color="secondary" onClick={() => handleCloseModal()}>
+                Đóng
+              </CButton>
+            </span>
           </CForm>
         </CModalBody>
-        <CModalFooter>
-          {editForm ? (
-            <CButton color="secondary" onClick={saveRoomTypeToEdit}>
-              Lưu
-            </CButton>
-          ) : (
-            <CButton color="secondary" onClick={saveRoomTypeToCreate}>
-              Lưu
-            </CButton>
-          )}
-
-          <CButton color="secondary" onClick={() => handleCloseModal()}>
-            Đóng
-          </CButton>
-        </CModalFooter>
       </CModal>
     )
   }
@@ -180,20 +224,25 @@ const Parameters = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Danh sách loại phòng:</strong>
+            <strong>Danh sách quy định chung của khách sạn:</strong>
           </CCardHeader>
-          <CCardBody>
+          <CCardBody style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <p className="text-medium-emphasis small" style={{ width: '70%' }}>
-                Đây là danh sách các loại phòng của khách sạn
+                Đây là danh sách các quy định chung của khách sạn
               </p>
               <CInputGroup style={{ width: '20%', marginRight: 20 }}>
                 <CCol>
-                  <CFormControl type="text" name="searchInput" />
+                  <CFormControl
+                    type="text"
+                    name="searchInput"
+                    onInput={handleChangeSearchInput}
+                    value={searchInput || ''}
+                  />
                 </CCol>
               </CInputGroup>
               <CButton
-                onClick={() => handleClickCreate()}
+                onClick={() => handleOpenModalToCreate()}
                 style={{ width: '10%', fontSize: '0.8rem' }}
               >
                 {/* <CIcon style={{ margin: '0px 5px' }} size={'lg'} name="cil-plus"></CIcon> */}
@@ -203,38 +252,43 @@ const Parameters = () => {
             </div>
             <CTable striped>
               <CTableHead>
-                <CTableRow>
+                <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">TÊN LOẠI PHÒNG</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">TÊN QUY ĐỊNH</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">GIÁ TRỊ</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {roomTypes.map((roomType, index) => (
-                  <CTableRow key={roomType.id}>
-                    <CTableDataCell>{index + 1}</CTableDataCell>
-                    <CTableDataCell>
-                      <strong>{roomType.name}</strong>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <strong>{roomType.cost}</strong>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CIcon
-                        style={{ margin: '0px 5px', cursor: 'pointer' }}
-                        size={'lg'}
-                        name="cil-pencil"
-                        onClick={() => handleClickEdit(roomType)}
-                      ></CIcon>{' '}
-                      <CIcon
-                        style={{ margin: '0px 5px', cursor: 'pointer' }}
-                        size={'lg'}
-                        name="cil-trash"
-                        onClick={() => (roomType.id = handleClickDelete(roomType.id))}
-                      />
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
+                {parameters.length > 0 ? (
+                  parameters.map((item, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{item.name}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong> {item.value} </strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <CIcon
+                          style={{ margin: '0px 5px', cursor: 'pointer' }}
+                          size={'lg'}
+                          name="cil-pencil"
+                          onClick={() => handleOpenModalToUpdate(item)}
+                        ></CIcon>
+                        <CIcon
+                          style={{ margin: '0px 5px', cursor: 'pointer' }}
+                          size={'lg'}
+                          name="cil-trash"
+                          onClick={() => (item.id = handleClickDelete(item.id))}
+                        />
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))
+                ) : (
+                  <CTableDataCell>Trống</CTableDataCell>
+                )}
               </CTableBody>
             </CTable>
           </CCardBody>
