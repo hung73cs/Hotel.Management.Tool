@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hotel.Management.Tool.Migrations
 {
-    public partial class init : Migration
+    public partial class thu2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,11 +16,27 @@ namespace Hotel.Management.Tool.Migrations
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
                     Username = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
-                    Role = table.Column<int>(nullable: false, defaultValue: 1)
+                    Role = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bills",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    GuestName = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    TotalPrice = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bills", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -29,7 +46,7 @@ namespace Hotel.Management.Tool.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
                     Name = table.Column<string>(nullable: false),
-                    SurchargeRate = table.Column<float>(nullable: false)
+                    SurchargeRate = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,6 +68,21 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    Month = table.Column<int>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
+                    TotalRevenue = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoomTypes",
                 columns: table => new
                 {
@@ -62,6 +94,20 @@ namespace Hotel.Management.Tool.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RoomTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SurchargeRates",
+                columns: table => new
+                {
+                    GuestLevel = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Rate = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurchargeRates", x => x.GuestLevel);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,26 +136,29 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Guests",
+                name: "ReportDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    Name = table.Column<string>(nullable: false),
-                    Gender = table.Column<int>(nullable: false),
-                    Birthday = table.Column<DateTime>(nullable: false),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    IdCard = table.Column<string>(nullable: false),
-                    GuestTypeId = table.Column<Guid>(nullable: false)
+                    ReportId = table.Column<Guid>(nullable: false),
+                    RomTypeId = table.Column<Guid>(nullable: false),
+                    Revenue = table.Column<decimal>(nullable: false),
+                    Ratio = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Guests", x => x.Id);
+                    table.PrimaryKey("PK_ReportDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Guests_GuestTypes_GuestTypeId",
-                        column: x => x.GuestTypeId,
-                        principalTable: "GuestTypes",
+                        name: "FK_ReportDetails_Reports_ReportId",
+                        column: x => x.ReportId,
+                        principalTable: "Reports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReportDetails_RoomTypes_RomTypeId",
+                        column: x => x.RomTypeId,
+                        principalTable: "RoomTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -121,7 +170,7 @@ namespace Hotel.Management.Tool.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
                     Name = table.Column<string>(nullable: false),
-                    RoomStatus = table.Column<int>(nullable: false, defaultValue: 1),
+                    RoomStatus = table.Column<int>(nullable: false),
                     RoomTypeId = table.Column<Guid>(nullable: false),
                     Note = table.Column<string>(nullable: true)
                 },
@@ -137,30 +186,29 @@ namespace Hotel.Management.Tool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bills",
+                name: "Bookings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
                     StartedDate = table.Column<DateTime>(nullable: false),
-                    EndedDate = table.Column<DateTime>(nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
-                    IsPaid = table.Column<bool>(nullable: false, defaultValue: false),
-                    GuestId = table.Column<Guid>(nullable: false),
                     RoomId = table.Column<Guid>(nullable: false),
-                    AccountId = table.Column<Guid>(nullable: false)
+                    AccountId = table.Column<Guid>(nullable: false),
+                    NumberOfGuest = table.Column<int>(nullable: false),
+                    UnitPrice = table.Column<decimal>(nullable: false),
+                    UnitStandardPrice = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bills", x => x.Id);
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bills_Accounts_AccountId",
+                        name: "FK_Bookings_Accounts_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bills_Rooms_RoomId",
+                        name: "FK_Bookings_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
                         principalColumn: "Id",
@@ -173,10 +221,11 @@ namespace Hotel.Management.Tool.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    Cost = table.Column<decimal>(nullable: false),
-                    Surcharge = table.Column<decimal>(nullable: false),
-                    Promotion = table.Column<decimal>(nullable: true),
-                    BillId = table.Column<Guid>(nullable: false)
+                    BookingId = table.Column<Guid>(nullable: false),
+                    BillId = table.Column<Guid>(nullable: false),
+                    NumberOfRentalDays = table.Column<int>(nullable: false),
+                    UnitPrice = table.Column<decimal>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -187,30 +236,39 @@ namespace Hotel.Management.Tool.Migrations
                         principalTable: "Bills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BillDetails_Bookings_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Bookings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "GuestBills",
+                name: "BookingDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    GuestId = table.Column<Guid>(nullable: false),
-                    BillId = table.Column<Guid>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    GuestName = table.Column<string>(nullable: false),
+                    GuestTypeId = table.Column<Guid>(nullable: false),
+                    IdCard = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: false),
+                    BookingId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GuestBills", x => x.Id);
+                    table.PrimaryKey("PK_BookingDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GuestBills_Bills_BillId",
-                        column: x => x.BillId,
-                        principalTable: "Bills",
+                        name: "FK_BookingDetails_Bookings_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GuestBills_Guests_GuestId",
-                        column: x => x.GuestId,
-                        principalTable: "Guests",
+                        name: "FK_BookingDetails_GuestTypes_GuestTypeId",
+                        column: x => x.GuestTypeId,
+                        principalTable: "GuestTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -218,33 +276,44 @@ namespace Hotel.Management.Tool.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_BillDetails_BillId",
                 table: "BillDetails",
-                column: "BillId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bills_AccountId",
-                table: "Bills",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bills_RoomId",
-                table: "Bills",
-                column: "RoomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GuestBills_BillId",
-                table: "GuestBills",
                 column: "BillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestBills_GuestId",
-                table: "GuestBills",
-                column: "GuestId");
+                name: "IX_BillDetails_BookingId",
+                table: "BillDetails",
+                column: "BookingId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Guests_GuestTypeId",
-                table: "Guests",
+                name: "IX_BookingDetails_BookingId",
+                table: "BookingDetails",
+                column: "BookingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookingDetails_GuestTypeId",
+                table: "BookingDetails",
                 column: "GuestTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_AccountId",
+                table: "Bookings",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_RoomId",
+                table: "Bookings",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReportDetails_ReportId",
+                table: "ReportDetails",
+                column: "ReportId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReportDetails_RomTypeId",
+                table: "ReportDetails",
+                column: "RomTypeId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rooms_RoomTypeId",
@@ -264,10 +333,16 @@ namespace Hotel.Management.Tool.Migrations
                 name: "BillDetails");
 
             migrationBuilder.DropTable(
-                name: "GuestBills");
+                name: "BookingDetails");
 
             migrationBuilder.DropTable(
                 name: "Parameters");
+
+            migrationBuilder.DropTable(
+                name: "ReportDetails");
+
+            migrationBuilder.DropTable(
+                name: "SurchargeRates");
 
             migrationBuilder.DropTable(
                 name: "UsersInfo");
@@ -276,16 +351,19 @@ namespace Hotel.Management.Tool.Migrations
                 name: "Bills");
 
             migrationBuilder.DropTable(
-                name: "Guests");
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "GuestTypes");
+
+            migrationBuilder.DropTable(
+                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Rooms");
-
-            migrationBuilder.DropTable(
-                name: "GuestTypes");
 
             migrationBuilder.DropTable(
                 name: "RoomTypes");
