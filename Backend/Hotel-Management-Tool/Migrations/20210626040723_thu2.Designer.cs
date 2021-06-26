@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Management.Tool.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210606071152_remove Guest table")]
-    partial class removeGuesttable
+    [Migration("20210626040723_thu2")]
+    partial class thu2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,70 @@ namespace Hotel.Management.Tool.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Bill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("GuestName")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.BillDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BillId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("NumberOfRentalDays")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillId");
+
+                    b.HasIndex("BookingId")
+                        .IsUnique();
+
+                    b.ToTable("BillDetails");
+                });
+
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Booking", b =>
                 {
                     b.Property<Guid>("Id")
@@ -57,31 +121,25 @@ namespace Hotel.Management.Tool.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("GuestId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("EndedDate")
-                        .IsRequired()
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<bool>("IsPaid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
+                    b.Property<int>("NumberOfGuest")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("StartedDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("UnitStandardPrice")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -98,27 +156,34 @@ namespace Hotel.Management.Tool.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("BookingId")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric");
+                    b.Property<string>("GuestName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("GuestTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("IdCard")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<decimal?>("Promotion")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Surcharge")
-                        .HasColumnType("numeric");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId")
-                        .IsUnique();
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("GuestTypeId");
 
                     b.ToTable("BookingDetails");
                 });
@@ -180,8 +245,14 @@ namespace Hotel.Management.Tool.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTime>("ReportDateTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<int>("Month")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalRevenue")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -275,6 +346,26 @@ namespace Hotel.Management.Tool.Migrations
                     b.ToTable("RoomTypes");
                 });
 
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.SurchargeRate", b =>
+                {
+                    b.Property<int>("GuestLevel")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("integer");
+
+                    b.HasKey("GuestLevel");
+
+                    b.ToTable("SurchargeRates");
+                });
+
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.UserInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -319,6 +410,21 @@ namespace Hotel.Management.Tool.Migrations
                     b.ToTable("UsersInfo");
                 });
 
+            modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.BillDetail", b =>
+                {
+                    b.HasOne("Hotel.Management.Tool.Core.Entities.Bill", "Bill")
+                        .WithMany("BillDetails")
+                        .HasForeignKey("BillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel.Management.Tool.Core.Entities.Booking", "Booking")
+                        .WithOne("BillDetail")
+                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BillDetail", "BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.Booking", b =>
                 {
                     b.HasOne("Hotel.Management.Tool.Core.Entities.Account", "Account")
@@ -337,8 +443,14 @@ namespace Hotel.Management.Tool.Migrations
             modelBuilder.Entity("Hotel.Management.Tool.Core.Entities.BookingDetail", b =>
                 {
                     b.HasOne("Hotel.Management.Tool.Core.Entities.Booking", "Booking")
-                        .WithOne("BookingDetail")
-                        .HasForeignKey("Hotel.Management.Tool.Core.Entities.BookingDetail", "BookingId")
+                        .WithMany("BookingDetails")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel.Management.Tool.Core.Entities.GuestType", "GuestType")
+                        .WithMany("BookingDetails")
+                        .HasForeignKey("GuestTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

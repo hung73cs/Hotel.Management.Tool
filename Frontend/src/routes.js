@@ -60,6 +60,7 @@ const GetAccounts = React.lazy(() => import('./screens/user/GetAccounts'))
 const CreateAccount = React.lazy(() => import('./screens/user/CreateAccount'))
 const RoomTypes = React.lazy(() => import('./screens/rooms/RoomTypes'))
 const Rooms = React.lazy(() => import('./screens/rooms/Rooms'))
+const Parameters = React.lazy(() => import('./screens/parameters/Parameters'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -116,5 +117,6 @@ const routes = [
   { path: '/user/createaccount', name: 'CreateAccount', component: CreateAccount },
   { path: '/room-type', name: 'RoomType', component: RoomTypes },
   { path: '/room', name: 'Room', component: Rooms },
+  { path: '/parameter', name: 'Parameter', component: Parameters },
 ]
 export default routes

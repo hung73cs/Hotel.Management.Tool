@@ -203,10 +203,11 @@ const RoomTypes = () => {
             </div>
             <CTable striped>
               <CTableHead>
-                <CTableRow>
+                <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÊN LOẠI PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>

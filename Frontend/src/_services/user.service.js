@@ -17,6 +17,9 @@ async function login(username, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
   }
+  console.log(username)
+  console.log(password)
+
   return await fetch(`${apiUrl}/login`, requestOptions)
     .then(handleResponse)
     .then((user) => {

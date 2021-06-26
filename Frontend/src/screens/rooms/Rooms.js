@@ -16,112 +16,118 @@ import {
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter,
   CInputGroup,
   CFormLabel,
   CFormControl,
   CFormSelect,
-  CPagination,
-  CPaginationItem,
   CForm,
+  CFormFeedback,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { roomService, roomTypeService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 const Rooms = () => {
-  const roomToCreateInit = {
-    id: null,
-    name: '',
-    roomTypeId: '',
-    note: '',
-  }
+  const [validated, setValidated] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-  const [rooms, setRooms] = useState([])
-  const [roomTypes, setRoomtypes] = useState([
-    {
-      id: '',
-      name: '',
-      cost: 0,
-    },
-  ])
-  const [roomToCreate, setRoomToCreate] = useState(roomToCreateInit)
-  const [editForm, setEditForm] = useState(false)
   const [message, setMessage] = useState('')
-  const [toastMessage, setToastMessage] = useState()
+  const [toastMessage, setToastMessage] = useState('')
+  const [editForm, setEditForm] = useState(false)
+  const [rooms, setRooms] = useState([])
+  const [roomTypes, setRoomtypes] = useState([])
+  const [roomName, setRoomName] = useState('')
+  const [roomNote, setRoomNote] = useState('')
+  const [roomTypeId, setRoomTypeId] = useState('')
+  const [roomId, setRoomId] = useState('')
+
+  useEffect(() => {
+    roomTypeService.getAll().then((x) => setRoomtypes(x))
+  }, [])
 
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
   }, [openModal])
 
-  const handleClickCreate = () => {
-    setOpenModal(true)
-  }
-  const handleClickEdit = (room) => {
-    setEditForm(true)
-    setOpenModal(true)
-    setRoomToCreate(room)
-  }
-
-  const handleClickDelete = (data) => {
-    roomService._delete(data)
-    let roomsCopy = rooms.filter((item) => item.id !== data)
-    setRooms(roomsCopy)
-    setToastMessage('Xoá phòng thành công')
-  }
-
-  const handleCloseModal = () => {
-    setOpenModal(false)
-    setMessage('')
-    setRoomToCreate(roomToCreateInit)
-    setEditForm(false)
-  }
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setRoomToCreate({ ...roomToCreate, [name]: value })
-  }
-
-  const loadedValueSelectRoomType = (data) => {
-    if (editForm) return roomTypes.find((x) => x.id === data)?.name
-    else return roomTypes[0]?.name
-  }
-
-  const saveRoomToCreate = () => {
-    var data = {
-      name: roomToCreate.name,
-      roomTypeId: roomTypes.find((x) => x.name === roomToCreate.roomType)?.id,
-      note: roomToCreate.note,
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+      setValidated(true)
+      return
     }
+    if (!editForm) {
+      event.preventDefault()
+      createRoomService()
+      handleReset()
+    } else {
+      event.preventDefault()
+      editRoomService()
+      handleReset()
+    }
+  }
+
+  const createRoomService = () => {
+    var data = {
+      name: roomName,
+      roomTypeId: roomTypeId,
+      note: roomNote,
+    }
+    console.log('createRoomService', data)
     roomService.create(data).then((res) => {
       if (res === 500 || res === 409) {
-        return setMessage('Gặp lỗi khi tạo, kiểm tra tên có bị trùng')
+        return setMessage('Gặp lỗi khi sửa, kiểm tra tên có bị trùng')
       } else {
         setMessage('')
         setOpenModal(false)
-        setRoomToCreate(roomToCreateInit)
-        setToastMessage('Tạo phòng thành công')
+        setToastMessage('Thêm phòng thành công')
       }
     })
   }
 
-  const saveRoomToEdit = () => {
+  const editRoomService = () => {
     var data = {
-      id: roomToCreate.id,
-      name: roomToCreate.name,
-      roomTypeId: roomToCreate.roomTypeId,
-      note: roomToCreate.note,
+      id: roomId,
+      name: roomName,
+      roomTypeId: roomTypeId,
+      note: roomNote,
     }
+    console.log('createRoomService', data)
     roomService.edit(data).then((res) => {
       if (res === 500 || res === 409) {
         return setMessage('Gặp lỗi khi sửa, kiểm tra tên có bị trùng')
       } else {
         setMessage('')
         setOpenModal(false)
-        setRoomToCreate(roomToCreateInit)
         setToastMessage('Sửa phòng thành công')
       }
     })
+  }
+
+  const handleOpenModalToCreate = () => {
+    setOpenModal(true)
+  }
+  const handleOpenModalToUpdate = (data) => {
+    setRoomId(data.id)
+    setRoomName(data.name)
+    setRoomTypeId(data.roomTypeId)
+    setRoomNote(data.note)
+    setEditForm(true)
+    setOpenModal(true)
+  }
+  const handleCloseModal = () => {
+    setOpenModal(false)
+    handleReset()
+  }
+
+  const handleReset = () => {
+    setMessage('')
+    setToastMessage('')
+    setEditForm(false)
+    setRoomId('')
+    setRoomName('')
+    setRoomNote('')
+    setRoomTypeId('')
   }
 
   const [searchInput, setSearchInput] = useState('')
@@ -131,25 +137,18 @@ const Rooms = () => {
     setSearchInput({ ...searchInput, [name]: value })
     //searchRoom()
   }
-  const searchRoom = () => {
-    let filteredData = rooms.filter((value) => {
-      return (
-        value.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-        value.roomType.toLowerCase().includes(searchInput.toLowerCase()) ||
-        value.note.toString().toLowerCase().includes(searchInput.toLowerCase())
-      )
-    })
-    setRooms(filteredData)
-  }
 
-  useEffect(() => {
-    roomTypeService.getAll().then((x) => setRoomtypes(x))
-  }, [])
+  const handleClickDelete = (data) => {
+    roomService._delete(data)
+    let roomsCopy = rooms.filter((item) => item.id !== data)
+    setRooms(roomsCopy)
+    setToastMessage('Xoá phòng thành công')
+  }
 
   const modalCreateEdit = () => {
     return (
       <CModal visible={openModal}>
-        <CModalHeader onDismiss={() => setOpenModal(false)}>
+        <CModalHeader onDismiss={() => handleCloseModal()}>
           {editForm ? (
             <CModalTitle>Thông tin phòng muốn sửa</CModalTitle>
           ) : (
@@ -158,7 +157,12 @@ const Rooms = () => {
         </CModalHeader>
         {message && <Message variant="danger">{message}</Message>}
         <CModalBody>
-          <CForm>
+          <CForm
+            className="row g-3 needs-validation"
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+          >
             <CInputGroup className="mb-3">
               <CCol>
                 <CFormLabel>Tên: </CFormLabel>
@@ -168,9 +172,10 @@ const Rooms = () => {
                   name="name"
                   type="text"
                   id="name"
-                  value={roomToCreate.name}
-                  onInput={handleInputChange}
+                  value={roomName}
+                  onInput={(e) => setRoomName(e.target.value)}
                 />
+                <CFormFeedback invalid>Bắt buộc</CFormFeedback>
               </CCol>
             </CInputGroup>
             <CInputGroup className="mb-3">
@@ -178,17 +183,43 @@ const Rooms = () => {
                 <CFormLabel>Loại phòng:</CFormLabel>
               </CCol>
               <CCol>
-                <CFormSelect
-                  name="roomType"
-                  id="roomType"
-                  value={roomToCreate.roomType}
-                  defaultValue={loadedValueSelectRoomType(roomToCreate.roomTypeId)}
-                  onInput={handleInputChange}
-                >
-                  {roomTypes.map((item, index) => {
-                    return <option key={index}>{item.name}</option>
-                  })}
-                </CFormSelect>
+                {editForm ? (
+                  <CCol>
+                    <CFormSelect
+                      name="roomType"
+                      id="roomType"
+                      value={roomTypeId}
+                      defaultValue={roomTypeId}
+                      onInput={(e) => setRoomTypeId(e.target.value)}
+                    >
+                      <option value="">--ChọnEdit--</option>
+                      {roomTypes.map((item, index) => {
+                        return (
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        )
+                      })}
+                    </CFormSelect>
+                    <CFormFeedback invalid>Bắt buộc</CFormFeedback>
+                  </CCol>
+                ) : (
+                  <CFormSelect
+                    name="roomType"
+                    id="roomType"
+                    value={roomTypeId}
+                    onInput={(e) => setRoomTypeId(e.target.value)}
+                  >
+                    <option value="">--Chọn--</option>
+                    {roomTypes.map((item, index) => {
+                      return (
+                        <option value={item.id} key={index}>
+                          {item.name}
+                        </option>
+                      )
+                    })}
+                  </CFormSelect>
+                )}
               </CCol>
             </CInputGroup>
             <CInputGroup className="mb-3">
@@ -200,28 +231,21 @@ const Rooms = () => {
                   type="text"
                   id="note"
                   name="note"
-                  onInput={handleInputChange}
-                  value={roomToCreate.note}
+                  onInput={(e) => setRoomNote(e.target.value)}
+                  value={roomNote}
                 />
               </CCol>
             </CInputGroup>
+            <span>
+              <CButton color="secondary" type="submit">
+                Lưu
+              </CButton>
+              <CButton color="secondary" onClick={() => handleCloseModal()}>
+                Đóng
+              </CButton>
+            </span>
           </CForm>
         </CModalBody>
-        <CModalFooter>
-          {editForm ? (
-            <CButton color="secondary" onClick={saveRoomToEdit}>
-              Lưu
-            </CButton>
-          ) : (
-            <CButton color="secondary" onClick={saveRoomToCreate}>
-              Lưu
-            </CButton>
-          )}
-
-          <CButton color="secondary" onClick={() => handleCloseModal()}>
-            Đóng
-          </CButton>
-        </CModalFooter>
       </CModal>
     )
   }
@@ -251,7 +275,7 @@ const Rooms = () => {
                 </CCol>
               </CInputGroup>
               <CButton
-                onClick={() => handleClickCreate()}
+                onClick={() => handleOpenModalToCreate()}
                 style={{ width: '10%', fontSize: '0.8rem' }}
               >
                 {/* <CIcon style={{ margin: '0px 5px' }} size={'lg'} name="cil-plus"></CIcon> */}
@@ -261,13 +285,14 @@ const Rooms = () => {
             </div>
             <CTable striped>
               <CTableHead>
-                <CTableRow>
+                <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÊN PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">LOẠI PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÌNH TRẠNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">GHI CHÚ</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -275,7 +300,9 @@ const Rooms = () => {
                   rooms.map((room, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{room.name}</CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{room.name}</strong>
+                      </CTableDataCell>
                       <CTableDataCell>
                         <strong> {room.roomTypeModel.name} </strong>
                       </CTableDataCell>
@@ -289,7 +316,7 @@ const Rooms = () => {
                           style={{ margin: '0px 5px', cursor: 'pointer' }}
                           size={'lg'}
                           name="cil-pencil"
-                          onClick={() => handleClickEdit(room)}
+                          onClick={() => handleOpenModalToUpdate(room)}
                         ></CIcon>
                         <CIcon
                           style={{ margin: '0px 5px', cursor: 'pointer' }}
@@ -305,13 +332,6 @@ const Rooms = () => {
                 )}
               </CTableBody>
             </CTable>
-            <CPagination aria-label="Page navigation example">
-              <CPaginationItem>Previous</CPaginationItem>
-              <CPaginationItem>1</CPaginationItem>
-              <CPaginationItem>2</CPaginationItem>
-              <CPaginationItem>3</CPaginationItem>
-              <CPaginationItem>Next</CPaginationItem>
-            </CPagination>
           </CCardBody>
         </CCard>
       </CCol>
