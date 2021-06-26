@@ -1,3 +1,7 @@
 export * from './user.service'
 export * from './room-type.service'
 export * from './room.service'
+export * from './parameter.service'
+export * from './booking.service'
+export * from './customer_type.service'
+export * from './report.service'
