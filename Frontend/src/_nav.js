@@ -82,6 +82,21 @@ const _nav = [
   {
     _component: 'CNavGroup',
     as: NavLink,
+    anchor: 'Quy định chung',
+    to: '/to',
+    icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Quy định đạt phòng',
+        to: '/parameter',
+      },
+    ],
+  },
+  {
+    _component: 'CNavGroup',
+    as: NavLink,
     anchor: 'Base',
     to: '/to',
     icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,

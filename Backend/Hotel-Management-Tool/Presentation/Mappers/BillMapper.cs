@@ -110,8 +110,6 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 billModels.Add(billModel);
             }
             return billModels;
-        }
-
-         
+        }     
     }
 }
