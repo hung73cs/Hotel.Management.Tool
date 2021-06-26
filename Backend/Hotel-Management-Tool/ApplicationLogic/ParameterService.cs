@@ -72,6 +72,9 @@ namespace Hotel.Management.Tool.ApplicationLogic
             await _parameter.DeleteAsync(a => a.Id == parameterId);
         }
 
-       
+        public async Task<List<Parameter>> GetParametersAsync()
+        {
+            return await _parameter.GetListAsync();
+        }
     }
 }

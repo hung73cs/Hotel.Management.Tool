@@ -36,7 +36,7 @@ namespace Hotel.Management.Tool.Core.Database
             }
             catch (Exception ex) when ((ex.InnerException as PostgresException)?.SqlState == PostgresErrorCodes.UniqueViolation)
             {
-                throw new ExtendException(ErrorCode.ItemExisted,$"{typeof(T).Name} already exists in database.", ex);
+                throw new ExtendException(ErrorCode.ItemExisted, $"{typeof(T).Name} already exists in database.", ex);
             }
             catch (Exception ex)
             {
@@ -251,7 +251,7 @@ namespace Hotel.Management.Tool.Core.Database
 
                 return item;
             }
-            catch (Exception )
+            catch (Exception)
             {
                 throw new ExtendException(ErrorCode.BadRequest, "An error when get list");
             }

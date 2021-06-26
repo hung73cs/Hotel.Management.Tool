@@ -8,6 +8,5 @@ namespace Hotel.Management.Tool.Models
         public Guid GuestTypeId { get; set; }
         public string IdCard { get; set; }
         public string Address { get; set; }
-        public Guid BookingId { get; set; }
     }
 }

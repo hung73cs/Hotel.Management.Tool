@@ -3,7 +3,6 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Room;
-using System;
 using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
@@ -21,7 +20,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             var room = new Room
             {
                 Name = roomModel.Name,
-                RoomStatus = _enumMapper.Map<RoomStatus>(roomModel.RoomStatus).Value,
+                RoomStatus = RoomStatus.OPEN,
                 Note = roomModel.Note,
                 //RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty,
                 RoomTypeId = roomModel.roomTypeId
@@ -36,7 +35,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 roomEntity.Name = roomModel.Name;
                 roomEntity.Note = roomModel.Note;
-                roomEntity.RoomStatus = _enumMapper.Map<RoomStatus>(roomModel.RoomStatus).Value;
+                roomEntity.RoomStatus = RoomStatus.OPEN;
                 //roomEntity.RoomTypeId = Guid.TryParse(roomModel.roomTypeId, out var RoomTypeId) ? RoomTypeId : Guid.Empty;
                 roomEntity.RoomTypeId = roomModel.roomTypeId;
             }
@@ -53,13 +52,23 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 Note = room.Note,
                 roomTypeId = room.RoomTypeId
             };
+            if (room.RoomType != null)
+            {
+                var roomTypeModel = new RoomTypeModel
+                {
+                    Id = room.RoomTypeId,
+                    Name = room.RoomType.Name,
+                    Cost = room.RoomType.Cost,
+                };
+                roomModel.RoomTypeModel = roomTypeModel;
+            }
             return roomModel;
         }
 
         public List<RoomModel> MapRoomToRoomModel(List<Room> rooms)
         {
             var roomModels = new List<RoomModel>();
-            foreach(var i in rooms)
+            foreach (var i in rooms)
             {
                 var roomModel = new RoomModel
                 {
@@ -69,7 +78,16 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                     Note = i.Note,
                     roomTypeId = i.RoomTypeId
                 };
-
+                if (i.RoomType != null)
+                {
+                    var roomTypeModel = new RoomTypeModel
+                    {
+                        Id = i.RoomTypeId,
+                        Name = i.RoomType.Name,
+                        Cost = i.RoomType.Cost,
+                    };
+                    roomModel.RoomTypeModel = roomTypeModel;
+                }
                 roomModels.Add(roomModel);
             }
             return roomModels;

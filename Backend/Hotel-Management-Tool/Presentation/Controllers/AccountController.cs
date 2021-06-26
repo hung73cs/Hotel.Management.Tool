@@ -30,7 +30,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("id/{accountId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<GetAccountModel>> GetAccount(Guid accountId)
         {
             var account = await _account.GetAccountAsync(accountId);
@@ -46,7 +46,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("get/{page}/{item}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<GetAccountModel>>> GetAccountsPagingAsync(int page, int item)
         {
             var accounts = await _account.GetMultipleAccountPagingAsync(page, item);
@@ -60,7 +60,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<GetAccountModel>>> GetAccountsAsync()
         {
             var accounts = await _account.GetAccountsAsync();
@@ -75,10 +75,10 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel account)
         {
-            var mappedAccount =  _accountMapper.MapAccountModelToAccount(account);
+            var mappedAccount = _accountMapper.MapAccountModelToAccount(account);
 
             if (mappedAccount == null)
             {
@@ -94,8 +94,8 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{accountId}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> UpdateAccount(Guid accountId, [FromBody]UpdateAccountModel updatedAccount)
+        [Authorize(Roles = "ADMIN")]
+        public async Task<ActionResult> UpdateAccount(Guid accountId, [FromBody] UpdateAccountModel updatedAccount)
         {
             var currentAccount = await _account.GetAccountAsync(accountId);
 
@@ -103,7 +103,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
-      
+
             var mappedAccount = _accountMapper.MapAccountModelToAccount(updatedAccount, currentAccount);
 
             if (mappedAccount == null)
@@ -117,7 +117,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{accountId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteAccount(Guid accountId)
         {
             await _account.DeleteAsync(accountId);
@@ -127,7 +127,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{accountId}/hard-delete")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> HardDeleteAccount(Guid accountId)
         {
             await _account.HardDeleteAsync(accountId);

@@ -1,7 +1,6 @@
 ﻿using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Models.Account;
 using Hotel.Management.Tool.Presentation.Mappers;
-using System;
 using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Core.Interfaces

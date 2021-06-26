@@ -1,12 +1,9 @@
 ﻿using Hotel.Management.Tool.Core.Constants;
-using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
-using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Parameter;
 using Hotel.Management.Tool.Presentation.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -19,7 +16,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
     {
         private readonly IParameterService _parameterService;
         private readonly IParameterMapper _parameterMapper;
-        
+
         public ParameterController(
             IParameterService parameterService,
             IParameterMapper parameterMapper
@@ -42,11 +39,22 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             return Ok(_parameterMapper.MapParameterToParameterModel(parameter));
         }
 
+        [HttpGet]
+        public async Task<ActionResult<ParameterModel>> GetParameters()
+        {
+            var parameters = await _parameterService.GetParametersAsync();
+            if (parameters == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            return Ok(_parameterMapper.MapParameterToParameterModel(parameters));
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateParameter([FromBody] ParameterModel parameterModel)
         {
             var mapper = _parameterMapper.MapParameterModelToParameter(parameterModel);
-            if(mapper == null)
+            if (mapper == null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }

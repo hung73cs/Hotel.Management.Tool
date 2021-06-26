@@ -21,8 +21,8 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<TokenResponseModel>> Authenticate([FromBody]LoginModel loginAccount)
-        {         
+        public async Task<ActionResult<TokenResponseModel>> Authenticate([FromBody] LoginModel loginAccount)
+        {
             var account = await _authen.AuthenticateUser(loginAccount);
             if (account == null)
             {

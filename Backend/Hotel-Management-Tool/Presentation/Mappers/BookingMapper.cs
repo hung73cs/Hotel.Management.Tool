@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Booking;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
 {
@@ -13,20 +13,20 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public Booking MapBookingModelToBooking(CreateBookingModel model)
         {
             var bookingDetails = new List<BookingDetail>();
-            if (model.BookingDetails != null)
+            if (model.BookingDetailModels != null)
             {
-                bookingDetails = model.BookingDetails.Select(x => new BookingDetail
+                bookingDetails = model.BookingDetailModels.Select(x => new BookingDetail
                 {
                     GuestName = x.GuestName,
                     GuestTypeId = x.GuestTypeId,
                     IdCard = x.IdCard,
-                    Address = x.Address
+                    Address = x.Address,
                 }).ToList();
             }
             return new Booking
             {
                 Id = Guid.NewGuid(),
-                StartedDate = model.StartedDate == null ? DateTime.Now : model.StartedDate,
+                StartedDate = DateTime.Now,
                 RoomId = model.RoomId,
                 AccountId = model.AccountId,
                 NumberOfGuest = model.NumberOfGuest,
@@ -39,10 +39,10 @@ namespace Hotel.Management.Tool.Presentation.Mappers
 
         public BookingModel MappBookingToBookingModel(Booking booking)
         {
-            var bookingDetails = new List<BookingDetail>();
+            var bookingDetailModels = new List<BookingDetailModel>();
             if (booking.BookingDetails != null)
             {
-                bookingDetails = booking.BookingDetails.Select(x => new BookingDetail
+                bookingDetailModels = booking.BookingDetails.Select(x => new BookingDetailModel
                 {
                     GuestName = x.GuestName,
                     GuestTypeId = x.GuestTypeId,
@@ -59,7 +59,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 NumberOfGuest = booking.NumberOfGuest,
                 UnitPrice = booking.UnitPrice,
                 UnitStandardPrice = booking.UnitStandardPrice,
-                BookingDetails = bookingDetails,
+                BookingDetailModels = bookingDetailModels,
             };
         }
 
@@ -68,10 +68,10 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             var bookingModels = new List<BookingModel>();
             foreach (var i in bookings)
             {
-                var bookingDetails = new List<BookingDetail>();
+                var bookingDetailModels = new List<BookingDetailModel>();
                 if (i.BookingDetails != null)
                 {
-                    bookingDetails = i.BookingDetails.Select(x => new BookingDetail
+                    bookingDetailModels = i.BookingDetails.Select(x => new BookingDetailModel
                     {
                         GuestName = x.GuestName,
                         GuestTypeId = x.GuestTypeId,
@@ -88,7 +88,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                     NumberOfGuest = i.NumberOfGuest,
                     UnitPrice = i.UnitPrice,
                     UnitStandardPrice = i.UnitStandardPrice,
-                    BookingDetails = bookingDetails,
+                    BookingDetailModels = bookingDetailModels,
                 };
                 bookingModels.Add(bookingModel);
             }
@@ -98,9 +98,9 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public Booking MapBookingModelToBooking(Booking bookingEntity, CreateBookingModel model)
         {
             var bookingDetails = new List<BookingDetail>();
-            if (model.BookingDetails != null)
+            if (model.BookingDetailModels != null)
             {
-                bookingDetails = model.BookingDetails.Select(x => new BookingDetail
+                bookingDetails = model.BookingDetailModels.Select(x => new BookingDetail
                 {
                     GuestName = x.GuestName,
                     GuestTypeId = x.GuestTypeId,
@@ -110,11 +110,9 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             }
             if (model != null)
             {
-                bookingEntity.StartedDate = model.StartedDate;
                 bookingEntity.RoomId = model.RoomId;
                 bookingEntity.NumberOfGuest = model.NumberOfGuest;
                 bookingEntity.UnitPrice = model.UnitPrice;
-                bookingEntity.StartedDate = model.StartedDate;
                 bookingEntity.BookingDetails = bookingDetails;
             }
             return bookingEntity;

@@ -81,6 +81,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IGuestTypeService, GuestTypeService>();
             services.AddTransient<IParameterService, ParameterService>();
             services.AddTransient<ISurchargeRateService, SurchargeRateService>();
+            services.AddTransient<IBillService, BillService>();
 
 
             //Mapper
@@ -91,7 +92,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IBookingMapper, BookingMapper>();
             services.AddTransient<IGuestTypeMapper, GuestTypeMapper>();
             services.AddTransient<IParameterMapper, ParameterMapper>();
-            //services.AddTransient<IReportMapper, ReportMapper>();
+            services.AddTransient<IBillMapper, BillMapper>();
 
             //Repository
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();
@@ -103,6 +104,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IGuestTypeRepository, GuestTypeRepository>();
             services.AddTransient<IParameterRepository, ParameterRepository>();
             services.AddTransient<ISurchargeRateRepository, SurchargeRateRepository>();
+            services.AddTransient<IBillRepository, BillRepository>();
 
         }
 
@@ -126,7 +128,7 @@ namespace Hotel.Management.Tool
             app.ConfigExceptionHandler();
 
             app.UseRouting();
-            
+
             //Add Cors
             app.UseCors(MyAllowSpecificOrigins);
 
@@ -138,7 +140,7 @@ namespace Hotel.Management.Tool
             {
                 endpoints.MapControllers();
             });
-            
+
         }
     }
 }

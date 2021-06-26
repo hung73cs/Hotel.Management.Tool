@@ -27,7 +27,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
         {
             var accounts = await _account.GetListAsync();
             var results = new List<Account>();
-            foreach(var i in accounts)
+            foreach (var i in accounts)
             {
                 var account = await _account.SearchForSingleItemAsync(x => x.Id == i.Id, x => x.UserInfo);
                 results.Add(account);
@@ -72,7 +72,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
         }
 
         public async Task<Account> UpdateAsync(Account accountRequest)
-        {        
+        {
             return await _account.UpdateAsync(accountRequest);
         }
     }

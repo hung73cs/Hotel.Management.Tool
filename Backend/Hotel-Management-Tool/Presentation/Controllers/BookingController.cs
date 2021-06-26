@@ -19,19 +19,22 @@ namespace Hotel.Management.Tool.Presentation.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly IBookingMapper _bookingMapper;
+        private readonly IRoomService _roomService;
 
         public BookingController(
             IBookingService bookingService,
-            IBookingMapper bookingMapper)
+            IBookingMapper bookingMapper,
+            IRoomService roomService)
         {
             _bookingService = bookingService;
             _bookingMapper = bookingMapper;
+            _roomService = roomService;
 
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateBooking([FromBody] CreateBookingModel model)
-        {       
+        {
             var mapper = _bookingMapper.MapBookingModelToBooking(model);
 
             if (mapper == null)
@@ -40,6 +43,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             }
 
             var result = await _bookingService.CreateAsync(mapper);
+            await _roomService.BookRoom(model.RoomId);
 
             Response.AddInfoHeaders(result.Id);
 
@@ -65,29 +69,39 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
             await _bookingService.UpdateBooking(mapper);
+
+            if (bookingModel.RoomId != bookingEntity.RoomId)
+                await _roomService.UpdateBookRoom(bookingEntity.RoomId, bookingModel.RoomId);
+
             return NoContent();
         }
 
         [HttpDelete]
         [Route("id/{bookingId}")]
-        public async Task<ActionResult> DeleteGuestType(Guid GuestTypeId)
+        public async Task<ActionResult> DeleteBooking(Guid bookingId)
         {
-            await _bookingService.DeleteBooking(GuestTypeId);
+            var booking = await _bookingService.GetBooking(bookingId);
+
+            await _roomService.UnBookRoom(booking.RoomId);
+            await _bookingService.DeleteBooking(bookingId);
 
             return NoContent();
         }
 
         [HttpDelete]
         [Route("id/{bookingId}/hard-delete")]
-        public async Task<ActionResult> HardDeleteGuestType(Guid GuestTypeId)
+        public async Task<ActionResult> HardDeleteBooking(Guid bookingId)
         {
-            await _bookingService.HardDeleteBooking(GuestTypeId);
+            var booking = await _bookingService.GetBooking(bookingId);
+
+            await _roomService.UnBookRoom(booking.RoomId);
+            await _bookingService.HardDeleteBooking(bookingId);
 
             return NoContent();
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<BookingModel>>> GetBookingsAsync()
         {
             var bookings = await _bookingService.GetBookings();

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Core.Entities
 {
@@ -13,6 +11,5 @@ namespace Hotel.Management.Tool.Core.Entities
         public decimal Price { get; set; }
         public virtual Booking Booking { get; set; }
         public virtual Bill Bill { get; set; }
-
     }
 }

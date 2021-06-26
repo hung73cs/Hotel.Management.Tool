@@ -6,7 +6,6 @@ using Hotel.Management.Tool.Models;
 using Hotel.Management.Tool.Models.Account;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Mappers
 {
@@ -27,7 +26,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public GetAccountModel MapAccountToAccountModel(Account account)
         {
             var accountModel = new GetAccountModel
-            {         
+            {
                 accountId = account.Id,
                 Username = account.Username,
                 Role = account.Role.ToString()
@@ -119,7 +118,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 accountEntity.UserInfo.Gender = _enumMapper.Map<Gender>(accountModel.UserInfoModel.Gender).Value;
                 accountEntity.UserInfo.Birthday = accountModel.UserInfoModel.Birthday;
                 accountEntity.UserInfo.PhoneNumber = accountModel.UserInfoModel.PhoneNumber;
-                accountEntity.UserInfo.Address = accountModel.UserInfoModel.Address;  
+                accountEntity.UserInfo.Address = accountModel.UserInfoModel.Address;
             }
             return accountEntity;
         }
