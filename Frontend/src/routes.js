@@ -125,5 +125,6 @@ const routes = [
   { path: '/booking', name: 'Booking' },
   { path: '/booking/create', name: 'CreateBooking', component: CreateBooking },
   { path: '/booking/bookings', name: 'Bookings', component: Bookings },
+  { path: '/report', name: 'Report' },
 ]
 export default routes
