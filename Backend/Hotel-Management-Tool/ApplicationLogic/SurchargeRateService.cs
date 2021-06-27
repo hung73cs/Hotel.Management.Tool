@@ -18,7 +18,6 @@ namespace Hotel.Management.Tool.ApplicationLogic
             _surchargeRate = surchargeRate;
         }
 
-
         public async Task<SurchargeRate> CreateSurchargeRateAsync(SurchargeRate surchargeRateToCreate)
         {
             var surchargeRate = await _surchargeRate.SearchForSingleItemAsync(x => x.GuestLevel == surchargeRateToCreate.GuestLevel);
