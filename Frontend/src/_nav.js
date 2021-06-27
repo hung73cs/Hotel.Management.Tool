@@ -6,50 +6,62 @@ const _nav = [
   {
     _component: 'CNavItem',
     as: NavLink,
-    anchor: 'Dashboard',
-    to: '/dashboard',
-    icon: <CIcon name="cil-speedometer" customClasses="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
-  },
-  //////////////////////////////////////
-  {
-    _component: 'CNavTitle',
-    anchor: 'Theme',
-  },
-  {
-    _component: 'CNavItem',
-    as: NavLink,
-    anchor: 'Colors',
-    to: '/theme/colors',
-    icon: <CIcon name="cil-drop" customClasses="nav-icon" />,
-  },
-  {
-    _component: 'CNavItem',
-    as: NavLink,
-    anchor: 'Typography',
-    to: '/theme/typography',
-    icon: <CIcon name="cil-pencil" customClasses="nav-icon" />,
+    anchor: 'Trang chủ',
+    to: '/home',
+    icon: <CIcon name="cil-home" customClasses="nav-icon" />,
   },
   {
     _component: 'CNavTitle',
     anchor: 'Thuê phòng',
   },
   {
-    _component: 'CNavItem',
+    _component: 'CNavGroup',
     as: NavLink,
-    anchor: 'Tạo phiếu thuê',
-    to: '/booking/create',
-    icon: <CIcon name="cil-pencil" customClasses="nav-icon" />,
+    anchor: 'Phiếu thuê phòng',
+    to: '/to',
+    icon: <CIcon name="cil-notes" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Tạo phiếu mới',
+        to: '/booking/create',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Danh sách phiếu',
+        to: '/booking/bookings',
+      },
+    ],
   },
   {
     _component: 'CNavItem',
     as: NavLink,
-    anchor: 'Danh sách phiếu',
-    to: '/booking/bookings',
-    icon: <CIcon name="cil-pencil" customClasses="nav-icon" />,
+    anchor: 'Hoá đơn',
+    to: '/bill',
+    icon: <CIcon name="cil-dollar" customClasses="nav-icon" />,
+  },
+  {
+    _component: 'CNavGroup',
+    as: NavLink,
+    anchor: 'Báo cáo',
+    to: '/to',
+    icon: <CIcon name="cil-chart-pie" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Doanh thu theo tháng',
+        to: '/report/month',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Doanh thu theo năm',
+        to: '/report/year',
+      },
+    ],
   },
   {
     _component: 'CNavTitle',
@@ -60,7 +72,7 @@ const _nav = [
     as: NavLink,
     anchor: 'Tài khoản',
     to: '/to',
-    icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,
+    icon: <CIcon name="cil-user" customClasses="nav-icon" />,
     items: [
       {
         _component: 'CNavItem',
@@ -81,7 +93,7 @@ const _nav = [
     as: NavLink,
     anchor: 'Phòng',
     to: '/to',
-    icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,
+    icon: <CIcon name="cil-room" customClasses="nav-icon" />,
     items: [
       {
         _component: 'CNavItem',
@@ -102,7 +114,7 @@ const _nav = [
     as: NavLink,
     anchor: 'Quy định chung',
     to: '/to',
-    icon: <CIcon name="cil-puzzle" customClasses="nav-icon" />,
+    icon: <CIcon name="cil-list-rich" customClasses="nav-icon" />,
     items: [
       {
         _component: 'CNavItem',
@@ -141,6 +153,13 @@ const _nav = [
     ],
   },
   //////
+  {
+    _component: 'CNavItem',
+    as: NavLink,
+    anchor: 'Typography',
+    to: '/theme/typography',
+    icon: <CIcon name="cil-home" customClasses="nav-icon" />,
+  },
   {
     _component: 'CNavGroup',
     as: NavLink,

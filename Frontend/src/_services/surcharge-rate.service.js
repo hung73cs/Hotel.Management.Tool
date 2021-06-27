@@ -14,6 +14,6 @@ async function calculate(ob) {
   }
   console.log('ob', JSON.stringify(ob))
   return await fetch(`${apiUrl}/surcharge-rate/calculate`, requestOptions)
-    .then((data) => data)
+    .then((res) => res.json())
     .catch((er) => er)
 }

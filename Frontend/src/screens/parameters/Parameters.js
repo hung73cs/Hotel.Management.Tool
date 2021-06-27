@@ -78,6 +78,9 @@ const Parameters = () => {
         case 409:
           setMessage('Tên quy định đã tồn tại')
           break
+        case 403:
+          setMessage('Không có quyền')
+          break
         case 500:
           setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
           break
@@ -102,6 +105,9 @@ const Parameters = () => {
           break
         case 404:
           setMessage('Quy định cần sửa không tồn tại')
+          break
+        case 403:
+          setMessage('Không có quyền')
           break
         case 409:
           setMessage('Tên quy định bị trùng với các quy định khác')

@@ -12,13 +12,42 @@ import {
   CTableHeaderCell,
   CTableRow,
   CButton,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
 } from '@coreui/react'
-import { roomService, bookingService, userService } from 'src/_services'
-
+import CIcon from '@coreui/icons-react'
+import { useDispatch } from 'react-redux'
+import { bookingActions } from 'src/_actions'
+import { NavLink } from 'react-router-dom'
+import { roomService, bookingService, userService, guestTypeService } from 'src/_services'
+import ToastNotification from 'src/components/Toasts'
+import Message from 'src/components/Message'
+import EditBooking from './EditBooking'
 const Bookings = () => {
+  const initBooking = {
+    id: '',
+    roomId: '',
+    accountId: '',
+    numberOfGuest: 0,
+    startedDate: '',
+    unitPrice: 0,
+    unitStandardPrice: 0,
+    bookingDetailModels: [],
+  }
+
+  const [message, setMessage] = useState('')
+  const [toastMessage, setToastMessage] = useState('')
+  const [visibleXL, setVisibleXL] = useState(false)
   const [bookings, setBookings] = useState([])
   const [rooms, setRooms] = useState([])
   const [accounts, setAccounts] = useState([])
+  const [bookingShow, setBookingShow] = useState(initBooking)
+  const [guestTypes, setGuestTypes] = useState([])
+  const [openEdit, setOpenEdit] = useState(false)
+  const [bookingToEdit, setBookingToEdit] = useState(initBooking)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
@@ -32,17 +61,108 @@ const Bookings = () => {
     bookingService.getAll().then((x) => setBookings(x))
   }, [])
 
+  useEffect(() => {
+    guestTypeService.getAll().then((x) => setGuestTypes(x))
+  }, [])
+
+  const handleDeleteBooking = (id) => {
+    bookingService._delete(id)
+    let bookingsCopy = bookings.filter((item) => item.id !== id)
+    setBookings(bookingsCopy)
+    setToastMessage('Xoá phiếu thuê phòng thành công')
+  }
+
   const findNameRoom = (id) => {
     return rooms.find((x) => x.id === id)?.name
   }
   const findAccount = (id) => {
-    console.log('id', id)
-    return accounts.find((x) => x.id === id)?.username
+    return accounts.find((x) => x.accountId === id)?.username
   }
-  console.log('room', rooms)
-  console.log('accounts', accounts)
+  const findGuestType = (id) => {
+    return guestTypes.find((x) => x.id === id)?.name
+  }
+  const ShowBookingDetailModal = (booking) => {
+    setBookingShow(booking)
+    console.log('bookingShow', bookingShow)
+    console.log('bookingShow', bookingShow.bookingDetailModels)
+    setVisibleXL(true)
+  }
+  const BookingDetailModal = () => {
+    return (
+      <CModal size="xl" visible={visibleXL}>
+        <CModalHeader onDismiss={() => setVisibleXL(false)}>
+          <CModalTitle>THÔNG TIN CHI TIẾT</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CTable>
+            <CTableBody>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Phòng: </CTableHeaderCell>
+                <CTableDataCell scope="col">{findNameRoom(bookingShow.roomId)}</CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Người lập phiếu: </CTableHeaderCell>
+                <CTableDataCell scope="col">{findAccount(bookingShow.accountId)}</CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Ngày bắt đầu thuê: </CTableHeaderCell>
+                <CTableDataCell scope="col">{bookingShow.startedDate}</CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Số lượng khách: </CTableHeaderCell>
+                <CTableDataCell scope="col">{bookingShow.numberOfGuest}</CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Đơn giá: </CTableHeaderCell>
+                <CTableDataCell scope="col">{bookingShow.unitStandardPrice}</CTableDataCell>
+              </CTableRow>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Giá tạm tính: </CTableHeaderCell>
+                <CTableDataCell scope="col">{bookingShow.unitStandardPrice}</CTableDataCell>
+              </CTableRow>
+              <CTable>
+                <CTableHead color="secondary">
+                  <CTableRow>
+                    <CTableHeaderCell scope="col">STT</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">KHÁCH HÀNG</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">LOẠI KHÁCH</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">CMND</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">ĐỊA CHỈ</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {bookingShow.bookingDetailModels.map((item, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>
+                        <strong>{index + 1}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{item.guestName}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{findGuestType(item.guestTypeId)}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{item.idCard}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{item.address}</strong>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </CTableBody>
+          </CTable>
+        </CModalBody>
+      </CModal>
+    )
+  }
   return (
     <CRow>
+      {toastMessage && <ToastNotification message={toastMessage} />}
+      {openEdit && <EditBooking booking={bookingToEdit}></EditBooking>}
+      {BookingDetailModal()}
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
@@ -72,7 +192,25 @@ const Bookings = () => {
                       <CTableDataCell>{item.startedDate}</CTableDataCell>
                       <CTableDataCell>{item.unitStandardPrice}</CTableDataCell>
                       <CTableDataCell>
-                        <CButton onClick={() => findNameRoom(item.roomId)}></CButton>
+                        <CButton color="link" onClick={() => ShowBookingDetailModal(item)}>
+                          Chi tiết
+                        </CButton>
+                        <NavLink to="/booking/editbooking">
+                          <CIcon
+                            style={{ margin: '0px 5px', cursor: 'pointer' }}
+                            size={'lg'}
+                            name="cil-trash"
+                            onClick={() => {
+                              dispatch(bookingActions.editBooking(item))
+                            }}
+                          />
+                        </NavLink>
+                        <CIcon
+                          style={{ margin: '0px 5px', cursor: 'pointer' }}
+                          size={'lg'}
+                          name="cil-trash"
+                          onClick={() => handleDeleteBooking(item.id)}
+                        />
                       </CTableDataCell>
                     </CTableRow>
                   ))}

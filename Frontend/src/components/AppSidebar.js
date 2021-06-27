@@ -9,12 +9,17 @@ import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from '../_nav'
-
+import navigationUser from '../_narUser'
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
+  const Admin = () => {
+    let isAdmin = JSON.parse(localStorage.getItem('user'))?.role
+    if (isAdmin === 0) return true
+    else return false
+  }
   return (
     <CSidebar position="fixed" selfHiding="md" unfoldable={unfoldable} show={sidebarShow}>
       <CSidebarBrand style={{ margin: '10px 50px' }} className="d-none d-md-flex" to="/">
@@ -23,7 +28,11 @@ const AppSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <CCreateNavItem items={navigation} />
+          {Admin() ? (
+            <CCreateNavItem items={navigation} />
+          ) : (
+            <CCreateNavItem items={navigationUser} />
+          )}
         </SimpleBar>
       </CSidebarNav>
     </CSidebar>

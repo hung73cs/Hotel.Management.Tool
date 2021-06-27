@@ -68,6 +68,9 @@ const GuestTypes = () => {
         case 409:
           setMessage('Tên loại khách bị trùng')
           break
+        case 403:
+          setMessage('Không có quyền')
+          break
         case 500:
           setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
           break
@@ -95,6 +98,9 @@ const GuestTypes = () => {
         case 409:
           setMessage('Tên loại khách bị trùng với các loại khách khác')
           break
+        case 403:
+          setMessage('Không có quyền')
+          break
         case 500:
           setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
           break
@@ -114,10 +120,16 @@ const GuestTypes = () => {
   }
 
   const handleClickDelete = (id) => {
-    guestTypeService._delete(id)
-    let guestTypesCopy = guestTypes.filter((item) => item.id !== id)
-    setGuestTypes(guestTypesCopy)
-    setToastMessage('Xoá loại khách thành công')
+    guestTypeService._delete(id).then((res) => {
+      switch (res) {
+        case 403:
+          setMessage('Không có quyền')
+          break
+        default:
+          setGuestTypes(guestTypes.filter((item) => item.id !== id))
+          setToastMessage('Xoá loại khách thành công')
+      }
+    })
   }
 
   const handleInputChange = (event) => {

@@ -24,7 +24,9 @@ import CIcon from '@coreui/icons-react'
 import { roomService, surchargeRateService, guestTypeService, bookingService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
-const CreateBooking = () => {
+import { useSelector, useDispatch } from 'react-redux'
+
+const EditBooking = () => {
   const [validated, setValidated] = useState(false)
   const [message, setMessage] = useState('')
   const [toastMessage, setToastMessage] = useState('')
@@ -38,6 +40,7 @@ const CreateBooking = () => {
   const [numberOfGuest, setNumberOfGuest] = useState('')
   const [unitPrice, setUnitPrice] = useState(0)
   const [unitStandardPrice, setUnitStandardPrice] = useState(0)
+  const [startedDate, setStartedDate] = useState()
 
   const initBookingDetail = [
     {
@@ -102,13 +105,25 @@ const CreateBooking = () => {
     },
   ]
   const [bookingDetails, setBookDetails] = useState(initBookingDetail)
-
-  const date = new Date()
   const [numberBookingDetail, setNumberBookingDetail] = useState(0)
+
+  const booking = useSelector((state) => state.booking.data)
+
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
     guestTypeService.getAll().then((x) => setguestTypes(x))
     setAccountId(JSON.parse(localStorage.getItem('user'))?.accountId)
+  }, [])
+
+  useEffect(() => {
+    setRoomId(booking.roomId)
+    setAccountId(booking.accountId)
+    setNumberOfGuest(booking.numberOfGuest)
+    setUnitPrice(booking.unitPrice)
+    setUnitStandardPrice(booking.unitStandardPrice)
+    setBookDetails(booking.bookingDetailModels)
+    setStartedDate(booking.startedDate)
+    onBlurNumberOfGuest(booking.numberOfGuest)
   }, [])
 
   const handleSubmit = (event) => {
@@ -121,7 +136,7 @@ const CreateBooking = () => {
     }
     event.preventDefault()
     setMessage('')
-    createBookingService()
+    editBookingService()
     return
   }
 
@@ -143,7 +158,7 @@ const CreateBooking = () => {
     console.log('UnitStandardPrice', unitStandardPrice)
   }
 
-  const createBookingService = () => {
+  const editBookingService = () => {
     const books = bookingDetails.slice(0, numberOfGuest)
     var data = {
       roomId: roomId,
@@ -154,20 +169,20 @@ const CreateBooking = () => {
       bookingDetailModels: books,
     }
     console.log('data', data)
-    bookingService.create(data).then((res) => {
+    bookingService.edit(booking.id, data).then((res) => {
       switch (res) {
         case 400:
-          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          setMessage('Có lỗi khi lưu, vui lòng điền đầy đủ thông tin')
           break
         case 409:
           setMessage('Phòng hiện đã được thuê')
           break
         case 500:
-          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          setMessage('Có lỗi khi lưu, vui lòng điền đầy đủ thông tin')
           break
         default:
           setMessage('')
-          setToastMessage('Tạo phiếu thuê phòng thành công')
+          setToastMessage('Lưu phiếu thuê phòng thành công')
       }
     })
   }
@@ -193,7 +208,7 @@ const CreateBooking = () => {
       {toastMessage && <ToastNotification message={toastMessage} />}
       <CCard className="sb-4">
         <CCardHeader>
-          <strong>Tạo tài khoản người dùng</strong>
+          <strong>Sửa phiếu thuê phòng</strong>
         </CCardHeader>
         {message && <Message variant="danger">{message}</Message>}
         <CCardBody>
@@ -241,7 +256,7 @@ const CreateBooking = () => {
                 <CFormLabel>Ngày bắt đầu thuê:</CFormLabel>
               </CCol>
               <CCol>
-                <CFormControl id="date" name="date" value={date} disabled />
+                <CFormControl id="date" name="date" value={startedDate} disabled />
               </CCol>
             </CInputGroup>
             <CInputGroup>
@@ -368,4 +383,4 @@ const CreateBooking = () => {
   )
 }
 
-export default CreateBooking
+export default EditBooking

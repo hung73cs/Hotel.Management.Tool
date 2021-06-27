@@ -12,9 +12,12 @@ namespace Hotel.Management.Tool.ApplicationLogic
     public class BookingService : IBookingService
     {
         private readonly IBookingRepository _booking;
-        public BookingService(IBookingRepository booking)
+        private readonly IBookingDetailRepository _bookingDetail;
+
+        public BookingService(IBookingRepository booking, IBookingDetailRepository bookingDetail)
         {
             _booking = booking;
+            _bookingDetail = bookingDetail;
         }
         public async Task<Booking> CreateAsync(Booking bookingRequest)
         {
@@ -71,6 +74,15 @@ namespace Hotel.Management.Tool.ApplicationLogic
                     results.Add(booking);
             }
             return results;
+        }
+
+        public async Task DeleteBookingDetail(Guid bookingId)
+        {
+            var bookingDetails = await _bookingDetail.SearchForMultipleItemsAsync(x => x.BookingId == bookingId);
+            foreach(var i in bookingDetails)
+            {
+                await _bookingDetail.DeleteAsync(x => x.Id == i.Id);
+            }
         }
     }
 }
