@@ -17,9 +17,9 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 reportDetails = model.ReportDetails.Select(x => new ReportDetail
                 {
-                    RomTypeId = x.RomTypeId,
+                    //RomTypeId = x.RomTypeId,
                     Revenue = x.Revenue,
-                    Ratio = x.Ratio
+                    //Ratio = x.Ratio
                 }).ToList();
             }
             return new Report
@@ -65,9 +65,9 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 {
                     reportDetails = i.ReportDetails.Select(x => new ReportDetail
                     {
-                        RomTypeId = x.RomTypeId,
+                        //RomTypeId = x.RomTypeId,
                         Revenue = x.Revenue,
-                        Ratio = x.Ratio
+                        //Ratio = x.Ratio
                     }).ToList();
                 }
                 var reportModel = new ReportModel()
@@ -90,9 +90,9 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             {
                 reportDetails = model.ReportDetails.Select(x => new ReportDetail
                 {
-                    RomTypeId = x.RomTypeId,
+                    //RomTypeId = x.RomTypeId,
                     Revenue = x.Revenue,
-                    Ratio = x.Ratio
+                    //Ratio = x.Ratio
                 }).ToList();
             }
             if (model != null)
