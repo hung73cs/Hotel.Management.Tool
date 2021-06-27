@@ -68,16 +68,8 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         public async Task<ActionResult> UpdateBooking(Guid bookingId, [FromBody] CreateBookingModel bookingModel)
         {
             var bookingEntity = await _bookingService.GetBooking(bookingId);
-            if (bookingModel.RoomId != bookingEntity.RoomId)
-                await _roomService.UpdateBookRoom(bookingEntity.RoomId, bookingModel.RoomId);
-
-            var mapper = _bookingMapper.MapBookingModelToBooking(bookingEntity, bookingModel);
-            if (mapper == null)
-            {
-                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
-            }
             var room = await _roomService.GetRoomAsync(bookingModel.RoomId);
-
+      
             if (bookingModel.RoomId != bookingEntity.RoomId)
             {
                 if (room.RoomStatus == RoomStatus.CLOSE)
@@ -87,7 +79,15 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 }
             }
 
+            if (bookingModel.RoomId != bookingEntity.RoomId)
+                await _roomService.UpdateBookRoom(bookingEntity.RoomId, bookingModel.RoomId);
 
+            var mapper = _bookingMapper.MapBookingModelToBooking(bookingEntity, bookingModel);
+            if (mapper == null)
+            {
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
+            }
+   
             await _bookingService.DeleteBookingDetail(bookingId);
             await _bookingService.UpdateBooking(mapper);
 

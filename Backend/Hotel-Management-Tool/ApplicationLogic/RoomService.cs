@@ -109,11 +109,11 @@ namespace Hotel.Management.Tool.ApplicationLogic
         public async Task UpdateBookRoom(Guid roomId, Guid newRoomId)
         {
             var room = await _room.SearchForSingleItemAsync(x => x.Id == roomId);
-            room.RoomStatus = RoomStatus.CLOSE;
+            room.RoomStatus = RoomStatus.OPEN;
             await _room.UpdateAsync(room);
 
             var newRoom = await _room.SearchForSingleItemAsync(x => x.Id == newRoomId);
-            newRoom.RoomStatus = RoomStatus.OPEN;
+            newRoom.RoomStatus = RoomStatus.CLOSE;
             await _room.UpdateAsync(newRoom);
         }
     }

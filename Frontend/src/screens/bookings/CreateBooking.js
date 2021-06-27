@@ -139,7 +139,7 @@ const CreateBooking = () => {
       numberOfGuest: Number(numberOfGuest),
       unitPrice: Number(unitPrice),
     }
-    surchargeRateService.calculate(data).then((res) => setUnitStandardPrice(res.result))
+    surchargeRateService.calculate(data).then((res) => setUnitStandardPrice(res.result + unitPrice))
     console.log('UnitStandardPrice', unitStandardPrice)
   }
 

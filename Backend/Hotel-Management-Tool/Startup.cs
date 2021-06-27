@@ -93,6 +93,8 @@ namespace Hotel.Management.Tool
             services.AddTransient<IGuestTypeMapper, GuestTypeMapper>();
             services.AddTransient<IParameterMapper, ParameterMapper>();
             services.AddTransient<IBillMapper, BillMapper>();
+            services.AddTransient<ISurchargeRateMapper, SurchargeRateMapper>();
+
 
             //Repository
             services.AddTransient<IUserInfoRepository, UserInfoRepository>();

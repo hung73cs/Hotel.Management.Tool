@@ -3,20 +3,21 @@ using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models.SurchargeRate;
-using Hotel.Management.Tool.Presentation.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
 {
-    [ApiController]
+    [Authorize]
     [Route("surcharge-rate")]
     public class SurchargeRateController : ControllerBase
     {
         private readonly ISurchargeRateService _surchargeRateService;
         private readonly ISurchargeRateMapper _surchargeRateMapper;
-        public SurchargeRateController(ISurchargeRateService surchargeRateService, ISurchargeRateMapper surchargeRateMapper)
+        public SurchargeRateController(
+            ISurchargeRateService surchargeRateService,
+            ISurchargeRateMapper surchargeRateMapper)
         {
             _surchargeRateService = surchargeRateService;
             _surchargeRateMapper = surchargeRateMapper;
