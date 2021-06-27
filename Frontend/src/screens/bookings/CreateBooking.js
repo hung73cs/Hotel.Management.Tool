@@ -203,74 +203,80 @@ const CreateBooking = () => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-            <CInputGroup className="mb-3">
-              <CCol>
-                <CFormLabel>Chọn phòng:</CFormLabel>
-              </CCol>
-              <CCol>
-                <CFormSelect
-                  name="roomId"
-                  id="roomId"
-                  value={roomId}
-                  onInput={(e) => setRoomId(e.target.value)}
-                  onBlur={() => onBlurSetUnitPrice(roomId)}
-                  required
-                >
-                  <option value="">--Chọn--</option>
-                  {rooms.map((item, index) => {
-                    return (
-                      <option value={item.id} key={index}>
-                        {item.name}
-                      </option>
-                    )
-                  })}
-                </CFormSelect>
-                <CFormFeedback invalid>Bắt buộc</CFormFeedback>
-              </CCol>
-            </CInputGroup>
-            <CRow>
-              {roomId && (
-                <h6 style={{ textAlign: 'center' }}>
-                  Phòng bạn đang chọn là loại phòng <strong>{getRoomTypeRoom(roomId)}</strong>, có
-                  giá là <strong>{getPriceRoom(roomId)} đồng</strong>
-                </h6>
-              )}
-            </CRow>
-            <CInputGroup>
-              <CCol>
-                <CFormLabel>Ngày bắt đầu thuê:</CFormLabel>
-              </CCol>
-              <CCol>
-                <CFormControl id="date" name="date" value={date} disabled />
-              </CCol>
-            </CInputGroup>
-            <CInputGroup>
-              <CCol>
-                <CFormLabel>Số lượng khách:</CFormLabel>
-              </CCol>
-              <CCol>
-                <CFormControl
-                  id="numberOfGuest"
-                  name="numberOfGuest"
-                  type="number"
-                  value={numberOfGuest}
-                  onInput={(e) => setNumberOfGuest(e.target.value)}
-                  onBlur={() => onBlurNumberOfGuest(numberOfGuest)}
-                  required
-                />
-                <CFormFeedback invalid>Bắt buộc</CFormFeedback>
-              </CCol>
-              <CCol xs="12" sm="6" lg="3">
-                <CWidgetIcon
-                  className="mb-3"
-                  icon={<CIcon width={24} name="cil-settings" className="icon icon-xl" />}
-                  iconPadding={3}
-                  title="income"
-                  value="$1.999,50"
-                  color="primary"
-                />
-              </CCol>
-            </CInputGroup>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <div style={{ width: '50%' }}>
+                <CInputGroup className="mb-4">
+                  <CCol md="3">
+                    <CFormLabel>Chọn phòng:</CFormLabel>
+                  </CCol>
+                  <CCol>
+                    <CFormSelect
+                      name="roomId"
+                      id="roomId"
+                      value={roomId}
+                      onInput={(e) => setRoomId(e.target.value)}
+                      onBlur={() => onBlurSetUnitPrice(roomId)}
+                      required
+                    >
+                      <option value="">--Chọn--</option>
+                      {rooms.map((item, index) => {
+                        return (
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        )
+                      })}
+                    </CFormSelect>
+                    <CFormFeedback invalid>Bắt buộc</CFormFeedback>
+                  </CCol>
+                </CInputGroup>
+                <CInputGroup className="mb-4">
+                  <CCol md="3">
+                    <CFormLabel>Ngày bắt đầu thuê:</CFormLabel>
+                  </CCol>
+                  <CCol>
+                    <CFormControl id="date" name="date" value={date} disabled />
+                  </CCol>
+                </CInputGroup>
+                <CInputGroup className="mb-4">
+                  <CCol md="3">
+                    <CFormLabel>Số lượng khách:</CFormLabel>
+                  </CCol>
+                  <CCol>
+                    <CFormControl
+                      id="numberOfGuest"
+                      name="numberOfGuest"
+                      type="number"
+                      value={numberOfGuest}
+                      onInput={(e) => setNumberOfGuest(e.target.value)}
+                      onBlur={() => onBlurNumberOfGuest(numberOfGuest)}
+                      required
+                    />
+                    <CFormFeedback invalid>Bắt buộc</CFormFeedback>
+                  </CCol>
+                </CInputGroup>
+              </div>
+              <div style={{ width: '35%', margin: '0px 20px' }}>
+                <CCol>
+                  <CWidgetIcon
+                    className="mb-3"
+                    icon={<CIcon width={24} name="cil-settings" className="icon icon-xl" />}
+                    iconPadding={3}
+                    title={getPriceRoom(roomId) + ' VND'}
+                    value="GIÁ"
+                    color="danger"
+                  />
+                  <CWidgetIcon
+                    className="mb-3"
+                    icon={<CIcon width={24} name="cil-settings" className="icon icon-xl" />}
+                    iconPadding={3}
+                    title={unitStandardPrice + ' VND'}
+                    value="GIÁ TẠM TÍNH"
+                    color="danger"
+                  />
+                </CCol>
+              </div>
+            </div>
             <CTable>
               <CTableHead>
                 <CTableRow>
@@ -359,8 +365,14 @@ const CreateBooking = () => {
                 ))}
               </CTableBody>
             </CTable>
-            <CButton type="submit"> Tạo</CButton>
-            <CButton onClick={() => handleReset()}> Làm mới</CButton>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
+                THÊM
+              </CButton>
+              <CButton style={{ margin: '0px 10px', width: 100 }} onClick={() => handleReset()}>
+                LÀM MỚI
+              </CButton>
+            </div>
           </CForm>
         </CCardBody>
       </CCard>

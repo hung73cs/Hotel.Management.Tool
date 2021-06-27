@@ -186,19 +186,25 @@ const GuestTypes = () => {
           </CForm>
         </CModalBody>
         <CModalFooter>
-          {editForm ? (
-            <CButton color="secondary" onClick={saveGuestTypeToEdit}>
-              Lưu
-            </CButton>
-          ) : (
-            <CButton color="secondary" onClick={saveGuestTypeToCreate}>
-              Lưu
-            </CButton>
-          )}
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            {editForm ? (
+              <CButton style={{ margin: '0px 10px', width: 100 }} onClick={saveGuestTypeToEdit}>
+                SỬA
+              </CButton>
+            ) : (
+              <CButton style={{ margin: '0px 10px', width: 100 }} onClick={saveGuestTypeToCreate}>
+                THÊM
+              </CButton>
+            )}
 
-          <CButton color="secondary" onClick={() => handleCloseModal()}>
-            Đóng
-          </CButton>
+            <CButton
+              color="secondary"
+              style={{ margin: '0px 10px', width: 100 }}
+              onClick={() => handleCloseModal()}
+            >
+              ĐÓNG
+            </CButton>
+          </div>
         </CModalFooter>
       </CModal>
     )
@@ -214,23 +220,28 @@ const GuestTypes = () => {
             <strong>Danh sách loại phòng:</strong>
           </CCardHeader>
           <CCardBody>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <p className="text-medium-emphasis small" style={{ width: '70%' }}>
-                Đây là danh sách các loại phòng của khách sạn
-              </p>
-              <CInputGroup style={{ width: '20%', marginRight: 20 }}>
-                <CCol>
-                  <CFormControl type="text" name="searchInput" />
-                </CCol>
-              </CInputGroup>
-              <CButton
-                onClick={() => handleClickCreate()}
-                style={{ width: '10%', fontSize: '0.8rem' }}
-              >
-                {/* <CIcon style={{ margin: '0px 5px' }} size={'lg'} name="cil-plus"></CIcon> */}
-                <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>+</span>
-                Thêm
-              </CButton>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                margin: '10px 0px 10px 0px',
+              }}
+            >
+              <div>
+                <p className="text-medium-emphasis small">
+                  Đây là danh sách các quy định chung của khách sạn
+                </p>
+              </div>
+              <div>
+                <CButton
+                  onClick={() => handleClickCreate()}
+                  style={{ width: '100px', fontSize: '0.8rem' }}
+                >
+                  <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>+ </span>
+                  THÊM
+                </CButton>
+              </div>
             </div>
             <CTable striped>
               <CTableHead>

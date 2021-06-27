@@ -133,8 +133,7 @@ const CreateAccount = () => {
   const generateBirthDay = (date, month, year) => {
     console.log('gender', genders[0].value)
     console.log('role', roles[0].value)
-    if (0 < date < 10) return `${year}-${month}-0${date}`
-    else return `${year}-${month}-${date}`
+    return `${year}-${month}-${date}`
   }
 
   const createAccountService = () => {
@@ -224,7 +223,7 @@ const CreateAccount = () => {
             {/* Name */}
             <CInputGroup className="mb-3">
               <CCol md="4" style={{ marginRight: 10 }}>
-                <CFormLabel style={{ float: 'right' }}>Name:</CFormLabel>
+                <CFormLabel style={{ float: 'right' }}>Họ và tên:</CFormLabel>
               </CCol>
               <CCol md="6">
                 <CFormControl
@@ -426,14 +425,14 @@ const CreateAccount = () => {
                 <CFormFeedback invalid>Bắt buộc</CFormFeedback>
               </CCol>
             </CInputGroup>
-            <span>
-              <CButton color="primary" type="submit">
-                Tạo
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
+                THÊM
               </CButton>
-              <CButton color="primary" onClick={handleReset}>
-                Làm mới
+              <CButton style={{ margin: '0px 10px', width: 100 }} onClick={() => handleReset()}>
+                LÀM MỚI
               </CButton>
-            </span>
+            </div>
           </CForm>
         </CCardBody>
         <CCardFooter></CCardFooter>

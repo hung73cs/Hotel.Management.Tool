@@ -128,6 +128,12 @@ const _nav = [
         anchor: 'Loại khách',
         to: '/guest-type',
       },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Tỉ lệ phụ thu',
+        to: '/surcharge-rate',
+      },
     ],
   },
   {

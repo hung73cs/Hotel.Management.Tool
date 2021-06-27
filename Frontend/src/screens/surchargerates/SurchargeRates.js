@@ -23,28 +23,23 @@ import {
   CFormFeedback,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { parameterService } from 'src/_services'
+import { surchargeRateService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 
-const Parameters = () => {
+const SurchargeRates = () => {
   const [validated, setValidated] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [message, setMessage] = useState('')
   const [toastMessage, setToastMessage] = useState('')
   const [editForm, setEditForm] = useState(false)
-  const [parameterName, setParameterName] = useState('')
-  const [parameterValue, setParameterValue] = useState(0)
-  const [parameterId, setParameterId] = useState('')
-  const [parameters, setParameters] = useState('')
+  const [surchargeRates, setSurchargeRates] = useState([])
+  const [guestLevel, setGuestLevel] = useState('')
+  const [rate, setRate] = useState('')
 
   useEffect(() => {
-    parameterService.getAll().then((x) => setParameters(x))
+    //surchargeRateService.getAll().then((x) => setSurchargeRates(x))
   }, [])
-
-  useEffect(() => {
-    parameterService.getAll().then((x) => setParameters(x))
-  }, [openModal])
 
   const handleSubmit = (event) => {
     const form = event.currentTarget
@@ -67,10 +62,10 @@ const Parameters = () => {
 
   const createParameterService = () => {
     var data = {
-      name: parameterName,
-      value: Number(parameterValue),
+      guestLevel: Number(guestLevel),
+      rate: Number(rate),
     }
-    parameterService.create(data).then((res) => {
+    surchargeRateService.create(data).then((res) => {
       switch (res) {
         case 400:
           setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
@@ -94,11 +89,10 @@ const Parameters = () => {
 
   const editParameterService = () => {
     var data = {
-      id: parameterId,
-      name: parameterName,
-      value: Number(parameterValue),
+      guestLevel: Number(guestLevel),
+      rate: Number(rate),
     }
-    parameterService.edit(data).then((res) => {
+    surchargeRateService.edit(data).then((res) => {
       switch (res) {
         case 400:
           setMessage('Có lỗi khi sửa, vui lòng điền đầy đủ thông tin')
@@ -127,9 +121,8 @@ const Parameters = () => {
     setOpenModal(true)
   }
   const handleOpenModalToUpdate = (data) => {
-    setParameterId(data.id)
-    setParameterName(data.name)
-    setParameterValue(data.value)
+    setGuestLevel(data.guestLevel)
+    setRate(data.rate)
     setEditForm(true)
     setOpenModal(true)
   }
@@ -142,24 +135,15 @@ const Parameters = () => {
     setMessage('')
     setToastMessage('')
     setEditForm(false)
-    setParameterId('')
-    setParameterName('')
-    setParameterValue('')
-  }
-
-  const [searchInput, setSearchInput] = useState('')
-
-  const handleChangeSearchInput = (e) => {
-    const { name, value } = e.target
-    setSearchInput({ ...searchInput, [name]: value })
-    //searchRoom()
+    setGuestLevel('')
+    setRate('')
   }
 
   const handleClickDelete = (id) => {
-    parameterService._delete(id)
-    let parameterCopy = parameters.filter((item) => item.id !== id)
-    setParameters(parameterCopy)
-    setToastMessage('Xoá quy định thành công')
+    surchargeRateService._delete(id)
+    let copy = surchargeRates.filter((item) => item.id !== id)
+    setSurchargeRates(copy)
+    setToastMessage('Xoá thành công')
   }
 
   const modalCreateEdit = () => {
@@ -167,9 +151,9 @@ const Parameters = () => {
       <CModal visible={openModal}>
         <CModalHeader onDismiss={() => handleCloseModal()}>
           {editForm ? (
-            <CModalTitle>Thông tin quy định muốn sửa</CModalTitle>
+            <CModalTitle>Thông tin muốn sửa</CModalTitle>
           ) : (
-            <CModalTitle>Thông tin quy định muốn thêm</CModalTitle>
+            <CModalTitle>Thông tin muốn thêm</CModalTitle>
           )}
         </CModalHeader>
         {message && <Message variant="danger">{message}</Message>}
@@ -189,8 +173,8 @@ const Parameters = () => {
                   name="name"
                   type="text"
                   id="name"
-                  value={parameterName}
-                  onInput={(e) => setParameterName(e.target.value)}
+                  value={guestLevel}
+                  onInput={(e) => setGuestLevel(e.target.value)}
                 />
                 <CFormFeedback invalid>Bắt buộc</CFormFeedback>
               </CCol>
@@ -204,8 +188,8 @@ const Parameters = () => {
                   type="text"
                   id="value"
                   name="value"
-                  onInput={(e) => setParameterValue(e.target.value)}
-                  value={parameterValue}
+                  onInput={(e) => setRate(e.target.value)}
+                  value={rate}
                 />
               </CCol>
             </CInputGroup>
@@ -234,9 +218,9 @@ const Parameters = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Danh sách quy định chung của khách sạn:</strong>
+            <strong>Bảng tra cứu tỉ lệ phụ thu:</strong>
           </CCardHeader>
-          <CCardBody>
+          <CCardBody style={{ display: 'flex', flexDirection: 'column' }}>
             <div
               style={{
                 display: 'flex',
@@ -246,9 +230,7 @@ const Parameters = () => {
               }}
             >
               <div>
-                <p className="text-medium-emphasis small">
-                  Đây là danh sách các quy định chung của khách sạn
-                </p>
+                <p className="text-medium-emphasis small">Đây là danh sách tỉ lệ phụ thu</p>
               </div>
               <div>
                 <CButton
@@ -264,21 +246,21 @@ const Parameters = () => {
               <CTableHead>
                 <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">TÊN QUY ĐỊNH</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">GIÁ TRỊ</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">SỐ KHÁCH</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">TỈ LỆ PHỤ THU</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {parameters.length > 0 ? (
-                  parameters.map((item, index) => (
+                {surchargeRates.length > 0 ? (
+                  surchargeRates.map((item, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>
-                        <strong>{item.name}</strong>
+                        <strong>{item.guestLevel}</strong>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <strong> {item.value} </strong>
+                        <strong> {item.rate} </strong>
                       </CTableDataCell>
                       <CTableDataCell>
                         <CIcon
@@ -291,7 +273,7 @@ const Parameters = () => {
                           style={{ margin: '0px 5px', cursor: 'pointer' }}
                           size={'lg'}
                           name="cil-trash"
-                          onClick={() => (item.id = handleClickDelete(item.id))}
+                          onClick={() => handleClickDelete(item.guestLevel)}
                         />
                       </CTableDataCell>
                     </CTableRow>
@@ -308,4 +290,4 @@ const Parameters = () => {
   )
 }
 
-export default Parameters
+export default SurchargeRates

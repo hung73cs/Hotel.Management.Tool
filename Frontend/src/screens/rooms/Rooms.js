@@ -266,14 +266,18 @@ const Rooms = () => {
                 />
               </CCol>
             </CInputGroup>
-            <span>
-              <CButton color="secondary" type="submit">
-                Lưu
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
+                THÊM
               </CButton>
-              <CButton color="secondary" onClick={() => handleCloseModal()}>
-                Đóng
+              <CButton
+                color="secondary"
+                style={{ margin: '0px 10px', width: 100 }}
+                onClick={() => handleCloseModal()}
+              >
+                ĐÓNG
               </CButton>
-            </span>
+            </div>
           </CForm>
         </CModalBody>
       </CModal>
@@ -289,20 +293,29 @@ const Rooms = () => {
           <CCardHeader>
             <strong>Danh sách loại phòng:</strong>
           </CCardHeader>
-          <CCardBody style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <p className="text-medium-emphasis small" style={{ width: '70%' }}>
-                Đây là danh sách các phòng của khách sạn
-              </p>
-              <CInputGroup style={{ width: '20%', marginRight: 20 }}></CInputGroup>
-              <CButton
-                onClick={() => handleOpenModalToCreate()}
-                style={{ width: '10%', fontSize: '0.8rem' }}
-              >
-                {/* <CIcon style={{ margin: '0px 5px' }} size={'lg'} name="cil-plus"></CIcon> */}
-                <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>+</span>
-                Thêm
-              </CButton>
+          <CCardBody>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                margin: '10px 0px 10px 0px',
+              }}
+            >
+              <div>
+                <p className="text-medium-emphasis small">
+                  Đây là danh sách các loại phòng của khách sạn
+                </p>
+              </div>
+              <div>
+                <CButton
+                  onClick={() => handleOpenModalToCreate()}
+                  style={{ width: '100px', fontSize: '0.8rem' }}
+                >
+                  <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>+ </span>
+                  THÊM
+                </CButton>
+              </div>
             </div>
             <CTable striped>
               <CTableHead>
