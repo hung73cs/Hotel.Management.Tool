@@ -21,7 +21,7 @@ import {
   CWidgetIcon,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { roomService, surchargeRateService, guestTypeService } from 'src/_services'
+import { roomService, surchargeRateService, guestTypeService, bookingService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 const CreateBooking = () => {
@@ -35,37 +35,80 @@ const CreateBooking = () => {
   const [roomId, setRoomId] = useState('')
   const [accountId, setAccountId] = useState('')
 
-  const [numberOfGuest, setNumberOfGuest] = useState(0)
+  const [numberOfGuest, setNumberOfGuest] = useState('')
   const [unitPrice, setUnitPrice] = useState(0)
   const [unitStandardPrice, setUnitStandardPrice] = useState(0)
 
-  const [guestName, setGuestName] = useState('')
-  const [guestTypeId, setGuestTypeId] = useState('')
-  const [idCard, setIdCard] = useState('')
-  const [address, setAddress] = useState('')
-
-  let initBookingDetail = {
-    guestName: '',
-    guestTypeId: '',
-    idCard: '',
-    address: '',
-  }
-  const [bookingDetails, setBookDetails] = useState([
-    initBookingDetail,
-    initBookingDetail,
-    initBookingDetail,
-    initBookingDetail,
-    initBookingDetail,
-    initBookingDetail,
-    initBookingDetail,
-    initBookingDetail,
-  ])
+  const initBookingDetail = [
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+    {
+      guestName: '',
+      guestTypeId: '',
+      idCard: '',
+      address: '',
+    },
+  ]
+  const [bookingDetails, setBookDetails] = useState(initBookingDetail)
 
   const date = new Date()
   const [numberBookingDetail, setNumberBookingDetail] = useState(0)
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
     guestTypeService.getAll().then((x) => setguestTypes(x))
+    setAccountId(JSON.parse(localStorage.getItem('user'))?.accountId)
   }, [])
 
   const handleSubmit = (event) => {
@@ -76,6 +119,65 @@ const CreateBooking = () => {
       setValidated(true)
       return
     }
+    event.preventDefault()
+    setMessage('')
+    createBookingService()
+    return
+  }
+
+  const onBlurSetUnitPrice = (id) => {
+    setUnitPrice(getPriceRoom(id))
+  }
+
+  const onBlurNumberOfGuest = (number) => {
+    setNumberBookingDetail(number)
+    calculateUnitStandardPrice()
+  }
+
+  const calculateUnitStandardPrice = () => {
+    var data = {
+      numberOfGuest: Number(numberOfGuest),
+      unitPrice: Number(unitPrice),
+    }
+    surchargeRateService.calculate(data).then((res) => setUnitStandardPrice(res.result))
+    console.log('UnitStandardPrice', unitStandardPrice)
+  }
+
+  const createBookingService = () => {
+    const books = bookingDetails.slice(0, numberOfGuest)
+    var data = {
+      roomId: roomId,
+      accountId: accountId,
+      numberOfGuest: Number(numberOfGuest),
+      unitPrice: Number(unitPrice),
+      unitStandardPrice: Number(unitStandardPrice),
+      bookingDetailModels: books,
+    }
+    console.log('data', data)
+    bookingService.create(data).then((res) => {
+      switch (res) {
+        case 400:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        case 409:
+          setMessage('Phòng hiện đã được thuê')
+          break
+        case 500:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        default:
+          setMessage('')
+          setToastMessage('Tạo phiếu thuê phòng thành công')
+      }
+    })
+  }
+
+  const handleReset = () => {
+    setRoomId('')
+    setNumberOfGuest('')
+    setUnitPrice(0)
+    setUnitStandardPrice(0)
+    setBookDetails(initBookingDetail)
   }
 
   const getPriceRoom = (id) => {
@@ -111,6 +213,7 @@ const CreateBooking = () => {
                   id="roomId"
                   value={roomId}
                   onInput={(e) => setRoomId(e.target.value)}
+                  onBlur={() => onBlurSetUnitPrice(roomId)}
                   required
                 >
                   <option value="">--Chọn--</option>
@@ -152,7 +255,7 @@ const CreateBooking = () => {
                   type="number"
                   value={numberOfGuest}
                   onInput={(e) => setNumberOfGuest(e.target.value)}
-                  onBlur={(e) => setNumberBookingDetail(numberOfGuest)}
+                  onBlur={() => onBlurNumberOfGuest(numberOfGuest)}
                   required
                 />
                 <CFormFeedback invalid>Bắt buộc</CFormFeedback>
@@ -186,16 +289,14 @@ const CreateBooking = () => {
                     </CTableDataCell>
                     <CTableDataCell>
                       <CFormControl
-                        id="name"
-                        name="name"
+                        // id="name"
+                        // name="name"
                         type="text"
-                        value={bookingDetails[index]?.name || ''}
+                        value={bookingDetails[index]?.guestName || ''}
                         onInput={(e) => {
-                          let temp = Object.assign({}, bookingDetails)
-                          console.log(e.target.value)
-                          temp[index].name = e.target.value
+                          let temp = [...bookingDetails]
+                          temp[index].guestName = e.target.value
                           setBookDetails(temp)
-                          console.log(temp)
                         }}
                         required
                       />
@@ -207,11 +308,9 @@ const CreateBooking = () => {
                         // id="f"
                         value={bookingDetails[index]?.guestTypeId || ''}
                         onInput={(e) => {
-                          let temp = Object.assign({}, bookingDetails)
-                          console.log(e.target.value)
+                          let temp = [...bookingDetails]
                           temp[index].guestTypeId = e.target.value
                           setBookDetails(temp)
-                          console.log(temp)
                         }}
                         required
                       >
@@ -228,16 +327,14 @@ const CreateBooking = () => {
                     </CTableDataCell>
                     <CTableDataCell>
                       <CFormControl
-                        id="idCard"
-                        name="idCard"
+                        // id="idCard"
+                        // name="idCard"
                         type="text"
                         value={bookingDetails[index]?.idCard || ''}
                         onInput={(e) => {
-                          let temp = Object.assign({}, bookingDetails)
-                          console.log(e.target.value)
+                          let temp = [...bookingDetails]
                           temp[index].idCard = e.target.value
                           setBookDetails(temp)
-                          console.log(temp)
                         }}
                         required
                       />
@@ -245,16 +342,14 @@ const CreateBooking = () => {
                     </CTableDataCell>
                     <CTableDataCell>
                       <CFormControl
-                        id="address"
-                        name="address"
+                        // id="address"
+                        // name="address"
                         type="text"
                         value={bookingDetails[index]?.address || ''}
                         onInput={(e) => {
-                          let temp = Object.assign({}, bookingDetails)
-                          console.log(e.target.value)
+                          let temp = [...bookingDetails]
                           temp[index].address = e.target.value
                           setBookDetails(temp)
-                          console.log(temp)
                         }}
                         required
                       />
@@ -265,7 +360,7 @@ const CreateBooking = () => {
               </CTableBody>
             </CTable>
             <CButton type="submit"> Tạo</CButton>
-            <CButton> Làm mới</CButton>
+            <CButton onClick={() => handleReset()}> Làm mới</CButton>
           </CForm>
         </CCardBody>
       </CCard>

@@ -19,7 +19,7 @@ const AppHeaderDropdown = () => {
 
   const getUsername = () => {
     const username = JSON.parse(localStorage.getItem('user'))?.username
-    return <h6>{username}</h6>
+    return <h5>{username}</h5>
   }
 
   return (
@@ -30,10 +30,10 @@ const AppHeaderDropdown = () => {
         className="py-0"
         caret={false}
       >
-        <span>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           {getUsername()}
           <CAvatar src="avatars/avt.png" size="md" />
-        </span>
+        </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>

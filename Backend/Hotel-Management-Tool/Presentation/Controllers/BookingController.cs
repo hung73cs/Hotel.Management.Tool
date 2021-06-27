@@ -41,7 +41,12 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
+            var room = await _roomService.GetRoomAsync(model.RoomId);
+            if(room.RoomStatus == RoomStatus.CLOSE)
+            {
+                throw new ExtendException(ErrorCode.Conflict, "Phòng đã được thuê");
 
+            }
             var result = await _bookingService.CreateAsync(mapper);
             await _roomService.BookRoom(model.RoomId);
 
