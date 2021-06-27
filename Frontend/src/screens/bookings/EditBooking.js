@@ -136,7 +136,7 @@ const EditBooking = () => {
     }
     event.preventDefault()
     setMessage('')
-    createBookingService()
+    editBookingService()
     return
   }
 
@@ -158,7 +158,7 @@ const EditBooking = () => {
     console.log('UnitStandardPrice', unitStandardPrice)
   }
 
-  const createBookingService = () => {
+  const editBookingService = () => {
     const books = bookingDetails.slice(0, numberOfGuest)
     var data = {
       roomId: roomId,
@@ -169,7 +169,7 @@ const EditBooking = () => {
       bookingDetailModels: books,
     }
     console.log('data', data)
-    bookingService.create(data).then((res) => {
+    bookingService.edit(booking.id, data).then((res) => {
       switch (res) {
         case 400:
           setMessage('Có lỗi khi lưu, vui lòng điền đầy đủ thông tin')

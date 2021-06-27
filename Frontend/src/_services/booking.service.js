@@ -37,14 +37,16 @@ async function create(booking) {
   return await fetch(`${apiUrl}/booking`, requestOptions).then(handleResponse)
 }
 
-async function edit(booking) {
+async function edit(id, booking) {
   const requestOptions = {
     method: 'PUT',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
     body: JSON.stringify(booking),
   }
 
-  return await fetch(`${apiUrl}/booking/id/${booking.id}`, requestOptions).then(handleResponse)
+  console.log('id', id)
+  console.log('booking', booking)
+  return await fetch(`${apiUrl}/booking/id/${id}`, requestOptions).then(handleResponse)
 
 }
 
