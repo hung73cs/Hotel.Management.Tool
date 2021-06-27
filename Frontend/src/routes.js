@@ -127,5 +127,6 @@ const routes = [
   { path: '/booking/create', name: 'Tạo phiếu thuê phòng', component: CreateBooking },
   { path: '/booking/bookings', name: 'Danh sách phiếu thuê phòng', component: Bookings },
   { path: '/booking/editbooking', name: 'Sửa phiếu thuê phòng', component: EditBooking },
+  { path: '/report', name: 'Báo cáo doanh thu' },
 ]
 export default routes
