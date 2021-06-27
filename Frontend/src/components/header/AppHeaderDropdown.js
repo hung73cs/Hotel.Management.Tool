@@ -17,10 +17,23 @@ const AppHeaderDropdown = () => {
     dispatch(userActions.logout())
   }
 
+  const getUsername = () => {
+    const username = JSON.parse(localStorage.getItem('user'))?.username
+    return <h6>{username}</h6>
+  }
+
   return (
     <CDropdown variant="nav-item">
-      <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src="avatars/avt.png" size="md" />
+      <CDropdownToggle
+        style={{ display: 'flex' }}
+        placement="bottom-end"
+        className="py-0"
+        caret={false}
+      >
+        <span>
+          {getUsername()}
+          <CAvatar src="avatars/avt.png" size="md" />
+        </span>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>

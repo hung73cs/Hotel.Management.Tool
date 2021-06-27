@@ -80,6 +80,9 @@ const Rooms = () => {
         case 409:
           setMessage('Tên phòng đã tồn tại')
           break
+        case 403:
+          setMessage('Không có quyền')
+          break
         case 500:
           setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
           break
@@ -106,6 +109,9 @@ const Rooms = () => {
           break
         case 404:
           setMessage('Phòng cần sửa không tồn tại')
+          break
+        case 403:
+          setMessage('Không có quyền')
           break
         case 409:
           setMessage('Tên phòng bị trùng với các phòng khác')

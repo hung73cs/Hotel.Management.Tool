@@ -159,6 +159,9 @@ const CreateAccount = () => {
         case 409:
           setMessage('Tên tài khoản đã tồn tại')
           break
+        case 403:
+          setMessage('Không có quyền')
+          break
         case 500:
           setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
           break

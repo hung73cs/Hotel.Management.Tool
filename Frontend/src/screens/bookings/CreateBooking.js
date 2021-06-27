@@ -24,9 +24,6 @@ import CIcon from '@coreui/icons-react'
 import { roomService, surchargeRateService, guestTypeService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
-import { date } from 'yup'
-import { array } from 'yup'
-import { Number, Object } from 'core-js'
 const CreateBooking = () => {
   const [validated, setValidated] = useState(false)
   const [message, setMessage] = useState('')
