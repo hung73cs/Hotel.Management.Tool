@@ -64,6 +64,7 @@ const Parameters = React.lazy(() => import('./screens/parameters/Parameters'))
 const GuestTypes = React.lazy(() => import('./screens/guests/GuestTypes'))
 const CreateBooking = React.lazy(() => import('./screens/bookings/CreateBooking'))
 const Bookings = React.lazy(() => import('./screens/bookings/Bookings'))
+const EditBooking = React.lazy(() => import('./screens/bookings/EditBooking'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -125,5 +126,6 @@ const routes = [
   { path: '/booking', name: 'Thuê phòng' },
   { path: '/booking/create', name: 'Tạo phiếu thuê phòng', component: CreateBooking },
   { path: '/booking/bookings', name: 'Danh sách phiếu thuê phòng', component: Bookings },
+  { path: '/booking/editbooking', name: 'Sửa phiếu thuê phòng', component: EditBooking },
 ]
 export default routes
