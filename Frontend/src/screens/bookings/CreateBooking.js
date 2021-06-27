@@ -18,6 +18,7 @@ import {
   CFormSelect,
   CForm,
   CFormFeedback,
+  CWidgetIcon,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { roomService, surchargeRateService, guestTypeService } from 'src/_services'
@@ -158,6 +159,16 @@ const CreateBooking = () => {
                   required
                 />
                 <CFormFeedback invalid>Bắt buộc</CFormFeedback>
+              </CCol>
+              <CCol xs="12" sm="6" lg="3">
+                <CWidgetIcon
+                  className="mb-3"
+                  icon={<CIcon width={24} name="cil-settings" className="icon icon-xl" />}
+                  iconPadding={3}
+                  title="income"
+                  value="$1.999,50"
+                  color="primary"
+                />
               </CCol>
             </CInputGroup>
             <CTable>

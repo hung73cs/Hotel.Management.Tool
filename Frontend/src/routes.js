@@ -115,15 +115,15 @@ const routes = [
   { path: '/widgets', name: 'Widgets', component: Widgets },
 
   //Tự thêm
-  { path: '/user', name: 'User' },
-  { path: '/user/getaccounts', name: 'GetAccounts', component: GetAccounts },
-  { path: '/user/createaccount', name: 'CreateAccount', component: CreateAccount },
-  { path: '/room-type', name: 'RoomType', component: RoomTypes },
-  { path: '/room', name: 'Room', component: Rooms },
-  { path: '/parameter', name: 'Parameter', component: Parameters },
-  { path: '/guest-type', name: 'GuestType', component: GuestTypes },
-  { path: '/booking', name: 'Booking' },
-  { path: '/booking/create', name: 'CreateBooking', component: CreateBooking },
-  { path: '/booking/bookings', name: 'Bookings', component: Bookings },
+  { path: '/user', name: 'Tài khoản' },
+  { path: '/user/getaccounts', name: 'Danh sách tài khoản', component: GetAccounts },
+  { path: '/user/createaccount', name: 'Tạo tài khoản', component: CreateAccount },
+  { path: '/room-type', name: 'Quản lý loại phòng', component: RoomTypes },
+  { path: '/room', name: 'Quản lý phòng', component: Rooms },
+  { path: '/parameter', name: 'Quy định chung', component: Parameters },
+  { path: '/guest-type', name: 'Quản lý loại khách', component: GuestTypes },
+  { path: '/booking', name: 'Thuê phòng' },
+  { path: '/booking/create', name: 'Tạo phiếu thuê phòng', component: CreateBooking },
+  { path: '/booking/bookings', name: 'Danh sách phiếu thuê phòng', component: Bookings },
 ]
 export default routes

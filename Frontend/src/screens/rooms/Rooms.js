@@ -149,12 +149,6 @@ const Rooms = () => {
 
   const [searchInput, setSearchInput] = useState('')
 
-  const handleChangeSearchInput = (e) => {
-    const { name, value } = e.target
-    setSearchInput({ ...searchInput, [name]: value })
-    //searchRoom()
-  }
-
   const handleClickDelete = (data) => {
     roomService._delete(data)
     let roomsCopy = rooms.filter((item) => item.id !== data)
@@ -162,6 +156,19 @@ const Rooms = () => {
     setToastMessage('Xoá phòng thành công')
   }
 
+  const [sort, setSort] = useState(true)
+  const handleSort = () => {
+    if (sort) {
+      rooms.sort((a, b) => a.name.localeCompare(b.name))
+      setSort(!sort)
+    } else {
+      rooms.sort((a, b) => b.name.localeCompare(a.name))
+    }
+  }
+
+  // const statusColor = (data) = {
+  //   if(data = 'OPEN') {},
+  // }
   const modalCreateEdit = () => {
     return (
       <CModal visible={openModal}>
@@ -281,16 +288,7 @@ const Rooms = () => {
               <p className="text-medium-emphasis small" style={{ width: '70%' }}>
                 Đây là danh sách các phòng của khách sạn
               </p>
-              <CInputGroup style={{ width: '20%', marginRight: 20 }}>
-                <CCol>
-                  <CFormControl
-                    type="text"
-                    name="searchInput"
-                    onInput={handleChangeSearchInput}
-                    value={searchInput || ''}
-                  />
-                </CCol>
-              </CInputGroup>
+              <CInputGroup style={{ width: '20%', marginRight: 20 }}></CInputGroup>
               <CButton
                 onClick={() => handleOpenModalToCreate()}
                 style={{ width: '10%', fontSize: '0.8rem' }}
@@ -304,7 +302,13 @@ const Rooms = () => {
               <CTableHead>
                 <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">TÊN PHÒNG</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleSort()}
+                  >
+                    TÊN PHÒNG
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col">LOẠI PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÌNH TRẠNG</CTableHeaderCell>
@@ -326,7 +330,9 @@ const Rooms = () => {
                       <CTableDataCell>
                         <strong>{room.roomTypeModel.cost} </strong>
                       </CTableDataCell>
-                      <CTableDataCell>{room.roomStatus}</CTableDataCell>
+                      <CTableDataCell>
+                        <p style={{ color: 'danger' }}>{room.roomStatus}</p>
+                      </CTableDataCell>
                       <CTableDataCell>{room.note}</CTableDataCell>
                       <CTableDataCell>
                         <CIcon
