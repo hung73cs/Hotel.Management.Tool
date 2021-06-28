@@ -20,11 +20,6 @@ namespace Hotel.Management.Tool.ApplicationLogic
         }
         public async Task<Report> CreateReportAsync(Report reportToCreate)
         {
-            var report = await _report.SearchForSingleItemAsync(x => x.Month == reportToCreate.Month, x => x.Year == reportToCreate.Year);
-            if (report != null)
-            {
-                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ItemExisted);
-            }
             return await _report.CreateAsync(reportToCreate);
         }
 

@@ -55,13 +55,12 @@ const Bookings = () => {
   }, [])
 
   useEffect(() => {
-    userService.getAll().then((x) => setAccounts(x))
-  }, [])
+    bookingService.getAll().then((x) => setBookings(x))
+  }, [rooms])
 
   useEffect(() => {
-    bookingService.getAll().then((x) => setBookings(x))
+    userService.getAll().then((x) => setAccounts(x))
   }, [])
-
   useEffect(() => {
     guestTypeService.getAll().then((x) => setGuestTypes(x))
   }, [])
@@ -74,8 +73,16 @@ const Bookings = () => {
   }
 
   const findNameRoom = (id) => {
+    console.log('room', id)
+    console.log('booking', bookings)
+    console.log('room', rooms)
+    console.log(
+      'room',
+      rooms.find((x) => x.id === id),
+    )
     return rooms.find((x) => x.id === id)?.name
   }
+
   const findAccount = (id) => {
     return accounts.find((x) => x.accountId === id)?.username
   }

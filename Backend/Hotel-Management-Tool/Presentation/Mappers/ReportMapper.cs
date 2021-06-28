@@ -9,12 +9,19 @@ namespace Hotel.Management.Tool.Presentation.Mappers
 {
     public class ReportMapper : IReportMapper
     {
-        public Report MapReportModelToReport(ReportModel reportModel)
+        public Report MapReportModelToReport(ReportCreateModel reportModel, decimal totalPrice)
         {
-            throw new NotImplementedException();
+            var report = new Report
+            {
+                Id = Guid.NewGuid(),
+                Month = reportModel.Month,
+                Year = reportModel.Year,
+                TotalRevenue = totalPrice
+            };
+            return report;
         }
 
-        public Report MapReportModelToReport(ReportModel reportModel, Report reportEntity)
+        public Report MapReportModelToReport(ReportCreateModel reportModel, Report reportEntity)
         {
             throw new NotImplementedException();
         }
@@ -38,7 +45,6 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 Month = report.Month,
                 Year = report.Year,
                 TotalRevenue = report.TotalRevenue,
-                ReportDetailModels = reportDetailModels,
             };
         }
 
@@ -64,7 +70,6 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                     Month = i.Month,
                     Year = i.Year,
                     TotalRevenue = i.TotalRevenue,
-                    ReportDetailModels = reportDetailModels,
                 };
                 reportModels.Add(reportModel);
             }

@@ -82,6 +82,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IParameterService, ParameterService>();
             services.AddTransient<ISurchargeRateService, SurchargeRateService>();
             services.AddTransient<IBillService, BillService>();
+            services.AddTransient<IReportService, ReportService>();
 
 
             //Mapper
@@ -94,6 +95,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<IParameterMapper, ParameterMapper>();
             services.AddTransient<IBillMapper, BillMapper>();
             services.AddTransient<ISurchargeRateMapper, SurchargeRateMapper>();
+            services.AddTransient<IReportMapper, ReportMapper>();
 
 
             //Repository
@@ -108,6 +110,7 @@ namespace Hotel.Management.Tool
             services.AddTransient<ISurchargeRateRepository, SurchargeRateRepository>();
             services.AddTransient<IBillRepository, BillRepository>();
             services.AddTransient<IBookingDetailRepository, BookingDetailRepository>();
+            services.AddTransient<IReportRepository, ReportRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

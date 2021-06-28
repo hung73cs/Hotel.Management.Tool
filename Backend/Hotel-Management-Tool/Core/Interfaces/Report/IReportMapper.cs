@@ -8,7 +8,7 @@ namespace Hotel.Management.Tool.Core.Interfaces
     {
         ReportModel MapReportToReportModel(Report report);
         List<ReportModel> MapReportToReportModel(List<Report> reports);
-        Report MapReportModelToReport(ReportCreateModel reportModel, decimal totalRevenue);
+        Report MapReportModelToReport(ReportCreateModel reportModel, decimal totalPrice);
         Report MapReportModelToReport(ReportCreateModel reportModel, Report reportEntity);
     }
 }
