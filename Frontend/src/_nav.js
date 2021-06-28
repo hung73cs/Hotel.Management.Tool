@@ -131,6 +131,27 @@ const _nav = [
     ],
   },
   {
+    _component: 'CNavGroup',
+    as: NavLink,
+    anchor: 'Hóa đơn',
+    to: '/to',
+    icon: <CIcon name="cil-dollar" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Kiểm tra hóa đơn',
+        to: '/bill',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Tạo hóa đơn',
+        to: '/createbill',
+      },
+    ],
+  },
+  {
     _component: 'CNavItem',
     as: NavLink,
     anchor: 'Typography',
