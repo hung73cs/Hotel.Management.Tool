@@ -23,7 +23,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
-import { roomService, bookingService } from 'src/_services'
+import { roomService, bookingService, billService } from 'src/_services'
 const CreateBill = () => {
   const [validated, setValidated] = useState(false)
   const [message, setMessage] = useState('')
@@ -37,6 +37,7 @@ const CreateBill = () => {
   const [totalPrice, setTotalPrice] = useState(0)
   const [bookingBilleds, setBookingBilleds] = useState([])
   const [numberOfRent, setNumberOfRent] = useState('')
+  const [billDetails, setBillDetails] = useState([])
   const date = new Date().toISOString()
 
   useEffect(() => {
@@ -58,16 +59,78 @@ const CreateBill = () => {
     event.preventDefault()
     setMessage('')
     //createBookingService()
+    createBillService()
     return
   }
+
+  const calculateNumberOfRentalDays = (date, preDate) => {
+    const dayDate = date.split('-').pop()
+    const dayPreDate = preDate.split('-').pop()
+    return dayDate - dayPreDate + 1
+  }
+
   const handleAddToBookingBills = (bookingId) => {
-    const booking = bookings.find((x) => x.id === bookingId)
-    setBookingBilleds((bookingBilleds) => bookingBilleds.push(booking))
+    let temp = bookingBilleds
+    let bookingsCopy = [...bookings]
+    let booking = bookingsCopy.find((x) => x.id === bookingId)
+    bookingsCopy = bookingsCopy.filter((x) => x.id !== bookingId)
+    let calculateTotalPrice = totalPrice
+    calculateTotalPrice += booking.unitStandardPrice
+    setTotalPrice(calculateTotalPrice)
+    temp.push(booking)
+    setBookingId(bookingId)
+    setBookingBilleds(temp)
+    console.log('booking', booking)
+    const data = {
+      bookingId: booking.id,
+      numberOfRentalDays: calculateNumberOfRentalDays(
+        date.split('T')[0],
+        booking.startedDate.split('T')[0],
+      ),
+      unitPrice: booking.unitPrice,
+      price: booking.unitStandardPrice,
+    }
+    let tempBillDetails = billDetails
+    tempBillDetails.push(data)
+    setBillDetails(tempBillDetails)
+    console.log('tempBillDetails', tempBillDetails)
+    setBookings(bookingsCopy)
     console.log('bookingBilleds', bookingBilleds)
   }
 
-  const findNameRoom = (bookingId) => {
+  const createBillService = () => {
+    var data = {
+      createdDate: date,
+      guestName: guestName,
+      address: address,
+      totalPrice: Number(totalPrice),
+      billDetailModels: billDetails,
+    }
+    console.log('data', data)
+    billService.create(data).then((res) => {
+      switch (res) {
+        case 400:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        case 409:
+          setMessage('Hoá đơn tạo không hợp lệ')
+          break
+        case 500:
+          setMessage('Có lỗi khi tạo, vui lòng điền đầy đủ thông tin')
+          break
+        default:
+          setMessage('')
+          setToastMessage('Tạo hoá đơn thành công')
+      }
+    })
+  }
+
+  const findBookingNameByRoom = (bookingId) => {
     const roomId = bookings.find((x) => x.id === bookingId)?.roomId
+    return rooms.find((x) => x.id === roomId)?.name
+  }
+
+  const findNameRoom = (roomId) => {
     return rooms.find((x) => x.id === roomId)?.name
   }
 
@@ -101,20 +164,19 @@ const CreateBill = () => {
                       name="bookingId"
                       id="bookingId"
                       value={bookingId}
-                      onInput={(e) => setBookingId(e.target.value)}
-                      required
-                      onChange={() => handleAddToBookingBills(bookingId)}
+                      onInput={(e) => {
+                        handleAddToBookingBills(e.target.value)
+                      }}
                     >
                       <option value="">--Chọn--</option>
                       {bookings.map((item, index) => {
                         return (
                           <option value={item.id} key={index}>
-                            {findNameRoom(item.id)}
+                            {item.id.split('-').pop()}
                           </option>
                         )
                       })}
                     </CFormSelect>
-                    <CFormFeedback invalid>Bắt buộc</CFormFeedback>
                   </CCol>
                 </CInputGroup>
                 <CInputGroup className="mb-4">
@@ -176,7 +238,7 @@ const CreateBill = () => {
                 <CTableRow>
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
                   <CTableHeaderCell scope="col">PHÒNG</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">SỐ NGÀY THUÊ</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">NGÀY BẮT ĐẦU THUÊ</CTableHeaderCell>
                   <CTableHeaderCell scope="col">ĐƠN GIÁ PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">THÀNH TIỀN</CTableHeaderCell>
                 </CTableRow>
@@ -189,16 +251,16 @@ const CreateBill = () => {
                         <strong>{index + 1}</strong>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <strong>{item.bookingId}</strong>
+                        <strong>{findNameRoom(item.roomId)}</strong>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <strong>{item.numberOfRent}</strong>
+                        <strong>{formatDatetime(item.startedDate)}</strong>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <strong>{item.bookingId}</strong>
+                        <strong>{item.unitPrice}</strong>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <strong>{item.bookingId}</strong>
+                        <strong>{item.unitStandardPrice}</strong>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -206,7 +268,7 @@ const CreateBill = () => {
             </CTable>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
-                THÊM
+                TẠO
               </CButton>
               <CButton style={{ margin: '0px 10px', width: 100 }}>LÀM MỚI</CButton>
             </div>

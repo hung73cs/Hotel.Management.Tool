@@ -20,32 +20,37 @@ import {
 import CIcon from '@coreui/icons-react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { billService } from 'src/_services'
+import { billService, bookingService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 
 const Bills = () => {
   const initBill = {
     id: '',
-    accountId: '',
     createdDate: '',
-    guessName: '',
+    guestName: '',
     address: '',
-    totalPrice: '',
+    totalPrice: 0,
     billDetailModels: [],
   }
 
-  const [message, setMessage] = useState('')
+  const initBillDetail = {
+    bookingId: '',
+    numberOfRentalDays: 0,
+    unitPrice: 0,
+    price: 0,
+  }
+
   const [toastMessage, setToastMessage] = useState('')
   const [visibleXL, setVisibleXL] = useState(false)
   const [bills, setBills] = useState([])
-  const [accounts, setAccounts] = useState([])
   const [billShow, setBillShow] = useState(initBill)
-  const [guestTypes, setGuestTypes] = useState([])
-
+  const [bookings, setBookings] = useState([])
   useEffect(() => {
     billService.getAll().then((x) => setBills(x))
-    console.log('bills', bills)
+  }, [])
+  useEffect(() => {
+    bookingService.getAll().then((x) => setBookings(x))
   }, [])
 
   const handleDeleteBill = (id) => {
@@ -55,26 +60,22 @@ const Bills = () => {
     setToastMessage('Xoá hóa đơn thành công')
   }
 
-  const findNameBill = (id) => {
-    return bills.find((x) => x.id === id)?.name
-  }
-  const findAccount = (id) => {
-    return accounts.find((x) => x.accountId === id)?.username
-  }
-  const findGuestType = (id) => {
-    return guestTypes.find((x) => x.id === id)?.name
-  }
   const ShowBillDetailModal = (bill) => {
+    console.log('billtruockhishow', bill)
     setBillShow(bill)
+    //setBillDetailModelsShow(bill.billDetailModels)
     console.log('billShow', billShow)
-    console.log('billShow', billShow.billDetailModels)
+    console.log('billShow.billDetailModels', billShow.billDetailModels)
     setVisibleXL(true)
   }
   const formatDatetime = (datetime) => {
     const regex = /\d{4}-\d{2}-\d{1,2}/
-    return datetime.match(regex)
+    return datetime?.match(regex)
   }
 
+  const getShortGuid = (bookingId) => {
+    return bookingId.split('-').pop()
+  }
   const BillDetailModal = () => {
     return (
       <CModal size="lg" visible={visibleXL}>
@@ -93,7 +94,7 @@ const Bills = () => {
               <CTableRow>
                 <CTableHeaderCell scope="col">Địa chỉ: </CTableHeaderCell>
                 <CTableDataCell scope="col">
-                  <strong>{findAccount(billShow.address)}</strong>
+                  <strong>{billShow.address}</strong>
                 </CTableDataCell>
               </CTableRow>
               <CTableRow>
@@ -114,33 +115,32 @@ const Bills = () => {
             <CTableHead color="secondary">
               <CTableRow>
                 <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                <CTableHeaderCell scope="col">KHÁCH HÀNG</CTableHeaderCell>
-                <CTableHeaderCell scope="col">LOẠI KHÁCH</CTableHeaderCell>
-                <CTableHeaderCell scope="col">CMND</CTableHeaderCell>
-                <CTableHeaderCell scope="col">ĐỊA CHỈ</CTableHeaderCell>
+                <CTableHeaderCell scope="col">MÃ HOÁ ĐƠN</CTableHeaderCell>
+                <CTableHeaderCell scope="col">SỐ NGÀY THUÊ</CTableHeaderCell>
+                <CTableHeaderCell scope="col">ĐƠN GIÁ</CTableHeaderCell>
+                <CTableHeaderCell scope="col">THÀNH TIỀN</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {billShow.lengh > 0 &&
-                billShow.bookingDetailModels.map((item, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>
-                      <strong>{index + 1}</strong>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <strong>{item.bookingId}</strong>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <strong>{item.numberOfRentalDays}</strong>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <strong>{item.unitPrice}</strong>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <strong>{item.price}</strong>
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
+              {billShow.billDetailModels.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>
+                    <strong>{index + 1}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{item.bookingId.split('-').pop()}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{item.numberOfRentalDays}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{item.unitPrice}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{item.price}</strong>
+                  </CTableDataCell>
+                </CTableRow>
+              ))}
             </CTableBody>
           </CTable>
         </CModalBody>
@@ -165,16 +165,22 @@ const Bills = () => {
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÊN KHÁCH HÀNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">NGÀY TẠO</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">THÀNH TIỀN</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">THÀNH TIỀN (VNĐ)</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {bills.map((item, index) => (
                   <CTableRow key={item.Id}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
-                    <CTableDataCell>{item.guestName}</CTableDataCell>
-                    <CTableDataCell>{item.createdDate}</CTableDataCell>
-                    <CTableDataCell>{item.totalPrice}</CTableDataCell>
+                    <CTableDataCell>
+                      <strong>{item.guestName}</strong>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <strong>{formatDatetime(item.createdDate)}</strong>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <strong>{item.totalPrice}</strong>
+                    </CTableDataCell>
                     <CTableDataCell>
                       <CButton color="link" onClick={() => ShowBillDetailModal(item)}>
                         Chi tiết
