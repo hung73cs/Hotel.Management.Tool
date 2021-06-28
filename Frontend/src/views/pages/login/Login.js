@@ -16,6 +16,7 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import Message from 'src/components/Message'
 
 const Login = () => {
   const [inputs, setInputs] = useState({
@@ -27,11 +28,7 @@ const Login = () => {
   const loggingIn = useSelector((state) => state.authentication.loggingIn)
   const dispatch = useDispatch()
   const location = useLocation()
-
-  // reset login status
-  // useEffect(() => {
-  //   dispatch(userActions.logout()``)
-  // }, [dispatch, submitted])
+  const [message, setMessage] = useState('')
 
   function handleChange(e, type) {
     let value = e.target.value
@@ -41,6 +38,8 @@ const Login = () => {
     console.log(inputs)
   }
 
+  const error = useSelector((state) => state.alert)
+
   function handleSubmit(e) {
     e.preventDefault()
     console.log('vdsd')
@@ -49,6 +48,8 @@ const Login = () => {
       // get return url from location state or default to home page
       const { from } = location.state || { from: { pathname: '/' } }
       dispatch(userActions.login(username, password, from))
+      setMessage(error.message)
+      console.log('fsdf', message)
     }
   }
 
@@ -85,6 +86,7 @@ const Login = () => {
                       onInput={(e) => handleChange(e, 'PASS')}
                     />
                   </CInputGroup>
+                  {message && <Message variant="danger">{message}</Message>}
                   <CRow>
                     <CCol xs="6">
                       <CButton

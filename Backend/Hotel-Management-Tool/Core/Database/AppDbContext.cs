@@ -169,6 +169,7 @@ namespace Hotel.Management.Tool.Core.Database
                 entity.Property(e => e.Address);
                 entity.Property(e => e.TotalPrice).IsRequired();
                 entity.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
+                entity.HasQueryFilter(x => x.IsDeleted == false);
             });
 
             modelBuilder.Entity<BillDetail>(entity =>
@@ -186,7 +187,7 @@ namespace Hotel.Management.Tool.Core.Database
                 entity.HasOne(s => s.Booking)
                   .WithOne(g => g.BillDetail)
                   .HasForeignKey<BillDetail>(s => s.BookingId);
-
+                entity.HasQueryFilter(x => x.IsDeleted == false);
             });
 
             modelBuilder.Entity<SurchargeRate>(entity =>
@@ -194,6 +195,7 @@ namespace Hotel.Management.Tool.Core.Database
                 entity.HasKey(e => e.GuestLevel);
                 entity.Property(e => e.Rate).IsRequired();
                 entity.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
+                entity.HasQueryFilter(x => x.IsDeleted == false);
             });
         }
     }

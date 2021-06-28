@@ -5,6 +5,7 @@ using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models.SurchargeRate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hotel.Management.Tool.Presentation.Controllers
@@ -24,7 +25,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpGet]
-        [Route("id/{surchargeRateId}")]
+        [Route("id/{guestLevel}")]
         public async Task<ActionResult<SurchargeRateModel>> GetSurchargeRate(int guestLevel)
         {
             var surchargeRate = await _surchargeRateService.GetSurchargeRateAsync(guestLevel);
@@ -39,14 +40,17 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<SurchargeRateModel>> GetSurchargeRates()
+        public async Task<ActionResult<List<SurchargeRateModel>>> GetSurchargeRates()
         {
-            var surchargeRates = await _surchargeRateService.GetSurchargeRatesAsync();
-            if (surchargeRates == null)
+            var surchargeRate = await _surchargeRateService.GetSurchargeRatesAsync();
+
+            if (surchargeRate == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
-            return Ok(_surchargeRateMapper.MapSurchargeRateToSurchargeRateModel(surchargeRates));
+
+            return Ok(
+                _surchargeRateMapper.MapSurchargeRateToSurchargeRateModel(surchargeRate));
         }
 
         [HttpPost]
@@ -57,13 +61,35 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
-            var result = await _surchargeRateService.CreateSurchargeRateAsync(mapper);
+
+            await _surchargeRateService.CreateSurchargeRateAsync(mapper);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("id/{guestLevel}")]
+        public async Task<ActionResult> UpdateSurchargeRate(int guestLevel, [FromBody] SurchargeRateModel surchargeRateModel)
+        {
+            var currentSurchargeRate = await _surchargeRateService.GetSurchargeRateAsync(guestLevel);
+
+            if (currentSurchargeRate == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+            var mapper = _surchargeRateMapper.MapSurchargeRateModelToSurchargeRate(surchargeRateModel, currentSurchargeRate);
+
+            if (mapper == null)
+            {
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
+            }
+            await _surchargeRateService.UpdateSurchargeRateAsync(mapper);
 
             return NoContent();
         }
 
         [HttpDelete]
-        [Route("id/{surchargeRateId}")]
+        [Route("id/{guestLevel}")]
         public async Task<ActionResult> DeleteSurchargeRate(int guestLevel)
         {
             await _surchargeRateService.DeleteSurchargeRateAsync(guestLevel);

@@ -110,7 +110,16 @@ const EditBooking = () => {
   const booking = useSelector((state) => state.booking.data)
 
   useEffect(() => {
-    roomService.getAll().then((x) => setRooms(x))
+    console.log('object', booking.roomId)
+    roomService
+      .getAll()
+      .then((x) =>
+        setRooms(
+          x.filter(
+            (x) => x.roomStatus === 'OPEN' || (x.roomStatus === 'CLOSE' && x.id === booking.roomId),
+          ),
+        ),
+      )
     guestTypeService.getAll().then((x) => setguestTypes(x))
     setAccountId(JSON.parse(localStorage.getItem('user'))?.accountId)
   }, [])
@@ -202,7 +211,10 @@ const EditBooking = () => {
   const getRoomTypeRoom = (id) => {
     return rooms.find((x) => x.id === id)?.roomTypeModel.name
   }
-
+  const formatDatetime = (datetime) => {
+    const regex = /\d{4}-\d{2}-\d{1,2}/
+    return datetime.match(regex)
+  }
   return (
     <CRow>
       {toastMessage && <ToastNotification message={toastMessage} />}

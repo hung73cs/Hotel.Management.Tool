@@ -19,10 +19,12 @@ function login(username, password, from) {
       (user) => {
         dispatch(UpdateToken(user.token))
         history.push(from)
+        console.log('user')
       },
       (error) => {
         dispatch(failure(error.toString()))
         dispatch(alertActions.error(error.toString()))
+        console.log('alert', alertActions.error(error.toString()))
       },
     )
   }
@@ -43,7 +45,6 @@ function UpdateToken(token) {
 }
 function logout() {
   userService.logout()
-  console.log('tao cut roi dcmm')
   return (dispatch) => {
     dispatch(RemoveToken())
   }

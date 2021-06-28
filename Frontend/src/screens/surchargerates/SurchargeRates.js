@@ -38,8 +38,8 @@ const SurchargeRates = () => {
   const [rate, setRate] = useState('')
 
   useEffect(() => {
-    //surchargeRateService.getAll().then((x) => setSurchargeRates(x))
-  }, [])
+    surchargeRateService.getAll().then((x) => setSurchargeRates(x))
+  }, [surchargeRates])
 
   const handleSubmit = (event) => {
     const form = event.currentTarget

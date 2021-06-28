@@ -25,6 +25,7 @@ import { roomService, bookingService, userService, guestTypeService } from 'src/
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 import EditBooking from './EditBooking'
+import FormatDatetime from 'src/utis/FormatDatetime'
 const Bookings = () => {
   const initBooking = {
     id: '',
@@ -87,9 +88,14 @@ const Bookings = () => {
     console.log('bookingShow', bookingShow.bookingDetailModels)
     setVisibleXL(true)
   }
+
+  const formatDatetime = (datetime) => {
+    const regex = /\d{4}-\d{2}-\d{1,2}/
+    return datetime.match(regex)
+  }
   const BookingDetailModal = () => {
     return (
-      <CModal size="xl" visible={visibleXL}>
+      <CModal size="lg" visible={visibleXL}>
         <CModalHeader onDismiss={() => setVisibleXL(false)}>
           <CModalTitle>THÔNG TIN CHI TIẾT</CModalTitle>
         </CModalHeader>
@@ -98,60 +104,72 @@ const Bookings = () => {
             <CTableBody>
               <CTableRow>
                 <CTableHeaderCell scope="col">Phòng: </CTableHeaderCell>
-                <CTableDataCell scope="col">{findNameRoom(bookingShow.roomId)}</CTableDataCell>
+                <CTableDataCell scope="col">
+                  <strong style={{ color: 'blue' }}>{findNameRoom(bookingShow.roomId)}</strong>
+                </CTableDataCell>
               </CTableRow>
               <CTableRow>
                 <CTableHeaderCell scope="col">Người lập phiếu: </CTableHeaderCell>
-                <CTableDataCell scope="col">{findAccount(bookingShow.accountId)}</CTableDataCell>
+                <CTableDataCell scope="col">
+                  <strong>{findAccount(bookingShow.accountId)}</strong>
+                </CTableDataCell>
               </CTableRow>
               <CTableRow>
                 <CTableHeaderCell scope="col">Ngày bắt đầu thuê: </CTableHeaderCell>
-                <CTableDataCell scope="col">{bookingShow.startedDate}</CTableDataCell>
+                <CTableDataCell scope="col">
+                  <strong>{formatDatetime(bookingShow.startedDate)}</strong>
+                </CTableDataCell>
               </CTableRow>
               <CTableRow>
                 <CTableHeaderCell scope="col">Số lượng khách: </CTableHeaderCell>
-                <CTableDataCell scope="col">{bookingShow.numberOfGuest}</CTableDataCell>
+                <CTableDataCell scope="col">
+                  <strong>{bookingShow.numberOfGuest}</strong>
+                </CTableDataCell>
               </CTableRow>
               <CTableRow>
                 <CTableHeaderCell scope="col">Đơn giá: </CTableHeaderCell>
-                <CTableDataCell scope="col">{bookingShow.unitStandardPrice}</CTableDataCell>
+                <CTableDataCell scope="col">
+                  <strong>{bookingShow.unitPrice} VNĐ</strong>
+                </CTableDataCell>
               </CTableRow>
               <CTableRow>
                 <CTableHeaderCell scope="col">Giá tạm tính: </CTableHeaderCell>
-                <CTableDataCell scope="col">{bookingShow.unitStandardPrice}</CTableDataCell>
+                <CTableDataCell scope="col">
+                  <strong style={{ color: 'red' }}>{bookingShow.unitStandardPrice} VNĐ</strong>
+                </CTableDataCell>
               </CTableRow>
-              <CTable>
-                <CTableHead color="secondary">
-                  <CTableRow>
-                    <CTableHeaderCell scope="col">STT</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">KHÁCH HÀNG</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">LOẠI KHÁCH</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">CMND</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">ĐỊA CHỈ</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {bookingShow.bookingDetailModels.map((item, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>
-                        <strong>{index + 1}</strong>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <strong>{item.guestName}</strong>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <strong>{findGuestType(item.guestTypeId)}</strong>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <strong>{item.idCard}</strong>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <strong>{item.address}</strong>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
+            </CTableBody>
+          </CTable>
+          <CTable>
+            <CTableHead color="secondary">
+              <CTableRow>
+                <CTableHeaderCell scope="col">STT</CTableHeaderCell>
+                <CTableHeaderCell scope="col">KHÁCH HÀNG</CTableHeaderCell>
+                <CTableHeaderCell scope="col">LOẠI KHÁCH</CTableHeaderCell>
+                <CTableHeaderCell scope="col">CMND</CTableHeaderCell>
+                <CTableHeaderCell scope="col">ĐỊA CHỈ</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {bookingShow.bookingDetailModels.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>
+                    <strong>{index + 1}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{item.guestName}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{findGuestType(item.guestTypeId)}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{item.idCard}</strong>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <strong>{item.address}</strong>
+                  </CTableDataCell>
+                </CTableRow>
+              ))}
             </CTableBody>
           </CTable>
         </CModalBody>
@@ -187,10 +205,20 @@ const Bookings = () => {
                   bookings.map((item, index) => (
                     <CTableRow key={item.accountId}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{findNameRoom(item.roomId)}</CTableDataCell>
-                      <CTableDataCell>{item.numberOfGuest}</CTableDataCell>
-                      <CTableDataCell>{item.startedDate}</CTableDataCell>
-                      <CTableDataCell>{item.unitStandardPrice}</CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{findNameRoom(item.roomId)}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong>
+                          <strong>{item.numberOfGuest}</strong>
+                        </strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{formatDatetime(item.startedDate)}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <strong style={{ color: 'red' }}>{item.unitStandardPrice}</strong>
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CButton color="link" onClick={() => ShowBookingDetailModal(item)}>
                           Chi tiết
@@ -199,7 +227,7 @@ const Bookings = () => {
                           <CIcon
                             style={{ margin: '0px 5px', cursor: 'pointer' }}
                             size={'lg'}
-                            name="cil-trash"
+                            name="cil-pencil"
                             onClick={() => {
                               dispatch(bookingActions.editBooking(item))
                             }}

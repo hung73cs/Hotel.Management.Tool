@@ -78,7 +78,7 @@ async function _delete(id) {
     headers: authHeader(),
   }
 
-  return await fetch(`${apiUrl}/users/${id}`, requestOptions).then(handleResponse)
+  return await fetch(`${apiUrl}/account/id/${id}`, requestOptions).then(handleResponse)
 }
 
 async function handleResponse(response) {

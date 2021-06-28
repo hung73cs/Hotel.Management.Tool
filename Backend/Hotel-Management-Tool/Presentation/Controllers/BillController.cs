@@ -66,19 +66,23 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         {
             var mapper = _billMapper.MapBillModelToBill(bill);
 
+            foreach (var i in bill.BillDetailModels)
+            {
+                var booking = await _bookingService.GetBooking(i.BookingId);
+
+                if (booking != null)
+                {
+                    await _roomService.UnBookRoom(booking.RoomId);
+                    await _bookingService.DeleteBooking(booking.Id);
+                }                     
+            }
+
             if (mapper == null)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
 
             var result = await _bill.CreateAsync(mapper);
-
-            foreach( var i in bill.BillDetailModels)
-            {
-                var booking = await _bookingService.GetBooking(i.BookingId);
-                if (booking != null)
-                    await _roomService.UnBookRoom(booking.RoomId);
-            }
 
             Response.AddInfoHeaders(result.Id);
 

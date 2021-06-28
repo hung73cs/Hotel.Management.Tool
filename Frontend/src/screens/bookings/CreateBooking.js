@@ -38,7 +38,6 @@ const CreateBooking = () => {
   const [numberOfGuest, setNumberOfGuest] = useState('')
   const [unitPrice, setUnitPrice] = useState(0)
   const [unitStandardPrice, setUnitStandardPrice] = useState(0)
-
   const initBookingDetail = [
     {
       guestName: '',
@@ -103,10 +102,12 @@ const CreateBooking = () => {
   ]
   const [bookingDetails, setBookDetails] = useState(initBookingDetail)
 
-  const date = new Date()
+  const date = new Date().toISOString()
   const [numberBookingDetail, setNumberBookingDetail] = useState(0)
   useEffect(() => {
-    roomService.getAll().then((x) => setRooms(x))
+    roomService.getAll().then((x) => {
+      setRooms(x.filter((x) => x.roomStatus === 'OPEN'))
+    })
     guestTypeService.getAll().then((x) => setguestTypes(x))
     setAccountId(JSON.parse(localStorage.getItem('user'))?.accountId)
   }, [])
@@ -188,6 +189,11 @@ const CreateBooking = () => {
     return rooms.find((x) => x.id === id)?.roomTypeModel.name
   }
 
+  const formatDatetime = (datetime) => {
+    const regex = /\d{4}-\d{2}-\d{1,2}/
+    return datetime.match(regex)
+  }
+
   return (
     <CRow>
       {toastMessage && <ToastNotification message={toastMessage} />}
@@ -235,7 +241,7 @@ const CreateBooking = () => {
                     <CFormLabel>Ngày bắt đầu thuê:</CFormLabel>
                   </CCol>
                   <CCol>
-                    <CFormControl id="date" name="date" value={date} disabled />
+                    <CFormControl id="date" name="date" value={formatDatetime(date)} disabled />
                   </CCol>
                 </CInputGroup>
                 <CInputGroup className="mb-4">
