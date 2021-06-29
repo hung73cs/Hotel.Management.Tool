@@ -1,7 +1,6 @@
 ﻿using Hotel.Management.Tool.Core.Entities;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models.SurchargeRate;
-using System;
 using System.Collections.Generic;
 
 namespace Hotel.Management.Tool.Presentation.Mappers

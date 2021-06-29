@@ -79,7 +79,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
         public async Task DeleteBookingDetail(Guid bookingId)
         {
             var bookingDetails = await _bookingDetail.SearchForMultipleItemsAsync(x => x.BookingId == bookingId);
-            foreach(var i in bookingDetails)
+            foreach (var i in bookingDetails)
             {
                 await _bookingDetail.DeleteAsync(x => x.Id == i.Id);
             }

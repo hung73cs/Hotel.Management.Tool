@@ -74,7 +74,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 {
                     await _roomService.UnBookRoom(booking.RoomId);
                     await _bookingService.DeleteBooking(booking.Id);
-                }                     
+                }
             }
 
             if (mapper == null)

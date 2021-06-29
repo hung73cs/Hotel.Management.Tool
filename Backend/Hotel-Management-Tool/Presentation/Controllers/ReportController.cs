@@ -93,7 +93,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             return Ok(new
             {
                 TotalPrice = totalPrice
-            }) ;
+            });
         }
 
         [HttpPost]

@@ -42,7 +42,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
             var room = await _roomService.GetRoomAsync(model.RoomId);
-            if(room.RoomStatus == RoomStatus.CLOSE)
+            if (room.RoomStatus == RoomStatus.CLOSE)
             {
                 throw new ExtendException(ErrorCode.Conflict, "Phòng đã được thuê");
 
@@ -69,7 +69,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         {
             var bookingEntity = await _bookingService.GetBooking(bookingId);
             var room = await _roomService.GetRoomAsync(bookingModel.RoomId);
-      
+
             if (bookingModel.RoomId != bookingEntity.RoomId)
             {
                 if (room.RoomStatus == RoomStatus.CLOSE)
@@ -87,11 +87,11 @@ namespace Hotel.Management.Tool.Presentation.Controllers
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
             }
-   
+
             await _bookingService.DeleteBookingDetail(bookingId);
             await _bookingService.UpdateBooking(mapper);
 
-            
+
 
             return NoContent();
         }

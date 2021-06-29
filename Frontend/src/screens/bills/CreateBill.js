@@ -64,12 +64,15 @@ const CreateBill = () => {
   }
 
   const calculateNumberOfRentalDays = (date, preDate) => {
-    const dayDate = date.split('-').pop()
-    const dayPreDate = preDate.split('-').pop()
-    return dayDate - dayPreDate + 1
-    // return Math.floor(
-    //   (Date.UTC(date.getDate(), date.getMonth(), date.getFullYear()) -
-    //     Date.UTC(preDate.getDate(), preDate.getMonth(), preDate.getFullYear(),)) / (1000 * 60 * 60 * 24))
+    // const dayDate = date.split('-').pop()
+    // const dayPreDate = preDate.split('-').pop()
+    // return dayDate - dayPreDate + 1
+    const dateParse = new Date(Date.parse(date));
+    const preDateParse = new Date(Date.parse(preDate));
+
+    return Math.floor(
+      (Date.UTC(dateParse.getDate(), dateParse.getMonth(), dateParse.getFullYear()) -
+        Date.UTC(preDateParse.getDate(), preDateParse.getMonth(), preDateParse.getFullYear(),)) / (1000 * 60 * 60 * 24))
   }
 
   const handleAddToBookingBills = (bookingId) => {
@@ -93,6 +96,9 @@ const CreateBill = () => {
       unitPrice: booking.unitPrice,
       price: booking.unitStandardPrice * calculateNumberOfRentalDays(date.split('T')[0], booking.startedDate.split('T')[0]),
     }
+    const dateT = new Date(Date.parse(date))
+    console.log('data', data)
+    console.log('dateT', dateT)
     let tempBillDetails = billDetails
     tempBillDetails.push(data)
     setBillDetails(tempBillDetails)

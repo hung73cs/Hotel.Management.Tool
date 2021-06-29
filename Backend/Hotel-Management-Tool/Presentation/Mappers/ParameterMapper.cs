@@ -12,7 +12,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         {
             var parameterModel = new ParameterModel
             {
-                Id= parameter.Id,
+                Id = parameter.Id,
                 Name = parameter.Name,
                 Value = parameter.Value
             };
@@ -40,7 +40,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public List<ParameterModel> MapParameterToParameterModel(List<Parameter> parameters)
         {
             var parameterModels = new List<ParameterModel>();
-            foreach(var i in parameters)
+            foreach (var i in parameters)
             {
                 var parameterModel = new ParameterModel
                 {

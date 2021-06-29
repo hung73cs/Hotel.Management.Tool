@@ -12,7 +12,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public Bill MapBillModelToBill(CreateBillModel model)
         {
             var billDetails = new List<BillDetail>();
-            if(model.BillDetailModels != null)
+            if (model.BillDetailModels != null)
             {
                 billDetails = model.BillDetailModels.Select(x => new BillDetail
                 {
@@ -46,13 +46,13 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                     Price = x.Price
                 }).ToList();
             }
-            if(model!=null)
+            if (model != null)
             {
                 billEntity.CreatedDate = model.CreatedDate;
                 billEntity.GuestName = model.GuestName;
                 billEntity.Address = model.Address;
                 billEntity.TotalPrice = model.TotalPrice;
-                billEntity.BillDetails = billDetails;               
+                billEntity.BillDetails = billDetails;
             }
             return billEntity;
         }
@@ -84,7 +84,7 @@ namespace Hotel.Management.Tool.Presentation.Mappers
         public List<BillModel> MapBillToBillModel(List<Bill> bills)
         {
             var billModels = new List<BillModel>();
-            foreach(var i in bills)
+            foreach (var i in bills)
             {
                 var billDetailModel = new List<BillDetailModel>();
 
@@ -110,6 +110,6 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 billModels.Add(billModel);
             }
             return billModels;
-        }     
+        }
     }
 }
