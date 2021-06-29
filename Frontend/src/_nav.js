@@ -98,6 +98,27 @@ const _nav = [
   {
     _component: 'CNavGroup',
     as: NavLink,
+    anchor: 'Báo cáo doanh thu',
+    to: '/to',
+    icon: <CIcon name="cil-bookmark" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Báo cáo theo tháng',
+        to: '/report-month',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Báo cáo theo năm',
+        to: '/report-year',
+      },
+    ],
+  },
+  {
+    _component: 'CNavGroup',
+    as: NavLink,
     anchor: 'Quy định chung',
     to: '/to',
     icon: <CIcon name="cil-list-rich" customClasses="nav-icon" />,

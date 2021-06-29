@@ -207,6 +207,7 @@ const CreateBooking = () => {
     return rooms.find((x) => x.id === id)?.roomTypeModel.cost
   }
 
+  // eslint-disable-next-line no-unused-vars
   const getRoomTypeRoom = (id) => {
     return rooms.find((x) => x.id === id)?.roomTypeModel.name
   }

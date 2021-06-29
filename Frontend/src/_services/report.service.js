@@ -2,9 +2,11 @@
 import { authHeader } from '../_helpers'
 import { commonConstants } from '../_constants/common.constants'
 const apiUrl = commonConstants.BACKENDURI
-export const roomTypeService = {
+export const reportService = {
   getById,
   getAll,
+  reportMonth,
+  reportYear,
   create,
   edit,
   _delete,
@@ -26,6 +28,25 @@ async function getById(id) {
     return await fetch(`${apiUrl}/report`, requestOptions).then(handleResponse)
   }
   
+  async function reportMonth(report) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      body: JSON.stringify(report),
+    }
+    //console.log('report', typeof report.cost)
+    return await fetch(`${apiUrl}/report/month`, requestOptions).then(handleResponse)
+  }
+  async function reportYear(report) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      body: JSON.stringify(report),
+    }
+    //console.log('report', typeof report.cost)
+    return await fetch(`${apiUrl}/report/year`, requestOptions).then(handleResponse)
+  }
+
   async function create(report) {
     const requestOptions = {
       method: 'POST',
