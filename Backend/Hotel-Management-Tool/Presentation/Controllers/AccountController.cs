@@ -30,7 +30,6 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("id/{accountId}")]
-        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<GetAccountModel>> GetAccount(Guid accountId)
         {
             var account = await _account.GetAccountAsync(accountId);
@@ -46,7 +45,6 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpGet]
         [Route("get/{page}/{item}")]
-        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<GetAccountModel>>> GetAccountsPagingAsync(int page, int item)
         {
             var accounts = await _account.GetMultipleAccountPagingAsync(page, item);
@@ -60,7 +58,6 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<GetAccountModel>>> GetAccountsAsync()
         {
             var accounts = await _account.GetAccountsAsync();
@@ -75,7 +72,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        //[Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel account)
         {
             var mappedAccount = _accountMapper.MapAccountModelToAccount(account);

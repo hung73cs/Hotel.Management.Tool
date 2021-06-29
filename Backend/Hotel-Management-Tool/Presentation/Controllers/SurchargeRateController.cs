@@ -54,6 +54,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> CreateSurchargeRate([FromBody] SurchargeRateModel surchargeRateModel)
         {
             var mapper = _surchargeRateMapper.MapSurchargeRateModelToSurchargeRate(surchargeRateModel);
@@ -69,6 +70,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{guestLevel}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> UpdateSurchargeRate(int guestLevel, [FromBody] SurchargeRateModel surchargeRateModel)
         {
             var currentSurchargeRate = await _surchargeRateService.GetSurchargeRateAsync(guestLevel);
@@ -90,6 +92,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{guestLevel}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteSurchargeRate(int guestLevel)
         {
             await _surchargeRateService.DeleteSurchargeRateAsync(guestLevel);
