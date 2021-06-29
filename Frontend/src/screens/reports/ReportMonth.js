@@ -1,4 +1,3 @@
-//Report by Month
 import React, { useState } from 'react'
 import {
   CCard,
@@ -134,7 +133,7 @@ const Reports = () => {
                 onInput={(e) => setMonth(e.target.value)}
                 required
               >
-                <option value="">--Chọn--</option>
+                <option value="">--Chọn tháng--</option>
                 {months.map((item, index) => {
                   return (
                     <option value={item.value} key={index}>
@@ -153,7 +152,7 @@ const Reports = () => {
           </CInputGroup>
           <CInputGroup>
             <CCol md="2">
-              <CFormLabel>Năm:</CFormLabel>
+              <CFormLabel>Nhập năm:</CFormLabel>
             </CCol>
             <CCol md="4">
               <CFormControl
@@ -172,7 +171,7 @@ const Reports = () => {
               <CFormLabel>DOANH THU:</CFormLabel>
             </CCol>
             <CCol md="4">
-              <h2>{revenue} </h2>
+              <h2>{revenue} VND</h2>
             </CCol>
           </CInputGroup>
         </CForm>

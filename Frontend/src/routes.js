@@ -18,7 +18,8 @@ const CreateBill = React.lazy(() => import('./screens/bills/CreateBill'))
 const GetBills = React.lazy(() => import('./screens/bills/Bills'))
 const ChangePassword = React.lazy(() => import('./screens/user/ChangePassword'))
 
-const Reports = React.lazy(() => import('./screens/reports/Report'))
+const ReportsMonth = React.lazy(() => import('./screens/reports/ReportMonth'))
+const ReportsYear = React.lazy(() => import('./screens/reports/ReportYear'))
 
 const routes = [
   { path: '/', exact: true, component: Dashboard },
@@ -40,6 +41,7 @@ const routes = [
   { path: '/bill/createbill', name: 'Tạo hoá đơn', component: CreateBill },
   { path: '/bill', name: 'Kiểm tra hóa đơn', component: GetBills },
   { path: '/change-password', name: 'Đổi mật khẩu', component: ChangePassword },
-  { path: '/report', name: 'Báo cáo doanh thu', component: Reports },
+  { path: '/report-month', name: 'Báo cáo doanh thu', component: ReportsMonth },
+  { path: '/report-year', name: 'Báo cáo doanh thu', component: ReportsYear },
 ]
 export default routes
