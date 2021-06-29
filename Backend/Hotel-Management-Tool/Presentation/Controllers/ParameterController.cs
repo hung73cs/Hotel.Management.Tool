@@ -4,6 +4,7 @@ using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
 using Hotel.Management.Tool.Models.Parameter;
 using Hotel.Management.Tool.Presentation.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -51,6 +52,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> CreateParameter([FromBody] ParameterModel parameterModel)
         {
             var mapper = _parameterMapper.MapParameterModelToParameter(parameterModel);
@@ -66,6 +68,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpPut]
         [Route("id/{parameterId}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> UpdateParameter(Guid parameterId, [FromBody] ParameterModel parameterModel)
         {
             var currentParameter = await _parameterService.GetParameterAsync(parameterId);
@@ -85,6 +88,7 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
         [HttpDelete]
         [Route("id/{parameterId}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> DeleteParameter(Guid parameterId)
         {
             await _parameterService.DeleteParameterAsync(parameterId);

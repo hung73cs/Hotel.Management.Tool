@@ -73,9 +73,6 @@ const Bills = () => {
     return datetime?.match(regex)
   }
 
-  const getShortGuid = (bookingId) => {
-    return bookingId.split('-').pop()
-  }
   const BillDetailModal = () => {
     return (
       <CModal size="lg" visible={visibleXL}>

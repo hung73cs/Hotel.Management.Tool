@@ -59,7 +59,6 @@ const CreateBill = () => {
     }
     event.preventDefault()
     setMessage('')
-    //createBookingService()
     createBillService()
     return
   }
@@ -92,7 +91,7 @@ const CreateBill = () => {
         booking.startedDate.split('T')[0],
       ),
       unitPrice: booking.unitPrice,
-      price: booking.unitStandardPrice,
+      price: booking.unitStandardPrice * calculateNumberOfRentalDays(date.split('T')[0], booking.startedDate.split('T')[0]),
     }
     let tempBillDetails = billDetails
     tempBillDetails.push(data)
@@ -223,7 +222,7 @@ const CreateBill = () => {
                 <CCol>
                   <CWidgetIcon
                     className="mb-3"
-                    icon={<CIcon width={24} name="cil-settings" className="icon icon-xl" />}
+                    icon={<CIcon width={24} name="cil-dollar" className="icon icon-xl" />}
                     iconPadding={3}
                     title={totalPrice + ' VND'}
                     value="TỔNG TIỀN"
@@ -259,7 +258,7 @@ const CreateBill = () => {
                         <strong>{item.unitPrice}</strong>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <strong>{item.unitStandardPrice}</strong>
+                        <strong>{item.unitStandardPrice * calculateNumberOfRentalDays(date.split('T')[0], item.startedDate.split('T')[0])}</strong>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

@@ -4,15 +4,8 @@ import { NavLink } from 'react-router-dom'
 
 const _navUser = [
   {
-    _component: 'CNavItem',
-    as: NavLink,
-    anchor: 'Trang chủ',
-    to: '/home',
-    icon: <CIcon name="cil-home" customClasses="nav-icon" />,
-  },
-  {
     _component: 'CNavTitle',
-    anchor: 'Thuê phòng cho user',
+    anchor: 'Thuê phòng',
   },
   {
     _component: 'CNavGroup',
@@ -38,21 +31,21 @@ const _navUser = [
   {
     _component: 'CNavGroup',
     as: NavLink,
-    anchor: 'Báo cáo',
-    to: '/to',
+    anchor: 'Hoá đơn',
+    to: '/bill',
     icon: <CIcon name="cil-chart-pie" customClasses="nav-icon" />,
     items: [
       {
         _component: 'CNavItem',
         as: NavLink,
-        anchor: 'Doanh thu theo tháng',
-        to: '/report/month',
+        anchor: 'Tạo hoá đơn',
+        to: '/bill/createbill',
       },
       {
         _component: 'CNavItem',
         as: NavLink,
-        anchor: 'Doanh thu theo năm',
-        to: '/report/year',
+        anchor: 'Kiểm tra hoá đơn',
+        to: '/bill',
       },
     ],
   },

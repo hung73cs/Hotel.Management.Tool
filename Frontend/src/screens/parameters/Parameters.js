@@ -184,16 +184,30 @@ const Parameters = () => {
               <CCol>
                 <CFormLabel>Tên: </CFormLabel>
               </CCol>
-              <CCol>
-                <CFormControl
-                  name="name"
-                  type="text"
-                  id="name"
-                  value={parameterName}
-                  onInput={(e) => setParameterName(e.target.value)}
-                />
-                <CFormFeedback invalid>Bắt buộc</CFormFeedback>
-              </CCol>
+              {editForm ? (
+                <CCol>
+                  <CFormControl
+                    name="name"
+                    type="text"
+                    id="name"
+                    value={parameterName}
+                    onInput={(e) => setParameterName(e.target.value)}
+                    disabled
+                  />
+                  <CFormFeedback invalid>Bắt buộc</CFormFeedback>
+                </CCol>
+              ) : (
+                <CCol>
+                  <CFormControl
+                    name="name"
+                    type="text"
+                    id="name"
+                    value={parameterName}
+                    onInput={(e) => setParameterName(e.target.value)}
+                  />
+                  <CFormFeedback invalid>Bắt buộc</CFormFeedback>
+                </CCol>
+              )}
             </CInputGroup>
             <CInputGroup className="mb-3">
               <CCol>
@@ -287,12 +301,12 @@ const Parameters = () => {
                           name="cil-pencil"
                           onClick={() => handleOpenModalToUpdate(item)}
                         ></CIcon>
-                        <CIcon
+                        {/* <CIcon
                           style={{ margin: '0px 5px', cursor: 'pointer' }}
                           size={'lg'}
                           name="cil-trash"
                           onClick={() => (item.id = handleClickDelete(item.id))}
-                        />
+                        /> */}
                       </CTableDataCell>
                     </CTableRow>
                   ))

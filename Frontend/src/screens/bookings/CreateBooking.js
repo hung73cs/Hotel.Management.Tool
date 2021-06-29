@@ -21,7 +21,13 @@ import {
   CWidgetIcon,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { roomService, surchargeRateService, guestTypeService, bookingService } from 'src/_services'
+import {
+  roomService,
+  surchargeRateService,
+  guestTypeService,
+  bookingService,
+  parameterService,
+} from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 const CreateBooking = () => {
@@ -31,13 +37,14 @@ const CreateBooking = () => {
 
   const [rooms, setRooms] = useState([])
   const [guestTypes, setguestTypes] = useState([])
-
+  const [parameters, setParameters] = useState([])
   const [roomId, setRoomId] = useState('')
   const [accountId, setAccountId] = useState('')
 
   const [numberOfGuest, setNumberOfGuest] = useState('')
   const [unitPrice, setUnitPrice] = useState(0)
   const [unitStandardPrice, setUnitStandardPrice] = useState(0)
+  const [isPlusGuestTypeCost, SetIsPlusGuestTypeCost] = useState(false)
   const initBookingDetail = [
     {
       guestName: '',
@@ -108,6 +115,9 @@ const CreateBooking = () => {
     roomService.getAll().then((x) => {
       setRooms(x.filter((x) => x.roomStatus === 'OPEN'))
     })
+    parameterService.getAll().then((x) => {
+      setParameters(x)
+    })
     guestTypeService.getAll().then((x) => setguestTypes(x))
     setAccountId(JSON.parse(localStorage.getItem('user'))?.accountId)
   }, [])
@@ -131,8 +141,15 @@ const CreateBooking = () => {
   }
 
   const onBlurNumberOfGuest = (number) => {
-    setNumberBookingDetail(number)
-    calculateUnitStandardPrice()
+    if (number > getParameterNumberOfGuestInRoom()) {
+      setMessage(
+        'Số khách trong phòng không được vượt quá ' + getParameterNumberOfGuestInRoom() + ' khách',
+      )
+    } else {
+      setNumberBookingDetail(number)
+      calculateUnitStandardPrice()
+      setMessage('')
+    }
   }
 
   const calculateUnitStandardPrice = () => {
@@ -181,6 +198,11 @@ const CreateBooking = () => {
     setBookDetails(initBookingDetail)
   }
 
+  const getParameterNumberOfGuestInRoom = () => {
+    const title = 'Số khách tối đa trong 1 phòng'
+    return parameters.find((x) => x.name === title)?.value
+  }
+
   const getPriceRoom = (id) => {
     return rooms.find((x) => x.id === id)?.roomTypeModel.cost
   }
@@ -193,13 +215,28 @@ const CreateBooking = () => {
     const regex = /\d{4}-\d{2}-\d{1,2}/
     return datetime.match(regex)
   }
+  const setPriceGuestType = (guestTypeId) => {
+    // if (isPlusGuestTypeCost === false && guestTypeId === 'e3d3865c-7c50-4a9c-a2ca-514c45cd7f06') {
+    //   const costGuestType = guestTypes.find((x) => x.id === guestTypeId)?.surchargeRate
+    //   console.log('costGuestType', costGuestType)
+    //   setUnitStandardPrice(unitStandardPrice + (unitStandardPrice * costGuestType) / 100)
+    //   SetIsPlusGuestTypeCost(true)
+    // }
+    if (isPlusGuestTypeCost === false) {
+      const costGuestType = guestTypes.find((x) => x.id === guestTypeId)?.surchargeRate
+      if (costGuestType > 0) {
+        setUnitStandardPrice(unitStandardPrice + (unitStandardPrice * costGuestType) / 100)
+        SetIsPlusGuestTypeCost(true)
+      }
+    }
+  }
 
   return (
     <CRow>
       {toastMessage && <ToastNotification message={toastMessage} />}
       <CCard className="sb-4">
         <CCardHeader>
-          <strong>Tạo tài khoản người dùng</strong>
+          <strong>Tạo phiếu thuê phòng</strong>
         </CCardHeader>
         {message && <Message variant="danger">{message}</Message>}
         <CCardBody>
@@ -266,7 +303,7 @@ const CreateBooking = () => {
                 <CCol>
                   <CWidgetIcon
                     className="mb-3"
-                    icon={<CIcon width={24} name="cil-settings" className="icon icon-xl" />}
+                    icon={<CIcon width={24} name="cil-dollar" className="icon icon-xl" />}
                     iconPadding={3}
                     title={getPriceRoom(roomId) + ' VND'}
                     value="GIÁ"
@@ -274,7 +311,7 @@ const CreateBooking = () => {
                   />
                   <CWidgetIcon
                     className="mb-3"
-                    icon={<CIcon width={24} name="cil-settings" className="icon icon-xl" />}
+                    icon={<CIcon width={24} name="cil-dollar" className="icon icon-xl" />}
                     iconPadding={3}
                     title={unitStandardPrice + ' VND'}
                     value="GIÁ TẠM TÍNH"
@@ -323,6 +360,7 @@ const CreateBooking = () => {
                           let temp = [...bookingDetails]
                           temp[index].guestTypeId = e.target.value
                           setBookDetails(temp)
+                          setPriceGuestType(bookingDetails[index]?.guestTypeId)
                         }}
                         required
                       >
@@ -373,7 +411,7 @@ const CreateBooking = () => {
             </CTable>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
-                THÊM
+                TẠO
               </CButton>
               <CButton style={{ margin: '0px 10px', width: 100 }} onClick={() => handleReset()}>
                 LÀM MỚI
