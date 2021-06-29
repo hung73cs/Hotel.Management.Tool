@@ -130,7 +130,7 @@ const RoomTypes = () => {
           setMessageOut('Có lỗi khi xoá')
           break
         case 404:
-          setMessageOut('Không tìm thấy phòng để xoá')
+          setMessageOut('Không tìm thấy loại phòng để xoá')
           break
         case 403:
           setMessageOut('Không có quyền')

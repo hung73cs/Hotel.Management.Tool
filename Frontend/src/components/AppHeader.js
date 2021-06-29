@@ -35,9 +35,17 @@ const AppHeader = () => {
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
-            <CNavLink to="/booking/create" component={NavLink} activeClassName="active">
-              <strong>TẠO PHIẾU THUÊ PHÒNG</strong>
-            </CNavLink>
+            <div style={{ display: 'flex', justifyContent: 'flex-begin' }}>
+              <CNavLink to="/booking/create" component={NavLink} activeClassName="active">
+                <strong>TẠO PHIẾU THUÊ PHÒNG</strong>
+              </CNavLink>
+              <CNavLink to="/bill/createbill" component={NavLink} activeClassName="active">
+                <strong>TẠO HOÁ ĐƠN</strong>
+              </CNavLink>
+              <CNavLink to="/room" component={NavLink} activeClassName="active">
+                <strong>DANH SÁCH PHÒNG</strong>
+              </CNavLink>
+            </div>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">

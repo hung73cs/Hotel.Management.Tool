@@ -205,8 +205,8 @@ const Rooms = () => {
   }
 
   const statusColor = (data) => {
-    if (data === 'OPEN') return <strong style={{ color: 'blue' }}>{data}</strong>
-    return <strong style={{ color: 'red' }}>{data}</strong>
+    if (data === 'OPEN') return <strong style={{ color: 'blue' }}>TRỐNG</strong>
+    return <strong style={{ color: 'red' }}>CÓ KHÁCH</strong>
   }
   const modalCreateEdit = () => {
     return (
@@ -344,7 +344,7 @@ const Rooms = () => {
             >
               <div>
                 <p className="text-medium-emphasis small">
-                  Đây là danh sách các loại phòng của khách sạn
+                  Đây là danh sách tất cả các loại phòng của khách sạn
                 </p>
               </div>
               <div>

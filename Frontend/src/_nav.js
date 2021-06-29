@@ -56,27 +56,6 @@ const _nav = [
   {
     _component: 'CNavGroup',
     as: NavLink,
-    anchor: 'Tài khoản',
-    to: '/to',
-    icon: <CIcon name="cil-user" customClasses="nav-icon" />,
-    items: [
-      {
-        _component: 'CNavItem',
-        as: NavLink,
-        anchor: 'Danh sách tài khoản',
-        to: '/user/getaccounts',
-      },
-      {
-        _component: 'CNavItem',
-        as: NavLink,
-        anchor: 'Thêm tài khoản',
-        to: '/user/createaccount',
-      },
-    ],
-  },
-  {
-    _component: 'CNavGroup',
-    as: NavLink,
     anchor: 'Phòng',
     to: '/to',
     icon: <CIcon name="cil-room" customClasses="nav-icon" />,
@@ -92,6 +71,27 @@ const _nav = [
         as: NavLink,
         anchor: 'Phòng',
         to: '/room',
+      },
+    ],
+  },
+  {
+    _component: 'CNavGroup',
+    as: NavLink,
+    anchor: 'Tài khoản',
+    to: '/to',
+    icon: <CIcon name="cil-user" customClasses="nav-icon" />,
+    items: [
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Danh sách tài khoản',
+        to: '/user/getaccounts',
+      },
+      {
+        _component: 'CNavItem',
+        as: NavLink,
+        anchor: 'Thêm tài khoản',
+        to: '/user/createaccount',
       },
     ],
   },
