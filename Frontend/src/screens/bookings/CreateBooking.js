@@ -45,6 +45,8 @@ const CreateBooking = () => {
   const [unitPrice, setUnitPrice] = useState(0)
   const [unitStandardPrice, setUnitStandardPrice] = useState(0)
   const [isPlusGuestTypeCost, SetIsPlusGuestTypeCost] = useState(false)
+  const [isPlusGuestTypeCostArray, SetIsPlusGuestTypeCostArray] = useState([])
+
   const initBookingDetail = [
     {
       guestName: '',
@@ -217,18 +219,13 @@ const CreateBooking = () => {
     return datetime.match(regex)
   }
   const setPriceGuestType = (guestTypeId) => {
-    // if (isPlusGuestTypeCost === false && guestTypeId === 'e3d3865c-7c50-4a9c-a2ca-514c45cd7f06') {
-    //   const costGuestType = guestTypes.find((x) => x.id === guestTypeId)?.surchargeRate
-    //   console.log('costGuestType', costGuestType)
-    //   setUnitStandardPrice(unitStandardPrice + (unitStandardPrice * costGuestType) / 100)
-    //   SetIsPlusGuestTypeCost(true)
-    // }
-    if (isPlusGuestTypeCost === false) {
-      const costGuestType = guestTypes.find((x) => x.id === guestTypeId)?.surchargeRate
-      if (costGuestType > 0) {
-        setUnitStandardPrice(unitStandardPrice + (unitStandardPrice * costGuestType) / 100)
-        SetIsPlusGuestTypeCost(true)
-      }
+    if (isPlusGuestTypeCostArray.find((x) => x === guestTypeId) === undefined) {
+      const guestTypesCopy = [...guestTypes]
+      const costGuestType = guestTypesCopy.find((x) => x.id === guestTypeId)?.surchargeRate
+      setUnitStandardPrice(unitStandardPrice + (unitStandardPrice * costGuestType) / 100)
+      const temp = isPlusGuestTypeCostArray
+      temp.push(guestTypeId)
+      SetIsPlusGuestTypeCostArray(temp)
     }
   }
 
