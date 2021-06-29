@@ -39,6 +39,7 @@ const Rooms = () => {
   const [roomNote, setRoomNote] = useState('')
   const [roomTypeId, setRoomTypeId] = useState('')
   const [roomId, setRoomId] = useState('')
+  const [messageOut, setMessageOut] = useState('')
 
   useEffect(() => {
     roomTypeService.getAll().then((x) => setRoomtypes(x))
@@ -46,7 +47,7 @@ const Rooms = () => {
 
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
-  }, [openModal])
+  }, [openModal, rooms])
 
   const handleSubmit = (event) => {
     const form = event.currentTarget
@@ -153,13 +154,32 @@ const Rooms = () => {
     setRoomTypeId('')
   }
 
-  const [searchInput, setSearchInput] = useState('')
-
-  const handleClickDelete = (data) => {
-    roomService._delete(data)
-    let roomsCopy = rooms.filter((item) => item.id !== data)
-    setRooms(roomsCopy)
-    setToastMessage('Xoá phòng thành công')
+  const handleClickDelete = (id) => {
+    roomService._delete(id).then((res) => {
+      switch (res) {
+        case 400:
+          setMessageOut('Có lỗi khi xoá')
+          break
+        case 404:
+          setMessageOut('Không tìm thấy phòng để xoá')
+          break
+        case 403:
+          setMessageOut('Không có quyền')
+          break
+        case 409:
+          setMessageOut('Không thể xoá vì phiếu thuê phòng đang sử dụng phòng này')
+          break
+        case 500:
+          setMessageOut('Có lỗi khi xoá')
+          break
+        default:
+          setMessageOut('')
+          console.log('odayla')
+          let roomsCopy = rooms.filter((item) => item.id !== id)
+          setRooms(roomsCopy)
+          setToastMessage('Xoá phòng thành công')
+      }
+    })
   }
 
   const [sort, setSort] = useState(true)
@@ -280,9 +300,16 @@ const Rooms = () => {
               </CCol>
             </CInputGroup>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
-                THÊM
-              </CButton>
+              {editForm ? (
+                <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
+                  SỬA
+                </CButton>
+              ) : (
+                <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
+                  THÊM
+                </CButton>
+              )}
+
               <CButton
                 color="secondary"
                 style={{ margin: '0px 10px', width: 100 }}
@@ -330,6 +357,7 @@ const Rooms = () => {
                 </CButton>
               </div>
             </div>
+            {messageOut && <Message variant="danger">{messageOut}</Message>}
             <CTable striped>
               <CTableHead>
                 <CTableRow color="primary">

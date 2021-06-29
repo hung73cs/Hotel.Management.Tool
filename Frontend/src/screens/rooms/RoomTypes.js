@@ -42,6 +42,7 @@ const RoomTypes = () => {
   const [openModal, setOpenModal] = useState(false)
   const [roomTypeToCreateOrUpdate, setRoomTypeToCreateOrUpdate] = useState(roomTypeInit)
   const [message, setMessage] = useState('')
+  const [messageOut, setMessageOut] = useState('')
   const [toastMessage, setToastMessage] = useState()
 
   const handleClickCreate = () => {
@@ -123,10 +124,31 @@ const RoomTypes = () => {
   }
 
   const handleClickDelete = (id) => {
-    roomTypeService._delete(id)
-    let roomTypesCopy = roomTypes.filter((item) => item.id !== id)
-    setRoomTypes(roomTypesCopy)
-    setToastMessage('Xoá loại phòng thành công')
+    roomTypeService._delete(id).then((res) => {
+      switch (res) {
+        case 400:
+          setMessageOut('Có lỗi khi xoá')
+          break
+        case 404:
+          setMessageOut('Không tìm thấy phòng để xoá')
+          break
+        case 403:
+          setMessageOut('Không có quyền')
+          break
+        case 409:
+          setMessageOut('Không thể xoá vì có phòng đang được sử dụng loại phòng này')
+          console.log('roomTypes', roomTypes)
+          break
+        case 500:
+          setMessageOut('Có lỗi khi xoá')
+          break
+        default:
+          setMessageOut('')
+          let roomTypesCopy = roomTypes.filter((item) => item.id !== id)
+          setRoomTypes(roomTypesCopy)
+          setToastMessage('Xoá loại phòng thành công')
+      }
+    })
   }
 
   const handleInputChange = (event) => {
@@ -136,7 +158,7 @@ const RoomTypes = () => {
 
   useEffect(() => {
     roomTypeService.getAll().then((x) => setRoomTypes(x))
-  }, [openModal])
+  }, [openModal, roomTypes])
 
   const modalCreateEdit = () => {
     return (
@@ -233,6 +255,7 @@ const RoomTypes = () => {
                 </CButton>
               </div>
             </div>
+            {messageOut && <Message variant="danger">{messageOut}</Message>}
             <CTable striped>
               <CTableHead>
                 <CTableRow color="primary">

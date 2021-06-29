@@ -43,6 +43,7 @@ const GuestTypes = () => {
   const [guestTypeToCreateOrUpdate, setGuestTypeToCreateOrUpdate] = useState(guestTypeInit)
   const [message, setMessage] = useState('')
   const [toastMessage, setToastMessage] = useState()
+  const [messageOut, setMessageOut] = useState('')
 
   const handleClickCreate = () => {
     setOpenModal(true)
@@ -123,7 +124,10 @@ const GuestTypes = () => {
     guestTypeService._delete(id).then((res) => {
       switch (res) {
         case 403:
-          setMessage('Không có quyền')
+          setMessageOut('Không có quyền')
+          break
+        case 409:
+          setMessageOut('Không thể xoá vì có phiếu thuê phòng đang chứa loại khách này')
           break
         default:
           setGuestTypes(guestTypes.filter((item) => item.id !== id))
@@ -140,7 +144,7 @@ const GuestTypes = () => {
 
   useEffect(() => {
     guestTypeService.getAll().then((x) => setGuestTypes(x))
-  }, [openModal])
+  }, [openModal, guestTypes])
 
   const modalCreateEdit = () => {
     return (
@@ -243,6 +247,7 @@ const GuestTypes = () => {
                 </CButton>
               </div>
             </div>
+            {messageOut && <Message variant="danger">{messageOut}</Message>}
             <CTable striped>
               <CTableHead>
                 <CTableRow color="primary">

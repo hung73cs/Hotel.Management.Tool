@@ -12,10 +12,12 @@ namespace Hotel.Management.Tool.ApplicationLogic
     public class RoomTypeService : IRoomTypeService
     {
         private readonly IRoomTypeRepository _roomType;
+        private readonly IRoomRepository _room;
 
-        public RoomTypeService(IRoomTypeRepository roomType)
+        public RoomTypeService(IRoomTypeRepository roomType, IRoomRepository room)
         {
             _roomType = roomType;
+            _room = room;
         }
 
         public async Task<RoomType> GetRoomTypeAsync(Guid roomTypeId)
@@ -62,6 +64,14 @@ namespace Hotel.Management.Tool.ApplicationLogic
             if (roomType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+
+            var roomTypeInRoom = await _room.ExistsAsync(x => x.RoomTypeId == roomTypeId);
+
+            if(roomTypeInRoom)
+            {
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ExistFogreinKey);
+
             }
             roomType.IsDeleted = true;
 

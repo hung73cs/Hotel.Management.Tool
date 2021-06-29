@@ -12,6 +12,8 @@
             public const string ItemNotFound = "Item do not exist";
             public const string ItemExisted = "Name of item had existed";
             public const string WrongMapping = "Mapping is wronged";
+            public const string ExistFogreinKey = "Exist FogreinKey in other table";
+
         }
         public static class DateFormats
         {

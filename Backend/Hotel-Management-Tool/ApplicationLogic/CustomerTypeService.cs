@@ -12,10 +12,12 @@ namespace Hotel.Management.Tool.ApplicationLogic
     public class GuestTypeService : IGuestTypeService
     {
         private readonly IGuestTypeRepository _GuestType;
+        private readonly IBookingDetailRepository _bookingDetail;
 
-        public GuestTypeService(IGuestTypeRepository GuestType)
+        public GuestTypeService(IGuestTypeRepository GuestType, IBookingDetailRepository bookingDetail)
         {
             _GuestType = GuestType;
+            _bookingDetail = bookingDetail;
         }
 
         public async Task<GuestType> GetGuestTypeAsync(Guid GuestTypeId)
@@ -62,6 +64,13 @@ namespace Hotel.Management.Tool.ApplicationLogic
             if (GuestType == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+
+            var guestTypeInBookingDetail = await _bookingDetail.ExistsAsync(x => x.GuestTypeId == GuestTypeId);
+            if(guestTypeInBookingDetail)
+            {
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ExistFogreinKey);
+
             }
             GuestType.IsDeleted = true;
 

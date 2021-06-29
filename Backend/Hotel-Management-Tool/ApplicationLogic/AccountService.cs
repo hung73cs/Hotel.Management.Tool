@@ -12,9 +12,11 @@ namespace Hotel.Management.Tool.ApplicationLogic
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _account;
-        public AccountService(IAccountRepository account)
+        private readonly IBookingRepository _booking;
+        public AccountService(IAccountRepository account, IBookingRepository booking)
         {
             _account = account;
+            _booking = booking;
         }
 
         public async Task<Account> GetAccountAsync(Guid accountId)
@@ -49,6 +51,13 @@ namespace Hotel.Management.Tool.ApplicationLogic
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
+
+            var accountInBooking = await _booking.ExistsAsync(x=>x.AccountId==accountId);
+
+            if(accountInBooking)
+            {
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ExistFogreinKey);
+            }    
             account.IsDeleted = true;
 
             await _account.UpdateAsync(account);

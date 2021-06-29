@@ -12,10 +12,12 @@ namespace Hotel.Management.Tool.ApplicationLogic
     public class RoomService : IRoomService
     {
         private readonly IRoomRepository _room;
+        private readonly IBookingRepository _booking;
 
-        public RoomService(IRoomRepository room)
+        public RoomService(IRoomRepository room, IBookingRepository booking)
         {
             _room = room;
+            _booking = booking;
         }
 
         public async Task<Room> GetRoomAsync(Guid roomId)
@@ -68,6 +70,13 @@ namespace Hotel.Management.Tool.ApplicationLogic
             if (room == null)
             {
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+
+            var roomInBooking = await _booking.ExistsAsync(x => x.RoomId == roomId);
+
+            if(roomInBooking)
+            {
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ExistFogreinKey);
             }
             room.IsDeleted = true;
 
