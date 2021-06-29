@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react'
 import {
   CCard,
@@ -67,6 +69,9 @@ const CreateBill = () => {
     const dayDate = date.split('-').pop()
     const dayPreDate = preDate.split('-').pop()
     return dayDate - dayPreDate + 1
+    // return Math.floor(
+    //   (Date.UTC(date.getDate(), date.getMonth(), date.getFullYear()) -
+    //     Date.UTC(preDate.getDate(), preDate.getMonth(), preDate.getFullYear(),)) / (1000 * 60 * 60 * 24))
   }
 
   const handleAddToBookingBills = (bookingId) => {
@@ -75,7 +80,7 @@ const CreateBill = () => {
     let booking = bookingsCopy.find((x) => x.id === bookingId)
     bookingsCopy = bookingsCopy.filter((x) => x.id !== bookingId)
     let calculateTotalPrice = totalPrice
-    calculateTotalPrice += booking.unitStandardPrice
+    calculateTotalPrice += booking.unitStandardPrice * calculateNumberOfRentalDays(date.split('T')[0], booking.startedDate.split('T')[0])
     setTotalPrice(calculateTotalPrice)
     temp.push(booking)
     setBookingId(bookingId)
@@ -123,11 +128,6 @@ const CreateBill = () => {
           setToastMessage('Tạo hoá đơn thành công')
       }
     })
-  }
-
-  const findBookingNameByRoom = (bookingId) => {
-    const roomId = bookings.find((x) => x.id === bookingId)?.roomId
-    return rooms.find((x) => x.id === roomId)?.name
   }
 
   const findNameRoom = (roomId) => {

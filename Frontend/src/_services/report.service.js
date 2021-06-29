@@ -2,7 +2,7 @@
 import { authHeader } from '../_helpers'
 import { commonConstants } from '../_constants/common.constants'
 const apiUrl = commonConstants.BACKENDURI
-export const roomTypeService = {
+export const reportService = {
   getById,
   getAll,
   create,

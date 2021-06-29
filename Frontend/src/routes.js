@@ -68,6 +68,8 @@ const EditBooking = React.lazy(() => import('./screens/bookings/EditBooking'))
 const SurchargeRates = React.lazy(() => import('./screens/surchargerates/SurchargeRates'))
 const CreateBill = React.lazy(() => import('./screens/bills/CreateBill'))
 const GetBills = React.lazy(() => import('./screens/bills/Bills'))
+const Reports = React.lazy(() => import('./screens/reports/Report'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
@@ -133,5 +135,6 @@ const routes = [
   { path: '/bill', name: 'Hoá đơn' },
   { path: '/bill/createbill', name: 'Tạo hoá đơn', component: CreateBill },
   { path: '/bill', name: 'Kiểm tra hóa đơn', component: GetBills },
+  { path: '/report', name: 'Báo cáo doanh thu', component: Reports },
 ]
 export default routes
