@@ -41,6 +41,15 @@ const CreateBill = () => {
   const [billDetails, setBillDetails] = useState([])
   const date = new Date().toISOString()
 
+  const handleReset = () => {
+    setBookingId('')
+    setGuestName('')
+    setAddress('')
+    setBookingBilleds('')
+    setTotalPrice('')
+    setValidated(false)
+  }
+
   useEffect(() => {
     roomService.getAll().then((x) => setRooms(x))
   }, [])
@@ -100,6 +109,7 @@ const CreateBill = () => {
     setBookings(bookingsCopy)
     console.log('bookingBilleds', bookingBilleds)
   }
+ 
 
   const createBillService = () => {
     var data = {
@@ -268,7 +278,7 @@ const CreateBill = () => {
               <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
                 TẠO
               </CButton>
-              <CButton style={{ margin: '0px 10px', width: 100 }}>LÀM MỚI</CButton>
+              <CButton style={{ margin: '0px 10px', width: 100 }} onClick={() => handleReset()}>LÀM MỚI</CButton>
             </div>
           </CForm>
         </CCardBody>

@@ -58,7 +58,7 @@ const Reports = () => {
     <CCard>
       {toastMessage && <ToastNotification message={toastMessage} />}
       <CCardHeader>
-        <strong>Báo cáo doanh thu theo tháng</strong>
+        <strong>Báo cáo doanh thu theo năm</strong>
       </CCardHeader>
       <CCardBody>
         <CForm
