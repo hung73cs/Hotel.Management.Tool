@@ -169,12 +169,25 @@ const Rooms = () => {
       setSort(!sort)
     } else {
       rooms.sort((a, b) => b.name.localeCompare(a.name))
+      setSort(!sort)
     }
   }
 
-  // const statusColor = (data) = {
-  //   if(data = 'OPEN') {},
-  // }
+  const [sortStatus, setSortStatus] = useState(true)
+  const handleSortStatus = () => {
+    if (sortStatus) {
+      rooms.sort((a, b) => a.roomStatus.localeCompare(b.roomStatus))
+      setSortStatus(!sortStatus)
+    } else {
+      rooms.sort((a, b) => b.roomStatus.localeCompare(a.roomStatus))
+      setSortStatus(!sortStatus)
+    }
+  }
+
+  const statusColor = (data) => {
+    if (data === 'OPEN') return <strong style={{ color: 'blue' }}>{data}</strong>
+    return <strong style={{ color: 'red' }}>{data}</strong>
+  }
   const modalCreateEdit = () => {
     return (
       <CModal visible={openModal}>
@@ -330,7 +343,13 @@ const Rooms = () => {
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col">LOẠI PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">ĐƠN GIÁ (VNĐ)</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">TÌNH TRẠNG</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleSortStatus()}
+                  >
+                    TÌNH TRẠNG
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col">GHI CHÚ</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
@@ -350,7 +369,7 @@ const Rooms = () => {
                         <strong>{room.roomTypeModel.cost} </strong>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <p style={{ color: 'danger' }}>{room.roomStatus}</p>
+                        <strong>{statusColor(room.roomStatus)}</strong>
                       </CTableDataCell>
                       <CTableDataCell>{room.note}</CTableDataCell>
                       <CTableDataCell>

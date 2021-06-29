@@ -196,13 +196,14 @@ const Bookings = () => {
             <p className="text-medium-emphasis small">Đây là danh sách các phiếu thuê phòng</p>
             <CTable striped>
               <CTableHead>
-                <CTableRow>
+                <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">MÃ PHIẾU THUÊ PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÊN PHÒNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">SỐ KHÁCH</CTableHeaderCell>
                   <CTableHeaderCell scope="col">NGÀY BẮT ĐẦU</CTableHeaderCell>
                   <CTableHeaderCell scope="col">GIÁ TẠM TÍNH</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">TUỲ CHỈNH</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -211,6 +212,9 @@ const Bookings = () => {
                   bookings.map((item, index) => (
                     <CTableRow key={item.accountId}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell>
+                        <strong>{item.id.split('-').pop()}</strong>
+                      </CTableDataCell>
                       <CTableDataCell>
                         <strong>{findNameRoom(item.roomId)}</strong>
                       </CTableDataCell>

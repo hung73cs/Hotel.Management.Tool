@@ -158,11 +158,12 @@ const Bills = () => {
             <p className="text-medium-emphasis small">Đây là danh sách các hóa đơn</p>
             <CTable striped>
               <CTableHead>
-                <CTableRow>
+                <CTableRow color="primary">
                   <CTableHeaderCell scope="col">STT</CTableHeaderCell>
                   <CTableHeaderCell scope="col">TÊN KHÁCH HÀNG</CTableHeaderCell>
                   <CTableHeaderCell scope="col">NGÀY TẠO</CTableHeaderCell>
                   <CTableHeaderCell scope="col">THÀNH TIỀN (VNĐ)</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tuỳ chỉnh</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
