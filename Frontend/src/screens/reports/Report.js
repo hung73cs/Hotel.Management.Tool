@@ -118,6 +118,9 @@ const Reports = () => {
     useEffect(() => {
         roomTypeService.getAll().then((x) => setRoomTypes(x))
     }, [])
+    useEffect(() => {
+        reportService.getAll().then((x) => setRevenue(x))
+    }, [])
     
     //Optional. Không chắc có cần xóa report không, nhưng define luôn
     // const handleDeleteReport = (id) => {
@@ -274,7 +277,7 @@ const Reports = () => {
                                 <CTableBody>
                                     <CTableRow>
                                     <CTableDataCell>
-                                        <strong>{reports.totalRevenue}</strong>
+                                        <strong>{revenue}</strong>
                                     </CTableDataCell>
                                     </CTableRow>
                                 </CTableBody>
