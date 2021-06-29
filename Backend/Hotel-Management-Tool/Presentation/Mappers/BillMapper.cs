@@ -72,8 +72,8 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             }
             return new BillModel
             {
-                Id = Guid.NewGuid(),
-                CreatedDate = DateTime.Now,
+                Id = bill.Id,
+                CreatedDate = bill.CreatedDate,
                 GuestName = bill.GuestName,
                 Address = bill.Address,
                 TotalPrice = bill.TotalPrice,
@@ -100,8 +100,8 @@ namespace Hotel.Management.Tool.Presentation.Mappers
                 }
                 var billModel = new BillModel()
                 {
-                    Id = Guid.NewGuid(),
-                    CreatedDate = DateTime.Now,
+                    Id = i.Id,
+                    CreatedDate = i.CreatedDate,
                     GuestName = i.GuestName,
                     Address = i.Address,
                     TotalPrice = i.TotalPrice,
