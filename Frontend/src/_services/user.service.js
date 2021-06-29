@@ -9,6 +9,7 @@ export const userService = {
   getById,
   update,
   delete: _delete,
+  changePassword,
 }
 
 async function login(username, password) {
@@ -40,6 +41,20 @@ async function getAll() {
     headers: authHeader(),
   }
   return await fetch(`${apiUrl}/account`, requestOptions).then(handleResponse)
+}
+
+async function changePassword(idAccount, model) {
+  const requestOptions = {
+    method: 'PUT',
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(model),
+  }
+  console.log('idAccount', idAccount)
+
+  console.log('changepassword', model)
+  return await fetch(`${apiUrl}/account/id/${idAccount}/changepassword`, requestOptions).then(
+    handleResponse,
+  )
 }
 
 async function getById(id) {

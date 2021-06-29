@@ -122,5 +122,14 @@ namespace Hotel.Management.Tool.Presentation.Mappers
             }
             return accountEntity;
         }
+
+        public Account MapAccountModelToAccount(string newPassword, Account accountEntity)
+        {
+            if (newPassword != null)
+            {
+                accountEntity.Password = Utils.HashPassword(newPassword);
+            }
+            return accountEntity;
+        }
     }
 }

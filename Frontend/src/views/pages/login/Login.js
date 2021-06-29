@@ -61,14 +61,13 @@ const Login = () => {
             <CCard className="p-4">
               <CCardBody>
                 <CForm>
-                  <h1>Login</h1>
-                  <p className="text-medium-emphasis">Sign In to your account</p>
+                  <h1>ĐĂNG NHẬP</h1>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon name="cil-user" />
                     </CInputGroupText>
                     <CFormControl
-                      placeholder="Username"
+                      placeholder="Tài khoản"
                       autoComplete="username"
                       value={inputs.username}
                       onInput={(e) => handleChange(e, 'USERNAME')}
@@ -80,7 +79,7 @@ const Login = () => {
                     </CInputGroupText>
                     <CFormControl
                       type="password"
-                      placeholder="Password"
+                      placeholder="Mật khẩu"
                       autoComplete="current-password"
                       value={inputs.password}
                       onInput={(e) => handleChange(e, 'PASS')}
@@ -95,7 +94,7 @@ const Login = () => {
                         className="px-4"
                         onClick={(e) => handleSubmit(e)}
                       >
-                        Login
+                        ĐĂNG NHẬP
                       </CButton>
                     </CCol>
                   </CRow>

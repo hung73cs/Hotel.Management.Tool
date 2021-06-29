@@ -10,11 +10,17 @@ import {
 import CIcon from '@coreui/icons-react'
 import { useDispatch } from 'react-redux'
 import { userActions } from '../../_actions'
+import { NavLink } from 'react-router-dom'
+
 const AppHeaderDropdown = () => {
   const dispatch = useDispatch()
 
   const LogOut = () => {
     dispatch(userActions.logout())
+  }
+
+  const ChangePasswordFunc = () => {
+    return <NavLink to="/change-password"></NavLink>
   }
 
   const getUsername = () => {
@@ -36,7 +42,13 @@ const AppHeaderDropdown = () => {
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
+        <CDropdownHeader className="bg-light fw-semibold py-2">Tài khoản</CDropdownHeader>
+        <NavLink to="/change-password">
+          <CDropdownItem>
+            <CIcon name="cil-lock-locked" className="me-2" />
+            Đổi mật khẩu
+          </CDropdownItem>
+        </NavLink>
         <CDropdownItem onClick={() => LogOut()}>
           <CIcon name="cil-lock-locked" className="me-2" />
           Đăng xuất

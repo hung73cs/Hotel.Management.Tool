@@ -24,7 +24,7 @@ import CIcon from '@coreui/icons-react'
 import { roomService, surchargeRateService, guestTypeService, bookingService } from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const EditBooking = () => {
   const [validated, setValidated] = useState(false)

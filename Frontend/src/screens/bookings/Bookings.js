@@ -25,7 +25,6 @@ import { roomService, bookingService, userService, guestTypeService } from 'src/
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 import EditBooking from './EditBooking'
-import FormatDatetime from 'src/utis/FormatDatetime'
 const Bookings = () => {
   const initBooking = {
     id: '',

@@ -40,10 +40,10 @@ const App = () => {
                 name="Login Page"
                 render={(props) => <Login {...props} />}
               />
-              <Route path="/" name="Login" render={(props) => <Login {...props} />} />
+              <Route path="/" name="Đăng nhập" render={(props) => <Login {...props} />} />
             </div>
           ) : (
-            <Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} />
+            <Route path="/" name="Trang chủ" render={(props) => <DefaultLayout {...props} />} />
           )}
         </Switch>
       </React.Suspense>
