@@ -1,4 +1,5 @@
-﻿using Hotel.Management.Tool.Core.Constants;
+﻿using Hotel.Management.Tool.ApplicationLogic.Utils;
+using Hotel.Management.Tool.Core.Constants;
 using Hotel.Management.Tool.Core.Enums;
 using Hotel.Management.Tool.Core.Exceptions;
 using Hotel.Management.Tool.Core.Interfaces;
@@ -111,6 +112,36 @@ namespace Hotel.Management.Tool.Presentation.Controllers
 
             return NoContent();
         }
+
+        [HttpPut]
+        [Route("id/{accountId}/changepassword")]
+        public async Task<ActionResult> ChangePassword(Guid accountId, [FromBody] ChangePasswordModel changePassword)
+        {
+            var currentAccount = await _account.GetAccountAsync(accountId);
+
+            if (currentAccount == null)
+            {
+                throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
+            }
+
+            var checkedMatchingPassword = Utils.CheckMatchingPassword(changePassword.Password, currentAccount.Password);
+
+            if (!checkedMatchingPassword)
+            {
+                throw new ExtendException(ErrorCode.Conflict, $"Mat khau cu khong chinh xac");
+            }
+
+            var mappedAccount = _accountMapper.MapAccountModelToAccount(changePassword.NewPassword, currentAccount);
+
+            if (mappedAccount == null)
+            {
+                throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.WrongMapping);
+            }
+            await _account.UpdateAsync(mappedAccount);
+
+            return NoContent();
+        }
+
 
         [HttpDelete]
         [Route("id/{accountId}")]

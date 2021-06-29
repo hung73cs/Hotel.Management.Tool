@@ -11,5 +11,7 @@ namespace Hotel.Management.Tool.Core.Interfaces
         List<GetAccountModel> MapAccountToAccountModel(List<Account> accounts);
         Account MapAccountModelToAccount(CreateAccountModel accountModel);
         Account MapAccountModelToAccount(UpdateAccountModel accountModel, Account accountEntity);
+        Account MapAccountModelToAccount(string newPassword, Account accountEntity);
+
     }
 }
