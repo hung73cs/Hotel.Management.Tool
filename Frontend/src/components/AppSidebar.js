@@ -10,6 +10,7 @@ import 'simplebar/dist/simplebar.min.css'
 // sidebar nav config
 import navigation from '../_nav'
 import navigationUser from '../_narUser'
+import { NavLink } from 'react-router-dom'
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
@@ -24,7 +25,9 @@ const AppSidebar = () => {
     <CSidebar position="fixed" selfHiding="md" unfoldable={unfoldable} show={sidebarShow}>
       <CSidebarBrand style={{ margin: '10px 50px' }} className="d-none d-md-flex" to="/">
         {/* <CAvatar src="logo/logo.png" size="xl" /> */}
-        <img src="logo/logo.png" className="img-fluid" alt="Responsive image"></img>
+        <NavLink to="/">
+          <img src="logo/logo.png" className="img-fluid" alt="Responsive image"></img>
+        </NavLink>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
