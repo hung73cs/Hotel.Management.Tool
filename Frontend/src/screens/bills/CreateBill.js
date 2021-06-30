@@ -81,7 +81,7 @@ const CreateBill = () => {
 
     return Math.floor(
       (Date.UTC(dateParse.getDate(), dateParse.getMonth(), dateParse.getFullYear()) -
-        Date.UTC(preDateParse.getDate(), preDateParse.getMonth(), preDateParse.getFullYear(),)) / (1000 * 60 * 60 * 24))
+        Date.UTC(preDateParse.getDate(), preDateParse.getMonth(), preDateParse.getFullYear(),)) / (1000 * 60 * 60 * 24) + 1)
   }
 
   const handleAddToBookingBills = (bookingId) => {
@@ -115,7 +115,7 @@ const CreateBill = () => {
     setBookings(bookingsCopy)
     console.log('bookingBilleds', bookingBilleds)
   }
- 
+
 
   const createBillService = () => {
     var data = {
