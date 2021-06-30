@@ -38,7 +38,7 @@ const Reports = () => {
     var data = {
       year: Number(year),
     }
-    reportService.reportMonth(data).then((res) => {
+    reportService.reportYear(data).then((res) => {
       switch (res) {
         case 400:
           setMessage('Lỗi khi tạo báo cáo')

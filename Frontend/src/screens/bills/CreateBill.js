@@ -275,8 +275,8 @@ const CreateBill = () => {
               </CTableBody>
             </CTable>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <CButton style={{ margin: '0px 10px', width: 100 }} type="submit">
-                TẠO
+              <CButton style={{ margin: '0px 10px', width: 150 }} type="submit">
+                XÁC NHẬN THANH TOÁN
               </CButton>
               <CButton style={{ margin: '0px 10px', width: 100 }} onClick={() => handleReset()}>LÀM MỚI</CButton>
             </div>
