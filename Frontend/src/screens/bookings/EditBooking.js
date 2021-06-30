@@ -33,23 +33,6 @@ import Message from 'src/components/Message'
 import { useSelector } from 'react-redux'
 
 const EditBooking = () => {
-  const booking = useSelector((state) => state.booking.data)
-
-  const [validated, setValidated] = useState(false)
-  const [message, setMessage] = useState('')
-  const [toastMessage, setToastMessage] = useState('')
-
-  const [rooms, setRooms] = useState([])
-  const [guestTypes, setguestTypes] = useState([])
-
-  const [roomId, setRoomId] = useState(booking.roomId)
-  const [accountId, setAccountId] = useState(booking.accountId)
-
-  const [numberOfGuest, setNumberOfGuest] = useState(booking.numberOfGuest)
-  const [unitPrice, setUnitPrice] = useState(booking.unitPrice)
-  const [unitStandardPrice, setUnitStandardPrice] = useState(booking.unitStandardPrice)
-  const [startedDate, setStartedDate] = useState(booking.startedDate)
-
   const initBookingDetail = [
     {
       guestName: '',
@@ -112,6 +95,30 @@ const EditBooking = () => {
       address: '',
     },
   ]
+
+  const init1BookingDetail = {
+    guestName: '',
+    guestTypeId: '',
+    idCard: '',
+    address: '',
+  }
+  const booking = useSelector((state) => state.booking.data)
+
+  const [validated, setValidated] = useState(false)
+  const [message, setMessage] = useState('')
+  const [toastMessage, setToastMessage] = useState('')
+
+  const [rooms, setRooms] = useState([])
+  const [guestTypes, setguestTypes] = useState([])
+
+  const [roomId, setRoomId] = useState(booking.roomId)
+  const [accountId, setAccountId] = useState(booking.accountId)
+
+  const [numberOfGuest, setNumberOfGuest] = useState(booking.numberOfGuest)
+  const [unitPrice, setUnitPrice] = useState(booking.unitPrice)
+  const [unitStandardPrice, setUnitStandardPrice] = useState(booking.unitStandardPrice)
+  const [startedDate, setStartedDate] = useState(booking.startedDate)
+
   const [bookingDetails, setBookDetails] = useState(booking.bookingDetailModels)
   const [numberBookingDetail, setNumberBookingDetail] = useState(booking.bookingDetailModels.length)
   const [parameters, setParameters] = useState([])
@@ -164,6 +171,14 @@ const EditBooking = () => {
   }
 
   const onBlurNumberOfGuest = (number) => {
+    if (number > numberBookingDetail) {
+      const temp = bookingDetails
+      const diff = (number = numberBookingDetail + 1)
+      for (let i = 1; i <= diff; i++) {
+        temp.push(init1BookingDetail)
+        setBookDetails(temp)
+      }
+    }
     if (number > getParameterNumberOfGuestInRoom()) {
       setMessage(
         'Số khách trong phòng không được vượt quá ' + getParameterNumberOfGuestInRoom() + ' khách',
@@ -264,6 +279,16 @@ const EditBooking = () => {
           >
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <div style={{ width: '50%' }}>
+                <CInputGroup className="mb-4">
+                  <CCol md="3">
+                    <CFormLabel>Mã phiếu thuê:</CFormLabel>
+                  </CCol>
+                  <CCol>
+                    <CFormLabel>
+                      <strong>{booking.id.split('-').pop()}</strong>
+                    </CFormLabel>
+                  </CCol>
+                </CInputGroup>
                 <CInputGroup className="mb-4">
                   <CCol md="3">
                     <CFormLabel>Chọn phòng:</CFormLabel>
