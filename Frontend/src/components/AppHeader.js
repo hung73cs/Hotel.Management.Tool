@@ -39,8 +39,14 @@ const AppHeader = () => {
               <CNavLink to="/booking/create" component={NavLink} activeClassName="active">
                 <strong>TẠO PHIẾU THUÊ PHÒNG</strong>
               </CNavLink>
+              <CNavLink to="/booking/bookings" component={NavLink} activeClassName="active">
+                <strong>DANH SÁCH PHIẾU THUÊ PHÒNG</strong>
+              </CNavLink>
               <CNavLink to="/bill/createbill" component={NavLink} activeClassName="active">
                 <strong>TẠO HOÁ ĐƠN</strong>
+              </CNavLink>
+              <CNavLink to="/bill" component={NavLink} activeClassName="active">
+                <strong>DANH SÁCH HOÁ ĐƠN</strong>
               </CNavLink>
               <CNavLink to="/room" component={NavLink} activeClassName="active">
                 <strong>DANH SÁCH PHÒNG</strong>
