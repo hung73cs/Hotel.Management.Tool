@@ -44,7 +44,6 @@ const CreateBooking = () => {
   const [numberOfGuest, setNumberOfGuest] = useState('')
   const [unitPrice, setUnitPrice] = useState(0)
   const [unitStandardPrice, setUnitStandardPrice] = useState(0)
-  const [isPlusGuestTypeCost, SetIsPlusGuestTypeCost] = useState(false)
   const [isPlusGuestTypeCostArray, SetIsPlusGuestTypeCostArray] = useState([])
 
   const initBookingDetail = [

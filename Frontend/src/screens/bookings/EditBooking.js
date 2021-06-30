@@ -21,12 +21,20 @@ import {
   CWidgetIcon,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { roomService, surchargeRateService, guestTypeService, bookingService } from 'src/_services'
+import {
+  roomService,
+  surchargeRateService,
+  guestTypeService,
+  bookingService,
+  parameterService,
+} from 'src/_services'
 import ToastNotification from 'src/components/Toasts'
 import Message from 'src/components/Message'
 import { useSelector } from 'react-redux'
 
 const EditBooking = () => {
+  const booking = useSelector((state) => state.booking.data)
+
   const [validated, setValidated] = useState(false)
   const [message, setMessage] = useState('')
   const [toastMessage, setToastMessage] = useState('')
@@ -34,13 +42,13 @@ const EditBooking = () => {
   const [rooms, setRooms] = useState([])
   const [guestTypes, setguestTypes] = useState([])
 
-  const [roomId, setRoomId] = useState('')
-  const [accountId, setAccountId] = useState('')
+  const [roomId, setRoomId] = useState(booking.roomId)
+  const [accountId, setAccountId] = useState(booking.accountId)
 
-  const [numberOfGuest, setNumberOfGuest] = useState('')
-  const [unitPrice, setUnitPrice] = useState(0)
-  const [unitStandardPrice, setUnitStandardPrice] = useState(0)
-  const [startedDate, setStartedDate] = useState()
+  const [numberOfGuest, setNumberOfGuest] = useState(booking.numberOfGuest)
+  const [unitPrice, setUnitPrice] = useState(booking.unitPrice)
+  const [unitStandardPrice, setUnitStandardPrice] = useState(booking.unitStandardPrice)
+  const [startedDate, setStartedDate] = useState(booking.startedDate)
 
   const initBookingDetail = [
     {
@@ -104,10 +112,10 @@ const EditBooking = () => {
       address: '',
     },
   ]
-  const [bookingDetails, setBookDetails] = useState(initBookingDetail)
-  const [numberBookingDetail, setNumberBookingDetail] = useState(0)
-
-  const booking = useSelector((state) => state.booking.data)
+  const [bookingDetails, setBookDetails] = useState(booking.bookingDetailModels)
+  const [numberBookingDetail, setNumberBookingDetail] = useState(booking.bookingDetailModels.length)
+  const [parameters, setParameters] = useState([])
+  const [isPlusGuestTypeCostArray, SetIsPlusGuestTypeCostArray] = useState([])
 
   useEffect(() => {
     console.log('object', booking.roomId)
@@ -120,19 +128,21 @@ const EditBooking = () => {
           ),
         ),
       )
+
     guestTypeService.getAll().then((x) => setguestTypes(x))
+    parameterService.getAll().then((x) => {
+      setParameters(x)
+    })
     setAccountId(JSON.parse(localStorage.getItem('user'))?.accountId)
   }, [])
 
   useEffect(() => {
-    setRoomId(booking.roomId)
-    setAccountId(booking.accountId)
-    setNumberOfGuest(booking.numberOfGuest)
-    setUnitPrice(booking.unitPrice)
-    setUnitStandardPrice(booking.unitStandardPrice)
-    setBookDetails(booking.bookingDetailModels)
-    setStartedDate(booking.startedDate)
-    onBlurNumberOfGuest(booking.numberOfGuest)
+    console.log('booking', booking)
+    console.log('hello')
+    console.log('roomid', roomId)
+    console.log('numberOfGuest', numberOfGuest)
+    console.log('unitPrice', unitPrice)
+    console.log('numberBookingDetail', numberBookingDetail)
   }, [])
 
   const handleSubmit = (event) => {
@@ -154,8 +164,15 @@ const EditBooking = () => {
   }
 
   const onBlurNumberOfGuest = (number) => {
-    setNumberBookingDetail(number)
-    calculateUnitStandardPrice()
+    if (number > getParameterNumberOfGuestInRoom()) {
+      setMessage(
+        'Số khách trong phòng không được vượt quá ' + getParameterNumberOfGuestInRoom() + ' khách',
+      )
+    } else {
+      setNumberBookingDetail(number)
+      calculateUnitStandardPrice()
+      setMessage('')
+    }
   }
 
   const calculateUnitStandardPrice = () => {
@@ -203,6 +220,10 @@ const EditBooking = () => {
     setUnitStandardPrice(0)
     setBookDetails(initBookingDetail)
   }
+  const getParameterNumberOfGuestInRoom = () => {
+    const title = 'Số khách tối đa trong 1 phòng'
+    return parameters.find((x) => x.name === title)?.value
+  }
 
   const getPriceRoom = (id) => {
     return rooms.find((x) => x.id === id)?.roomTypeModel.cost
@@ -214,6 +235,17 @@ const EditBooking = () => {
   const formatDatetime = (datetime) => {
     const regex = /\d{4}-\d{2}-\d{1,2}/
     return datetime.match(regex)
+  }
+
+  const setPriceGuestType = (guestTypeId) => {
+    if (isPlusGuestTypeCostArray.find((x) => x === guestTypeId) === undefined) {
+      const guestTypesCopy = [...guestTypes]
+      const costGuestType = guestTypesCopy.find((x) => x.id === guestTypeId)?.surchargeRate
+      setUnitStandardPrice(unitStandardPrice + (unitStandardPrice * costGuestType) / 100)
+      const temp = isPlusGuestTypeCostArray
+      temp.push(guestTypeId)
+      SetIsPlusGuestTypeCostArray(temp)
+    }
   }
   return (
     <CRow>
@@ -344,6 +376,7 @@ const EditBooking = () => {
                           let temp = [...bookingDetails]
                           temp[index].guestTypeId = e.target.value
                           setBookDetails(temp)
+                          setPriceGuestType(bookingDetails[index]?.guestTypeId)
                         }}
                         required
                       >
