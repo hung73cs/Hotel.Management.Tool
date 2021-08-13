@@ -331,7 +331,7 @@ const Rooms = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Danh sách loại phòng:</strong>
+            <strong>Danh sách phòng:</strong>
           </CCardHeader>
           <CCardBody>
             <div

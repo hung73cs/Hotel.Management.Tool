@@ -37,6 +37,7 @@ const CreateBill = () => {
   const [address, setAddress] = useState('')
   const [totalPrice, setTotalPrice] = useState(0)
   const [bookingBilleds, setBookingBilleds] = useState([])
+  // eslint-disable-next-line no-unused-vars
   const [numberOfRent, setNumberOfRent] = useState('')
   const [billDetails, setBillDetails] = useState([])
   const date = new Date().toISOString()
