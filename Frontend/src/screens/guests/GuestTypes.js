@@ -221,7 +221,7 @@ const GuestTypes = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Danh sách loại khách:</strong>
+            <strong>Danh sách loại phòng:</strong>
           </CCardHeader>
           <CCardBody>
             <div
