@@ -19,9 +19,9 @@ namespace Hotel.Management.Tool.Startup
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(connection.ToString(), options => options.EnableRetryOnFailure());           
+                options.UseNpgsql(connection.ToString(), options => options.EnableRetryOnFailure());
             }
             , ServiceLifetime.Transient);
-        }      
+        }
     }
 }

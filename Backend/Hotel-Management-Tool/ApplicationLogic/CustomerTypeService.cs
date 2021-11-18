@@ -67,7 +67,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
             }
 
             var guestTypeInBookingDetail = await _bookingDetail.ExistsAsync(x => x.GuestTypeId == GuestTypeId);
-            if(guestTypeInBookingDetail)
+            if (guestTypeInBookingDetail)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ExistFogreinKey);
 

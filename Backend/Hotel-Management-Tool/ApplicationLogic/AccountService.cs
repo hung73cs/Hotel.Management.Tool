@@ -52,12 +52,12 @@ namespace Hotel.Management.Tool.ApplicationLogic
                 throw new ExtendException(ErrorCode.NotFound, CommonConstants.ErrorMessage.ItemNotFound);
             }
 
-            var accountInBooking = await _booking.ExistsAsync(x=>x.AccountId==accountId);
+            var accountInBooking = await _booking.ExistsAsync(x => x.AccountId == accountId);
 
-            if(accountInBooking)
+            if (accountInBooking)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ExistFogreinKey);
-            }    
+            }
             account.IsDeleted = true;
 
             await _account.UpdateAsync(account);

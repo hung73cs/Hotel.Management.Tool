@@ -68,7 +68,7 @@ namespace Hotel.Management.Tool.ApplicationLogic
 
             var roomTypeInRoom = await _room.ExistsAsync(x => x.RoomTypeId == roomTypeId);
 
-            if(roomTypeInRoom)
+            if (roomTypeInRoom)
             {
                 throw new ExtendException(ErrorCode.Conflict, CommonConstants.ErrorMessage.ExistFogreinKey);
 
