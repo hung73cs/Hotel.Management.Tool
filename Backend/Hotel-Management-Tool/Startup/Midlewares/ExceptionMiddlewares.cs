@@ -3,6 +3,7 @@ using Hotel.Management.Tool.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -10,7 +11,7 @@ namespace Hotel.Management.Tool.Core.Exceptions
 {
     public static class ExceptionMiddlewares
     {
-        public static void ConfigExceptionHandler(this IApplicationBuilder app)
+        public static void ConfigExceptionHandler(this IApplicationBuilder app, ILogger logger)
         {
             _ = app.UseExceptionHandler(appError =>
               {

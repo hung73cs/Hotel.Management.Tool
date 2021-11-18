@@ -14,7 +14,7 @@ namespace Hotel.Management.Tool
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup.Startup>();
                 });
     }
 }
