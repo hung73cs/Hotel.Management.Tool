@@ -1,8 +1,8 @@
-Project is small tool to manage room lease in hotel. User register with primary account, can be add new room type, room, customer type, customer, new order... View list of them and perform update, delete data. Data will be change and save to DB.
+Project is small tool to manage room lease in hotel. User register with primary account, can be add new room type, room, customer type, customer, new order... View list of them and perform update, delete data. Data will be change and save to DB. Project have many user type, Admin is full permision user.
 This repo contain back-end and front-end. 
 
--	Back-end: using ASP.NET Core 3.1, Entity Framework Core (code first) with PostgreSQL, apply dependency injection, asynchronous, validate input data with FluentValidation.
--	Front-end: using ReactJS, Redux, call API by RESTful, authen and authod to back-end by JWT token.
+-	Back-end: using ASP.NET Core 3.1, Entity Framework Core (code first) with PostgreSQL, apply dependency injection, asynchronous, validate input data with FluentValidation, route, mapper, middleware.
+-	Front-end: using ReactJS, Redux thunk, call API by RESTful, authen and authod to back-end by JWT token.
 Project apply asynchronous
 
 Database Diagram. 
